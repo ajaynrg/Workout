@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>5-Day Beginner Strength &amp; Muscle Program | Performance Protocol</title>
+<title>5-Day Beginner Strength &amp; Muscle Program | Autonomous Protocol</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet"/>
@@ -22,6 +22,7 @@
     --cyan: #00E5FF;
     --cyan-glow: rgba(0, 229, 255, 0.15);
     --orange: #FF5C00;
+    --emerald: #10B981;
 
     --text: #F3F4F6;
     --text-muted: #8E98A5;
@@ -49,7 +50,7 @@
       radial-gradient(circle at 90% 0%, rgba(255, 0, 60, 0.08), transparent 45%),
       radial-gradient(circle at 10% 100%, rgba(0, 229, 255, 0.04), transparent 45%);
     background-attachment: fixed;
-    padding-bottom: 110px;
+    padding-bottom: 130px;
   }
 
   /* TOOLTIP SYSTEM */
@@ -390,6 +391,11 @@
     transition: transform 0.25s var(--ease-snappy), border-color 0.25s ease;
   }
 
+  .deck-card.active-card {
+    border-color: var(--accent);
+    box-shadow: 0 0 25px var(--accent-glow);
+  }
+
   /* LIST VIEW STYLES */
   .list-wrapper {
     display: flex;
@@ -534,7 +540,36 @@
 
   .card-history-memory strong { color: var(--text); }
 
-  /* SETS INTERACTIVE TRACKER */
+  /* EXERCISE START & SETS INTERACTIVE TRACKER */
+  .exercise-action-bar {
+    margin-bottom: 1rem;
+  }
+
+  .btn-start-exercise {
+    width: 100%;
+    background: var(--surface-3);
+    border: 1px solid var(--accent);
+    color: #fff;
+    font-family: var(--font-tech);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 0 12px var(--accent-glow);
+    transition: all 0.2s var(--ease-snappy);
+  }
+
+  .btn-start-exercise:hover {
+    background: var(--accent);
+    color: #000;
+  }
+
   .set-tracker-container {
     background: var(--surface-2);
     border: 1px solid var(--border);
@@ -664,13 +699,13 @@
     box-shadow: 0 0 10px var(--accent-glow);
   }
 
-  /* FLOATING REST TIMER DOCK (BOTTOM ZONE) */
+  /* FLOATING AUTONOMOUS TIMER & CONTROL DOCK */
   .timer-dock {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(11, 13, 14, 0.95);
+    background: rgba(11, 13, 14, 0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--border);
@@ -685,6 +720,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
+    flex-wrap: wrap;
   }
 
   .timer-display {
@@ -702,15 +738,20 @@
     letter-spacing: -0.05em;
   }
 
-  .timer-clock.active {
-    color: var(--accent);
-    text-shadow: 0 0 12px var(--accent-glow);
+  .timer-clock.active-rest {
+    color: var(--orange);
+    text-shadow: 0 0 12px rgba(255, 92, 0, 0.3);
     animation: pulseClock 1s infinite;
+  }
+
+  .timer-clock.active-work {
+    color: var(--emerald);
+    text-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
   }
 
   @keyframes pulseClock {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.75; }
+    50% { opacity: 0.6; }
   }
 
   .timer-status {
@@ -728,20 +769,23 @@
     gap: 0.4rem;
   }
 
-  .btn-timer-preset {
+  .btn-timer-action {
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text);
     font-family: var(--font-tech);
     font-size: 0.75rem;
     font-weight: 700;
-    padding: 0.4rem 0.65rem;
+    padding: 0.45rem 0.85rem;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
   }
 
-  .btn-timer-preset:hover {
+  .btn-timer-action:hover {
     border-color: var(--cyan);
     color: var(--cyan);
   }
@@ -753,7 +797,7 @@
     font-family: var(--font-tech);
     font-size: 0.75rem;
     font-weight: 700;
-    padding: 0.4rem 0.75rem;
+    padding: 0.45rem 0.85rem;
     border-radius: 6px;
     cursor: pointer;
   }
@@ -933,7 +977,7 @@
 <header class="top-hud">
   <div class="hud-main">
     <div class="hud-brand">
-      ⚡ <span>5-DAY PROTOCOL</span>
+      ⚡ <span>AUTONOMOUS PROTOCOL</span>
     </div>
     <div class="hud-clock-telemetry" id="currentTime">--:--:-- UTC</div>
     <div class="hud-actions">
@@ -1017,7 +1061,7 @@
 
   <!-- ONBOARDING HINT BANNER -->
   <div class="tip-banner">
-    <span>💡 <strong>Tip:</strong> Tap on exercise or warm-up GIFs for full-screen preview. Check previous week memory logs to guide progressive overload.</span>
+    <span>🤖 <strong>Autonomous Mode:</strong> Click <strong>🚀 START EXERCISE</strong> to initiate your sets and automated audio-guided rest intervals hands-free!</span>
   </div>
 
   <!-- WARM-UP PROTOCOL (COLLAPSIBLE) -->
@@ -1092,22 +1136,20 @@
   </details>
 </main>
 
-<!-- FLOATING REST TIMER DOCK -->
+<!-- FLOATING AUTONOMOUS TIMER & CONTROL DOCK -->
 <div class="timer-dock">
   <div class="timer-dock-inner">
     <div class="timer-display">
-      <div class="timer-clock" id="timerClock">00:00</div>
+      <div class="timer-clock active-work" id="timerClock">00:00</div>
       <div class="timer-status">
-        <span id="timerLabel">REST TIMER</span><br/>
-        <small id="timerSub">READY</small>
+        <span id="timerLabel">AUTONOMOUS STATE</span><br/>
+        <small id="timerSub">READY TO BEGIN</small>
       </div>
     </div>
     <div class="timer-controls">
-      <button class="btn-timer-preset" onclick="startRestTimer(45)" data-tooltip="Start 45s rest">45s</button>
-      <button class="btn-timer-preset" onclick="startRestTimer(60)" data-tooltip="Start 60s rest">60s</button>
-      <button class="btn-timer-preset" onclick="startRestTimer(75)" data-tooltip="Start 75s rest">75s</button>
-      <button class="btn-timer-preset" onclick="startRestTimer(90)" data-tooltip="Start 90s rest">90s</button>
-      <button class="btn-timer-stop" onclick="stopRestTimer()" data-tooltip="Halt active timer">STOP</button>
+      <button class="btn-timer-action" id="pausePlayBtn" onclick="togglePausePlay()" data-tooltip="Pause or Resume Timer">⏸ PAUSE</button>
+      <button class="btn-timer-action" onclick="skipCurrentRest()" data-tooltip="Skip rest period &amp; start next set">⏩ SKIP REST</button>
+      <button class="btn-timer-stop" onclick="stopAutonomousWorkflow()" data-tooltip="Stop autonomous protocol">🛑 STOP</button>
     </div>
   </div>
 </div>
@@ -1139,18 +1181,14 @@
 <div class="modal-overlay" id="helpModal">
   <div class="modal-box">
     <div class="modal-header">
-      <h2>How to Use Features</h2>
+      <h2>Autonomous Mode Guide</h2>
       <button class="btn-close-modal" onclick="closeHelpModal()">✕</button>
     </div>
     <div style="font-size: 0.85rem; color: var(--text); line-height: 1.6; display: flex; flex-direction: column; gap: 0.75rem;">
+      <div><strong style="color: var(--accent);">🚀 Start Button:</strong> Tap <strong>START EXERCISE</strong> on any card to begin your working sets. The app manages your rest timers and speaks audio cues automatically.</div>
+      <div><strong style="color: var(--accent);">✅ Set Completion:</strong> Tap the individual set pills (SET 1, SET 2...) *after* finishing your reps to log progress and trigger the next rest period.</div>
+      <div><strong style="color: var(--accent);">⏸ Pause / Play / Stop:</strong> Use the bottom dock controls at any moment to pause your rest countdown, skip straight to the next set, or abort the automated flow.</div>
       <div><strong style="color: var(--accent);">👉 Day Navigation:</strong> Tap any day at the top bar (Mon–Sun) to load that workout.</div>
-      <div><strong style="color: var(--accent);">👉 Swipe vs List:</strong> Use the <strong>⊞ LIST / SWIPE</strong> toggle in the top HUD to switch between a full-screen card swipe deck and a compact vertical checklist.</div>
-      <div><strong style="color: var(--accent);">👉 Zoom GIFs:</strong> Tap directly on any warm-up or exercise GIF image to view the high-definition loop in a full modal.</div>
-      <div><strong style="color: var(--accent);">👉 Interactive Sets:</strong> Tap <strong>SET 1, SET 2...</strong> pills as you finish sets. It updates tonnage, saves progress, and triggers the rest timer automatically.</div>
-      <div><strong style="color: var(--accent);">👉 Previous Memory:</strong> Each card displays your logged performance from the prior session to drive progressive overload.</div>
-      <div><strong style="color: var(--accent);">👉 Rest Timer & Audio:</strong> Rest countdown beeps on the final 3 seconds and vibrates when rest finishes.</div>
-      <div><strong style="color: var(--accent);">👉 Wake Lock:</strong> Tap <strong>WAKE</strong> in the top header so your phone screen stays on during training.</div>
-      <div><strong style="color: var(--accent);">👉 Load Calculator:</strong> Tap <strong>⚖️ LOAD</strong> to calculate warm-up ramp sets (50%, 70%, 85%).</div>
     </div>
   </div>
 </div>
@@ -1199,7 +1237,7 @@
 
 <script>
 /* ==========================================================================
-   WORKOUT DATA MODEL (Weeks 1–2: Form Foundation & Beginner Setup)
+   WORKOUT DATA MODEL
    ========================================================================== */
 var WORKOUT_PROGRAM = {
   1: {
@@ -1599,7 +1637,7 @@ var WORKOUT_PROGRAM = {
 };
 
 /* ==========================================================================
-   APPLICATION STATE & HOISTED TOP-LEVEL FUNCTIONS
+   APPLICATION STATE & AUTONOMOUS WORKFLOW ENGINE
    ========================================================================== */
 var currentDay = 1;
 var currentView = 'deck';
@@ -1613,6 +1651,8 @@ try {
 
 var timerInterval = null;
 var timerSecondsRemaining = 0;
+var isPaused = false;
+var activeWorkflow = null;
 var wakeLock = null;
 var audioCtx = null;
 var datasetCache = null;
@@ -1650,7 +1690,18 @@ function playBeep(freq, duration) {
   }
 }
 
+function speakText(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.05;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
 function selectDay(dayNum) {
+  stopAutonomousWorkflow();
   currentDay = parseInt(dayNum, 10);
   var tabs = document.querySelectorAll('.day-tab');
   for (var i = 0; i < tabs.length; i++) {
@@ -1735,7 +1786,6 @@ function generateExerciseCardHTML(ex, exIndex, day) {
   var title = ex.title || ex.name;
   var setKeyPrefix = 'd' + day + '_e' + exIndex;
 
-  // Retrieve previous memory log from localStorage
   var historyKey = 'ex_history_' + day + '_' + exIndex;
   var lastLog = localStorage.getItem(historyKey) || 'None logged yet (Baseline)';
 
@@ -1744,13 +1794,13 @@ function generateExerciseCardHTML(ex, exIndex, day) {
     var key = setKeyPrefix + '_s' + s;
     var isDone = !!setCompletionState[key];
     var restPeriod = ex.restTime || 60;
-    setButtonsHTML += '<button type="button" class="set-pill-btn' + (isDone ? ' completed' : '') + '" data-key="' + key + '" data-rest="' + restPeriod + '" data-load="' + (ex.loadNum || 0) + '" data-reps="' + parseInt(ex.reps, 10) + '">' +
+    setButtonsHTML += '<button type="button" class="set-pill-btn' + (isDone ? ' completed' : '') + '" data-key="' + key + '" data-rest="' + restPeriod + '" data-load="' + (ex.loadNum || 0) + '" data-reps="' + parseInt(ex.reps, 10) + '" data-exercise-idx="' + exIndex + '" data-set-num="' + s + '">' +
       '<span>SET ' + s + '</span>' +
       '<strong>' + (isDone ? '✓' : ex.reps) + '</strong>' +
       '</button>';
   }
 
-  return '<article class="deck-card">' +
+  return '<article class="deck-card" id="card_' + day + '_' + exIndex + '">' +
     '<div class="card-header" data-exercise-idx="' + exIndex + '" title="Click to zoom GIF demonstration">' +
       '<span class="card-header-badge">' + (exIndex + 1) + ' / ' + WORKOUT_PROGRAM[day].exercises.length + '</span>' +
       '<span class="card-header-target">' + ex.reps + ' REPS</span>' +
@@ -1765,10 +1815,15 @@ function generateExerciseCardHTML(ex, exIndex, day) {
       '</div>' +
       '<div class="card-meta-detail">' + (ex.meta || (ex.sets + ' sets × ' + ex.reps + ' reps')) + '</div>' +
       '<div class="card-history-memory"><span>Previous Best Log:</span> <strong>' + lastLog + '</strong></div>' +
+      
+      '<div class="exercise-action-bar">' +
+        '<button type="button" class="btn-start-exercise" onclick="startExerciseRoutine(' + day + ', ' + exIndex + ')" data-tooltip="Audio-guided set & rest automation">🚀 START EXERCISE</button>' +
+      '</div>' +
+
       '<div class="set-tracker-container">' +
         '<div class="set-tracker-header">' +
           '<span>Set Execution Tracker</span>' +
-          '<span style="color: var(--accent);">Auto-Rest Active (' + (ex.restTime || 60) + 's)</span>' +
+          '<span style="color: var(--accent);">Rest: ' + (ex.restTime || 60) + 's</span>' +
         '</div>' +
         '<div class="set-pills-row">' +
           setButtonsHTML +
@@ -1809,24 +1864,62 @@ function setupCarouselObserver() {
   }, { passive: true });
 }
 
+/* ==========================================================================
+   AUTONOMOUS WORKFLOW & START BUTTON ENGINE
+   ========================================================================== */
+function startExerciseRoutine(dayId, exerciseIdx) {
+  var progData = WORKOUT_PROGRAM[dayId];
+  if (!progData || !progData.exercises[exerciseIdx]) return;
+  var ex = progData.exercises[exerciseIdx];
+
+  stopAutonomousWorkflow();
+  speakText("Starting " + ex.name + ". Begin Set 1 now.");
+
+  var clockEl = document.getElementById('timerClock');
+  if (clockEl) clockEl.className = 'timer-clock active-work';
+  var label = document.getElementById('timerLabel');
+  var sub = document.getElementById('timerSub');
+  if (label) label.textContent = "WORKOUT PHASE";
+  if (sub) sub.textContent = "PERFORM: " + ex.name.toUpperCase();
+
+  // Highlight first uncompleted set or Set 1
+  var targetKey = 'd' + dayId + '_e' + exerciseIdx + '_s1';
+  for (var s = 1; s <= ex.sets; s++) {
+    var k = 'd' + dayId + '_e' + exerciseIdx + '_s' + s;
+    if (!setCompletionState[k]) {
+      targetKey = k;
+      break;
+    }
+  }
+
+  var targetBtn = document.querySelector('[data-key="' + targetKey + '"]');
+  if (targetBtn) {
+    targetBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    targetBtn.style.transform = 'scale(1.1)';
+    setTimeout(function() { targetBtn.style.transform = ''; }, 600);
+  }
+}
+
 function handleSetToggle(key, customRest, loadVal, repVal) {
   var isDone = !setCompletionState[key];
   if (isDone) {
     setCompletionState[key] = true;
     if (navigator.vibrate) navigator.vibrate([25, 40]);
     playBeep(880, 0.1);
-    startRestTimer(customRest || 60);
 
-    // Save history memory log for progressive overload
     var parts = key.split('_');
     if (parts.length >= 3) {
       var dId = parts[0].replace('d', '');
       var eId = parts[1].replace('e', '');
+      var sId = parts[2].replace('s', '');
       var historyKey = 'ex_history_' + dId + '_' + eId;
       localStorage.setItem(historyKey, loadVal + 'kg × ' + repVal + ' reps (Completed)');
+
+      startAutonomousRest(parseInt(dId, 10), parseInt(eId, 10), parseInt(sId, 10), customRest || 60);
     }
   } else {
     delete setCompletionState[key];
+    stopAutonomousWorkflow();
   }
   
   try {
@@ -1855,6 +1948,153 @@ function handleSetToggle(key, customRest, loadVal, repVal) {
   checkDayCompletion();
 }
 
+function startAutonomousRest(dayId, exerciseIdx, setNum, restSeconds) {
+  clearInterval(timerInterval);
+  isPaused = false;
+  timerSecondsRemaining = restSeconds;
+
+  var progData = WORKOUT_PROGRAM[dayId];
+  if (!progData || !progData.exercises[exerciseIdx]) return;
+  var ex = progData.exercises[exerciseIdx];
+  var totalSets = ex.sets;
+
+  var nextText = "";
+  if (setNum < totalSets) {
+    nextText = "Set " + (setNum + 1) + " of " + ex.name;
+  } else if (exerciseIdx + 1 < progData.exercises.length) {
+    var nextEx = progData.exercises[exerciseIdx + 1];
+    nextText = "Next Exercise: " + nextEx.name;
+  } else {
+    nextText = "Final Exercise Completed!";
+  }
+
+  activeWorkflow = {
+    dayId: dayId,
+    exerciseIdx: exerciseIdx,
+    setNum: setNum,
+    totalSets: totalSets,
+    restSeconds: restSeconds,
+    nextText: nextText
+  };
+
+  speakText("Set " + setNum + " complete. Resting for " + restSeconds + " seconds. " + nextText);
+  updateTimerUI();
+
+  var clockEl = document.getElementById('timerClock');
+  if (clockEl) {
+    clockEl.className = 'timer-clock active-rest';
+  }
+  var label = document.getElementById('timerLabel');
+  var sub = document.getElementById('timerSub');
+  if (label) label.textContent = "AUTONOMOUS REST PERIOD";
+  if (sub) sub.textContent = "UPCOMING: " + nextText.toUpperCase();
+
+  timerInterval = setInterval(function() {
+    if (isPaused) return;
+
+    timerSecondsRemaining--;
+    updateTimerUI();
+
+    if (timerSecondsRemaining === 15) {
+      speakText("15 seconds remaining. Prepare for next set.");
+    }
+
+    if (timerSecondsRemaining <= 3 && timerSecondsRemaining > 0) {
+      playBeep(660, 0.1);
+      speakText(String(timerSecondsRemaining));
+    }
+
+    if (timerSecondsRemaining <= 0) {
+      clearInterval(timerInterval);
+      playBeep(1200, 0.5);
+      if (navigator.vibrate) navigator.vibrate([150, 75, 150]);
+      
+      speakText("Rest complete. Start next set now!");
+      triggerNextSetAutomation(activeWorkflow);
+    }
+  }, 1000);
+}
+
+function triggerNextSetAutomation(workflow) {
+  var clockEl = document.getElementById('timerClock');
+  if (clockEl) {
+    clockEl.className = 'timer-clock active-work';
+  }
+  var label = document.getElementById('timerLabel');
+  var sub = document.getElementById('timerSub');
+  if (label) label.textContent = "WORKOUT PHASE";
+  if (sub) sub.textContent = "PERFORM SET NOW";
+
+  var dayId = workflow.dayId;
+  var exerciseIdx = workflow.exerciseIdx;
+  var setNum = workflow.setNum;
+  var totalSets = workflow.totalSets;
+  var progData = WORKOUT_PROGRAM[dayId];
+
+  if (setNum < totalSets) {
+    var nextKey = 'd' + dayId + '_e' + exerciseIdx + '_s' + (setNum + 1);
+    var targetBtn = document.querySelector('[data-key="' + nextKey + '"]');
+    if (targetBtn) {
+      targetBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      targetBtn.style.transform = 'scale(1.1)';
+      setTimeout(function() { targetBtn.style.transform = ''; }, 600);
+    }
+  } else if (exerciseIdx + 1 < progData.exercises.length) {
+    var nextExIdx = exerciseIdx + 1;
+    var carousel = document.getElementById('exerciseCarousel');
+    if (carousel) {
+      var cardWidth = carousel.offsetWidth;
+      carousel.scrollTo({ left: nextExIdx * cardWidth, behavior: 'smooth' });
+    }
+  }
+}
+
+function togglePausePlay() {
+  if (!activeWorkflow && timerSecondsRemaining <= 0) return;
+  isPaused = !isPaused;
+  var btn = document.getElementById('pausePlayBtn');
+  var label = document.getElementById('timerLabel');
+  if (isPaused) {
+    if (btn) btn.textContent = "▶ RESUME";
+    if (label) label.textContent = "AUTONOMOUS TIMER [PAUSED]";
+    speakText("Timer paused");
+  } else {
+    if (btn) btn.textContent = "⏸ PAUSE";
+    if (label) label.textContent = "AUTONOMOUS REST PERIOD";
+    speakText("Resuming timer");
+  }
+}
+
+function skipCurrentRest() {
+  if (timerSecondsRemaining > 0 && activeWorkflow) {
+    clearInterval(timerInterval);
+    timerSecondsRemaining = 0;
+    updateTimerUI();
+    playBeep(1200, 0.4);
+    speakText("Rest skipped. Starting next set!");
+    triggerNextSetAutomation(activeWorkflow);
+  }
+}
+
+function stopAutonomousWorkflow() {
+  clearInterval(timerInterval);
+  timerSecondsRemaining = 0;
+  activeWorkflow = null;
+  isPaused = false;
+  updateTimerUI();
+  var clockEl = document.getElementById('timerClock');
+  if (clockEl) clockEl.className = 'timer-clock active-work';
+  var label = document.getElementById('timerLabel');
+  var sub = document.getElementById('timerSub');
+  if (label) label.textContent = "AUTONOMOUS STATE";
+  if (sub) sub.textContent = "READY TO BEGIN";
+  var btn = document.getElementById('pausePlayBtn');
+  if (btn) btn.textContent = "⏸ PAUSE";
+}
+
+/* ==========================================================================
+   ANALYTICS & PROGRESS STATS
+   ========================================================================== */
 function updateSessionAnalytics() {
   var data = WORKOUT_PROGRAM[currentDay];
   if (!data || data.rest) {
@@ -1928,55 +2168,13 @@ function checkDayCompletion() {
     var modal = document.getElementById('finishModal');
     if (modal) modal.classList.add('open');
     if (navigator.vibrate) navigator.vibrate([80, 50, 80, 50, 150]);
+    speakText("Workout complete! Fantastic work today.");
   }
 }
 
 function closeFinishModal() {
   var modal = document.getElementById('finishModal');
   if (modal) modal.classList.remove('open');
-}
-
-function startRestTimer(seconds) {
-  clearInterval(timerInterval);
-  timerSecondsRemaining = seconds;
-  updateTimerUI();
-
-  var clockEl = document.getElementById('timerClock');
-  if (clockEl) clockEl.classList.add('active');
-  var label = document.getElementById('timerLabel');
-  var sub = document.getElementById('timerSub');
-  if (label) label.textContent = "REST INTERVAL";
-  if (sub) sub.textContent = "RECOVERING...";
-
-  timerInterval = setInterval(function() {
-    timerSecondsRemaining--;
-    updateTimerUI();
-
-    if (timerSecondsRemaining <= 3 && timerSecondsRemaining > 0) {
-      playBeep(660, 0.1);
-    }
-
-    if (timerSecondsRemaining <= 0) {
-      clearInterval(timerInterval);
-      playBeep(1200, 0.4);
-      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-      if (clockEl) clockEl.classList.remove('active');
-      if (label) label.textContent = "REST COMPLETE";
-      if (sub) sub.textContent = "READY FOR NEXT SET";
-    }
-  }, 1000);
-}
-
-function stopRestTimer() {
-  clearInterval(timerInterval);
-  timerSecondsRemaining = 0;
-  updateTimerUI();
-  var clockEl = document.getElementById('timerClock');
-  if (clockEl) clockEl.classList.remove('active');
-  var label = document.getElementById('timerLabel');
-  var sub = document.getElementById('timerSub');
-  if (label) label.textContent = "REST TIMER";
-  if (sub) sub.textContent = "READY";
 }
 
 function updateTimerUI() {
@@ -2197,7 +2395,7 @@ var aliases = {
   'Push Ups': ['pushup', 'push up'],
   'Resistance Band Rows': ['resistance band row', 'band seated row'],
   'Cat Cow': ['cat cow', 'spine stretch'],
-  'Leg Swings': ['leg swing'],
+  'LegSwings': ['leg swing'],
   'Glute Bridge': ['glute bridge'],
   'Plank': ['plank'],
   'Jumping Jack': ['jumping jack'],
