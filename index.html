@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>5-Day Workout Split | Performance Telemetry</title>
+<title>5-Day Beginner Strength &amp; Muscle Program | Performance Protocol</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet"/>
@@ -269,7 +269,29 @@
     color: var(--accent);
   }
 
-  /* ONBOARDING HINT BANNER */
+  /* SETUP & ONBOARDING HINT BANNERS */
+  .setup-banner {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .setup-banner strong {
+    color: #fff;
+    font-family: var(--font-tech);
+    text-transform: uppercase;
+  }
+
+  .setup-banner span.tag {
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
   .tip-banner {
     background: var(--surface-2);
     border: 1px dashed rgba(255, 0, 60, 0.35);
@@ -415,7 +437,7 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.4rem;
   }
 
   .card-title {
@@ -437,6 +459,14 @@
     padding: 0.3rem 0.65rem;
     border-radius: 6px;
     white-space: nowrap;
+  }
+
+  .card-meta-detail {
+    font-size: 0.82rem;
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    margin-bottom: 1rem;
+    font-weight: 600;
   }
 
   /* SETS INTERACTIVE TRACKER */
@@ -858,11 +888,11 @@
   <div class="day-tabs-wrapper" id="dayTabsList">
     <div class="day-tab active" data-day="1" onclick="selectDay(1)">
       <span class="tab-day">MON</span>
-      <span class="tab-name">CHEST</span>
+      <span class="tab-name">CHEST &amp; TRI</span>
     </div>
     <div class="day-tab" data-day="2" onclick="selectDay(2)">
       <span class="tab-day">TUE</span>
-      <span class="tab-name">BACK</span>
+      <span class="tab-name">BACK &amp; BI</span>
     </div>
     <div class="day-tab" data-day="3" onclick="selectDay(3)">
       <span class="tab-day">WED</span>
@@ -874,11 +904,11 @@
     </div>
     <div class="day-tab" data-day="5" onclick="selectDay(5)">
       <span class="tab-day">FRI</span>
-      <span class="tab-name">LEGS</span>
+      <span class="tab-name">LEGS &amp; CORE</span>
     </div>
     <div class="day-tab" data-day="6" onclick="selectDay(6)">
       <span class="tab-day">SAT</span>
-      <span class="tab-name">ARMS</span>
+      <span class="tab-name">ARMS &amp; ABS</span>
     </div>
     <div class="day-tab" data-day="7" onclick="selectDay(7)">
       <span class="tab-day">SUN</span>
@@ -891,8 +921,8 @@
   <!-- PROGRAM STATUS & TELEMETRY -->
   <section class="protocol-banner">
     <div class="protocol-info">
-      <h1 id="activeDayTitle">DAY 1: CHEST (MONDAY)</h1>
-      <p id="activeDaySubtitle">Hypertrophy &amp; Strength • Dumbbells, Bench, Pull-Up Bar</p>
+      <h1 id="activeDayTitle">DAY 1: CHEST &amp; TRICEPS (MONDAY)</h1>
+      <p id="activeDaySubtitle">Horizontal push strength, arm development foundation</p>
     </div>
     <div class="progress-stat">
       <span>COMPLETION</span>
@@ -900,14 +930,19 @@
     </div>
   </section>
 
+  <!-- USER SETUP BANNER -->
+  <div class="setup-banner">
+    <strong>📋 Your Setup:</strong> Adjustable dumbbells (max 24kg), bench, pull-up bar | <strong>Goal:</strong> Build muscle, stay lean | <strong>Training age:</strong> Beginner (restarting) | <strong>Schedule:</strong> 5 days/week with Wed-Thu rest
+  </div>
+
   <!-- ONBOARDING HINT BANNER -->
   <div class="tip-banner">
-    <span>💡 <strong>Tip:</strong> Tap on exercise GIFs to view them in full screen. Swipe cards left/right or tap set buttons to auto-trigger rest timer.</span>
+    <span>💡 <strong>Tip:</strong> Tap on exercise GIFs to view them in full screen. Tap set buttons (SET 1, SET 2...) to auto-start rest timer.</span>
   </div>
 
   <!-- WARM-UP PROTOCOL (COLLAPSIBLE) -->
   <details class="details-tray" id="warmupDrawer" style="margin-bottom: 1.25rem;">
-    <summary>Warm-Up Protocol (5-7 minutes)</summary>
+    <summary>Warm-Up Protocol (5 min)</summary>
     <div class="details-content" id="warmupListContent">
       <!-- Injected per day -->
     </div>
@@ -930,64 +965,48 @@
     </div>
   </div>
 
-  <!-- GUIDELINES & PROTOCOLS (DRAWER) -->
+  <!-- PROGRESSION & PHASES (DRAWER) -->
   <details class="details-tray" style="margin-top: 1.5rem;">
-    <summary>Progression Guidelines</summary>
+    <summary>8-Week Progression Framework</summary>
     <div class="details-content">
       <div class="cue-row">
-        <strong>Week 1–2: Form Focus</strong>
-        Use lighter weights, focus on perfect form and full ROM, build mind-muscle connection.
+        <strong>Weeks 1–2: Form Foundation</strong>
+        Movement quality, technique mastery, baseline establishment. Use lighter weight than you think you need. Form &gt; load.
       </div>
       <div class="cue-row">
-        <strong>Week 3–4: Establish Baseline</strong>
-        Find weights for target reps with good form, aim for pump/tightness, track all weights used.
+        <strong>Weeks 3–4: Baseline Calibration</strong>
+        Lock in optimal loads where target reps are completed with clean form. Maintain 2-second eccentric lowering tempo.
       </div>
       <div class="cue-row">
-        <strong>Week 5–8: Progressive Overload</strong>
-        Add 1–2 reps per set (increase weight by 5% when all target reps hit), maintain form quality.
+        <strong>Weeks 5–8: Progressive Overload</strong>
+        Add 1–2 reps per set or increase weight load by 5% upon reaching repetition targets.
       </div>
       <div class="alert-row">
         <strong>Form > Load Always</strong>
-        If form breaks down, reduce weight immediately. Sharp sensations require immediate halt.
+        If form breaks down or lower back arches uncontrollably, reduce weight immediately. Sharp pain requires immediate halt.
       </div>
     </div>
   </details>
 
-  <!-- TIPS FOR SUCCESS (DRAWER) -->
+  <!-- PROGRAM GUIDELINES & NOTES (DRAWER) -->
   <details class="details-tray" style="margin-top: 0.75rem;">
-    <summary>Tips for Success</summary>
+    <summary>Training Notes &amp; Best Practices</summary>
     <div class="details-content">
       <div class="cue-row">
-        <strong>1. Warm-Up Thoroughly</strong>
-        Prepares specific muscle groups and joint capsules prior to heavy load.
+        <strong>1. Controlled Tempo</strong>
+        2-second eccentric (lowering) descent across all press and curl movements to maximize mechanical tension.
       </div>
       <div class="cue-row">
         <strong>2. Rest Intervals</strong>
-        60-90 seconds between compound sets, 45-60 seconds between isolation movements.
+        75–90 seconds for compound presses, squats, and rows; 60 seconds for isolation triceps, biceps, and lateral raises.
       </div>
       <div class="cue-row">
-        <strong>3. Track Everything</strong>
-        Record weights, reps, and RPE for objective progressive overload.
+        <strong>3. Grip Conditioning</strong>
+        Use a towel wrapped around the pull-up bar to thicken the grip and build forearm endurance safely.
       </div>
       <div class="cue-row">
-        <strong>4. Adequate Protein</strong>
-        Consume 0.8-1g protein per pound of bodyweight on training days.
-      </div>
-      <div class="cue-row">
-        <strong>5. Sleep Recovery</strong>
-        Target 7-9 hours to maximize hormonal synthesis and tissue repair.
-      </div>
-      <div class="cue-row">
-        <strong>6. Maintain Hydration</strong>
-        Keep fluid and electrolyte intake consistent across your session.
-      </div>
-      <div class="cue-row">
-        <strong>7. Planned Deloads</strong>
-        Reduce overall volume by 40-50% every 8 weeks to reset CNS fatigue.
-      </div>
-      <div class="cue-row">
-        <strong>8. Listen to Feedback</strong>
-        Differentiate productive muscular soreness from joint or sharp tendon pain.
+        <strong>4. Adequate Nutrition</strong>
+        Support progressive overload with sufficient protein and water intake across your training split.
       </div>
     </div>
   </details>
@@ -1006,6 +1025,7 @@
     <div class="timer-controls">
       <button class="btn-timer-preset" onclick="startRestTimer(45)" data-tooltip="Start 45s rest">45s</button>
       <button class="btn-timer-preset" onclick="startRestTimer(60)" data-tooltip="Start 60s rest">60s</button>
+      <button class="btn-timer-preset" onclick="startRestTimer(75)" data-tooltip="Start 75s rest">75s</button>
       <button class="btn-timer-preset" onclick="startRestTimer(90)" data-tooltip="Start 90s rest">90s</button>
       <button class="btn-timer-stop" onclick="stopRestTimer()" data-tooltip="Halt active timer">STOP</button>
     </div>
@@ -1098,86 +1118,376 @@
 
 <script>
 /* ==========================================================================
-   WORKOUT DATA MODEL
+   WORKOUT DATA MODEL (Weeks 1–2: Form Foundation & Beginner Setup)
    ========================================================================== */
 var WORKOUT_PROGRAM = {
   1: {
     day: "Day 1",
-    name: "Chest (Monday)",
-    target: "Hypertrophy & Strength • Dumbbells, Bench, Pull-Up Bar",
-    warmup: ["Arm circles: 10 each direction", "Band pull-aparts (if available): 15 reps", "Incline bench push-ups: 8-10 reps", "Light dumbbell bench presses: 10 reps with light weight", "Cat-cow stretches: 5 reps"],
+    name: "Chest & Triceps (Monday)",
+    focus: "Horizontal push strength, arm development foundation",
+    warmup: [
+      "Arm circles: 10 forward, 10 back (each arm)",
+      "Band pull-aparts: 15 reps (chest activation)",
+      "Incline pushup hold: 3 × 10 seconds (your baseline)",
+      "Dumbbell bench press (empty hands): 10 reps (practice motion)",
+      "Light band rows: 12 reps (shoulder prep)"
+    ],
     exercises: [
-      { name: "Dumbbell Bench Press", sets: 4, reps: "6-8", cues: "Chest up, shoulders packed, elbows at 45° angle, full ROM.", redFlags: "Arching lower back excessively, elbows flaring wide, bouncing weight." },
-      { name: "Incline Dumbbell Press", sets: 3, reps: "8-10", cues: "Set bench to 30-45°, slight forward lean, control descent.", redFlags: "Bench too steep, weight drifting forward, elbows collapsing inward." },
-      { name: "Dumbbell Flyes", sets: 3, reps: "10-12", cues: "Slight bend in elbow, arc weight across body, feel chest stretch at bottom.", redFlags: "Elbows locking out, moving weight in vertical line, jerky movements." },
-      { name: "Push Ups / Band Press", title: "Resistance Band Chest Press (or Push-Ups)", sets: 3, reps: "12-15", cues: "Band anchored at chest height, controlled extension and return.", redFlags: "Shoulder elevation, incomplete ROM, uneven press." },
-      { name: "Dumbbell Pullovers", sets: 3, reps: "10-12", cues: "Lie perpendicular to bench, slight elbow bend, pull weight in arc over chest.", redFlags: "Excessive arch, jerky movement, weight too heavy." }
+      {
+        name: "Incline Dumbbell Press",
+        title: "1. Incline Dumbbell Bench Press",
+        sets: 3,
+        reps: "8",
+        load: "6kg dumbbells",
+        restTime: 90,
+        meta: "3 sets × 8 reps | 6kg dumbbells | 90 sec rest",
+        cues: "Bench inclined ~45°. Dumbbells level with lower chest. Press straight up, slight inward angle at lockout. Full control down (2-second descent). Elbows don't flare past 90°.",
+        redFlags: "Dumbbells drifting inward/outward mid-rep. Chest collapsing or shoulders hunching. Bouncing reps off chest. Sharp shoulder pain (stop if this happens)."
+      },
+      {
+        name: "Dumbbell Bench Press",
+        title: "2. Dumbbell Floor Press (Flat)",
+        sets: 3,
+        reps: "10",
+        load: "5kg dumbbells",
+        restTime: 90,
+        meta: "3 sets × 10 reps | 5kg dumbbells | 90 sec rest",
+        cues: "Lying on back, knees bent, feet flat. Dumbbells above chest. Lower until elbows touch ground (full range). Press back up. Stable core—lower back shouldn't arch off floor.",
+        redFlags: "Lower back arching excessively. Dumbbells crashing down uncontrolled. Wrists bending backward under load."
+      },
+      {
+        name: "Dumbbell Pullovers",
+        title: "3. Dumbbell Pullovers",
+        sets: 3,
+        reps: "12",
+        load: "6kg dumbbell",
+        restTime: 60,
+        meta: "3 sets × 12 reps | 6kg dumbbell | 60 sec rest",
+        cues: "Lying perpendicular on bench (upper back supported). Single dumbbell held above chest. Lower dumbbell behind head in an arc (stretch across chest). Return to start. Controlled tempo.",
+        redFlags: "Lower back arching off bench. Dumbbell dropping suddenly. Elbow position changing mid-rep."
+      },
+      {
+        name: "Dumbbell Overhead Triceps Extensions",
+        title: "4. Dumbbell Overhead Tricep Extension",
+        sets: 3,
+        reps: "12",
+        load: "5kg dumbbell",
+        restTime: 60,
+        meta: "3 sets × 12 reps | 5kg dumbbell | 60 sec rest",
+        cues: "Standing upright. Single dumbbell held overhead, arms extended. Lower dumbbell behind head (bend elbows only, upper arms stay vertical). Extend back to start. Elbows don't flare out.",
+        redFlags: "Elbow position moving (they should stay locked pointing up). Lower back arching. Dumbbell dropped suddenly behind head."
+      },
+      {
+        name: "Dumbbell Rows",
+        title: "5. Dumbbell Bench Rows (Alternating)",
+        sets: 3,
+        reps: "10/arm",
+        load: "6kg dumbbells",
+        restTime: 75,
+        meta: "3 sets × 10 reps (each arm) | 6kg dumbbells | 75 sec rest",
+        cues: "Standing, feet hip-width, slight knee bend. Hinge forward ~45°, dumbbells at sides. Row one dumbbell up to ribcage, return. Alternate. Upper back drives movement, not arms. Minimal rotation.",
+        redFlags: "Lower back rounding (hinge from hips, not spine). Upper body rotating side-to-side. Dumbbell momentum (not controlled)."
+      }
     ]
   },
   2: {
     day: "Day 2",
-    name: "Back (Tuesday)",
-    target: "Vertical & Horizontal Pull • Dumbbells, Bench, Pull-Up Bar",
-    warmup: ["Arm circles: 10 each direction", "Band pull-aparts: 15 reps", "Scapular pulls on pull-up bar: 10 reps (dead hang, then retract shoulder blades)", "Light pull-ups or band-assisted: 5-8 reps", "Cat-cow stretches: 5 reps"],
+    name: "Back & Biceps (Tuesday)",
+    focus: "Vertical and horizontal pull strength, grip conditioning",
+    warmup: [
+      "Scapular pulls on pullup bar: 10 reps (pull shoulders back, minimal arm bend)",
+      "Passive hang (with towel grip): 3 × 5–8 seconds (grip conditioning)",
+      "Band face pulls: 15 reps (rear shoulder prep)",
+      "Cat-cow stretch: 8 reps (spine mobility)",
+      "Light dumbbell bicep curls: 10 reps @ 4kg (arm activation)"
+    ],
     exercises: [
-      { name: "Pull-Ups", title: "Pull-Ups (or Band-Assisted)", sets: 4, reps: "5-8", cues: "Full dead hang, chest to bar (or as close as possible), controlled descent.", redFlags: "Partial ROM, swinging/kipping, elbows flaring out, shoulders shrugging." },
-      { name: "Dumbbell Rows", sets: 4, reps: "8-10", cues: "Staggered stance, neutral spine, drive elbow back past torso, squeeze shoulder blade.", redFlags: "Rotating torso, elbow drifting away from body, rounding lower back." },
-      { name: "Incline Dumbbell Rows", title: "Incline Dumbbell Rows (Bench at 45°)", sets: 3, reps: "10-12", cues: "Chest supported, neutral neck, drive elbows high, avoid using momentum.", redFlags: "Chest lifting off bench, jerky pulls, neck strain." },
-      { name: "Resistance Band Rows", sets: 3, reps: "12-15", cues: "Anchor band high, pull elbows down and back, control return.", redFlags: "Leaning back excessively, incomplete ROM, shoulder elevation." },
-      { name: "Dumbbell Reverse Flyes", sets: 3, reps: "12-15", cues: "Slight knee bend, hinge from hips, light weight, arc arms out to sides.", redFlags: "Heavy weight causing momentum, rounding lower back, jerky movements." }
+      {
+        name: "Incline Dumbbell Rows",
+        title: "1. Inverted Rows (Band-Assisted)",
+        sets: 3,
+        reps: "10",
+        load: "Band under bar, knees on ground",
+        restTime: 90,
+        meta: "3 sets × 10 reps | Band under bar, knees on ground | 90 sec rest",
+        cues: "Bar at chest height. Body angled, heels on ground (or knees if needed). Pull chest to bar. Elbows stay close to torso. Squeeze upper back at top. Lower with control.",
+        redFlags: "Lower back sagging. Elbows flaring out (rowing like a chicken wing). Jerky, explosive movements. Hips dipping."
+      },
+      {
+        name: "Pull-Ups",
+        title: "2. Pullup Bar Hang (Grip Conditioning)",
+        sets: 3,
+        reps: "10-15s",
+        load: "Towel wrapped around bar",
+        restTime: 60,
+        meta: "3 sets × 10–15 seconds | Towel wrapped around bar (thicker grip) | 60 sec rest",
+        cues: "Wrap a towel around the pullup bar to thicken it (reduces friction on palms). Dead hang, arms fully extended. Engage shoulders (don't shrug ears up). Breathe normally.",
+        redFlags: "Gripping too hard (causes premature fatigue). Shoulders hunching to ears. Swinging legs (stay still)."
+      },
+      {
+        name: "Dumbbell Rows",
+        title: "3. Dumbbell Single-Arm Rows",
+        sets: 3,
+        reps: "10/arm",
+        load: "6kg dumbbells",
+        restTime: 75,
+        meta: "3 sets × 10 reps (each arm) | 6kg dumbbells | 75 sec rest",
+        cues: "Hinge forward ~45°, one leg slightly forward for balance. Dumbbell at side. Row dumbbell to ribcage, elbow close to body. Squeeze back at top. Return under control. Switch arms.",
+        redFlags: "Lower back rounding or rotating excessively. Arm doing the work instead of back. Dumbbell swinging (not controlled)."
+      },
+      {
+        name: "Dumbbell Biceps Curls",
+        title: "4. Dumbbell Bicep Curls",
+        sets: 3,
+        reps: "12",
+        load: "5kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 12 reps | 5kg dumbbells | 60 sec rest",
+        cues: "Standing, arms at sides, palms forward. Curl dumbbells up, elbows stay at sides (don't move). Squeeze biceps at top. Lower with 2-second eccentric (lowering phase). No swinging.",
+        redFlags: "Elbows drifting forward/back (they lock in place). Swinging to generate momentum. Wrists bending backward. Shoulders shrugging up."
+      },
+      {
+        name: "Dumbbell Hammer Curls",
+        title: "5. Dumbbell Hammer Curls (Neutral Grip)",
+        sets: 3,
+        reps: "12",
+        load: "4kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 12 reps | 4kg dumbbells | 60 sec rest",
+        cues: "Standing, arms at sides, palms facing each other (hammer grip). Curl dumbbells up, elbows locked at sides. This hits forearms + biceps differently. Control the descent.",
+        redFlags: "Elbows moving around. Momentum from shoulders/hips. Too heavy (form breaks down)."
+      }
     ]
   },
   3: {
     day: "Day 3",
-    name: "Rest & Recovery (Wednesday)",
-    target: "Active Recovery & Neuromuscular Reset",
+    name: "Rest & Active Recovery (Wednesday)",
+    focus: "Complete physiological reset & tissue replenishment",
     rest: true,
-    checklist: ["Light stretching (10-15 minutes)", "Outdoor walk (20-30 minutes)", "Yoga or mobility work", "Complete passive rest is completely fine"]
+    checklist: [
+      "Light stretching (10–15 minutes)",
+      "Outdoor walk (20–30 minutes) for systemic blood flow",
+      "Hydration & electrolyte replenishment",
+      "Complete passive rest is completely fine"
+    ]
   },
   4: {
     day: "Day 4",
     name: "Rest & Preparation (Thursday)",
-    target: "Active Recovery & Tissue Repair",
+    focus: "Neuromuscular recovery & lower-body session prep",
     rest: true,
-    checklist: ["Light stretching", "Walk for general blood flow", "Foam rolling (if available)", "Complete rest"]
+    checklist: [
+      "Light hamstring & hip flexor mobility drills",
+      "Walking for joint fluid circulation",
+      "Foam rolling or gentle self-myofascial release",
+      "7–9 hours sleep priority"
+    ]
   },
   5: {
     day: "Day 5",
-    name: "Legs (Friday)",
-    target: "Lower Body Hypertrophy & Strength • Dumbbells, Bench",
-    warmup: ["Bodyweight squats: 10 reps", "Leg swings: 10 each direction per leg", "Glute bridges: 15 reps", "Walking lunges: 10 per leg", "Hip circles: 10 each direction"],
+    name: "Legs & Core (Friday)",
+    focus: "Lower body strength, core stability, cardiovascular base",
+    warmup: [
+      "Leg swings (forward/back): 10 each leg",
+      "Bodyweight squats: 12 reps (your baseline—perfect form)",
+      "Glute bridges: 12 reps (glute activation)",
+      "Plank hold: 2 × 15 seconds (core prep)",
+      "Jumping jacks: 20 reps (heart rate up)"
+    ],
     exercises: [
-      { name: "Dumbbell Goblet Squats", sets: 4, reps: "8-10", cues: "Hold dumbbell at chest, elbows in, knees track over toes, upright torso, full depth.", redFlags: "Knees caving inward, heels rising, torso collapsing forward, partial ROM." },
-      { name: "Dumbbell Romanian Deadlifts", title: "Dumbbell Romanian Deadlifts (RDLs)", sets: 4, reps: "8-10", cues: "Neutral spine, slight knee bend, hinge at hips, weight stays close to legs, feel hamstring stretch.", redFlags: "Rounding lower back, knees bending too much, weight drifting from legs." },
-      { name: "Bulgarian Split Squats", title: "Dumbbell Split Squats (Rear Foot Elevated)", sets: 3, reps: "10 / leg", cues: "Front knee tracks over ankle, rear knee lowers toward ground, upright torso.", redFlags: "Front knee caving in, leaning forward, too much weight on rear foot." },
-      { name: "Dumbbell Lateral Lunges", sets: 3, reps: "10 / side", cues: "Step wide, sit hips back into bent leg, other leg stays straight, torso upright.", redFlags: "Torso collapsing forward, knees caving inward, heel lifting." },
-      { name: "Dumbbell Calf Raises", sets: 3, reps: "15-20", cues: "Hold dumbbells at sides, rise onto balls of feet, full ROM, controlled descent.", redFlags: "Partial range of motion, leaning forward, momentum-based movement." }
+      {
+        name: "Dumbbell Goblet Squats",
+        title: "1. Goblet Squats (Dumbbell)",
+        sets: 4,
+        reps: "12",
+        load: "8kg dumbbell",
+        restTime: 90,
+        meta: "4 sets × 12 reps | 8kg dumbbell | 90 sec rest",
+        cues: "Hold one dumbbell at chest, feet shoulder-width. Squat down, knees tracking over toes. Chest up, lower back neutral. Drive through heels to stand. Full depth (hips below knees).",
+        redFlags: "Knees caving inward. Chest collapsing forward. Heels lifting. Pain in knees (not just muscle fatigue)."
+      },
+      {
+        name: "Dumbbell Romanian Deadlifts",
+        title: "2. Dumbbell Romanian Deadlift (RDL)",
+        sets: 3,
+        reps: "10",
+        load: "6kg dumbbells (each hand)",
+        restTime: 90,
+        meta: "3 sets × 10 reps | 6kg dumbbells (each hand) | 90 sec rest",
+        cues: "Standing, feet hip-width, dumbbells at thighs. Hinge from hips (not spine). Lower dumbbells down legs with slight knee bend. Hamstring stretch at bottom. Drive hips forward to stand.",
+        redFlags: "Lower back rounding excessively. Knees locking out (slight bend always). Dumbbells drifting away from legs. Shoulders shrugging."
+      },
+      {
+        name: "Dumbbell Lateral Lunges",
+        title: "3. Dumbbell Lateral Lunges",
+        sets: 3,
+        reps: "10/leg",
+        load: "6kg dumbbells",
+        restTime: 75,
+        meta: "3 sets × 10 reps (each leg) | 6kg dumbbells | 75 sec rest",
+        cues: "Standing, dumbbells at sides. Step out to one side, lower by bending that knee. Opposite leg stays straight. Return to center. Alternate sides. Core braced.",
+        redFlags: "Torso collapsing forward. Knees caving inward past toes. Heel lifting off floor."
+      },
+      {
+        name: "Bulgarian Split Squats",
+        title: "4. Dumbbell Split Squats (Rear Foot Elevated)",
+        sets: 3,
+        reps: "10/leg",
+        load: "5kg dumbbells",
+        restTime: 75,
+        meta: "3 sets × 10 reps (each leg) | 5kg dumbbells | 75 sec rest",
+        cues: "Front knee tracks over ankle, rear knee lowers toward floor, upright torso. Drive through front heel.",
+        redFlags: "Front knee caving inward. Over-leaning forward. Too much weight loaded on rear foot."
+      },
+      {
+        name: "Dumbbell Calf Raises",
+        title: "5. Dumbbell Calf Raises",
+        sets: 3,
+        reps: "15-20",
+        load: "8kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 15–20 reps | 8kg dumbbells | 60 sec rest",
+        cues: "Hold dumbbells at sides, rise onto balls of feet, squeeze calves at peak, controlled 2-second lowering.",
+        redFlags: "Partial range of motion. Bouncing or using momentum instead of calf contraction."
+      }
     ]
   },
   6: {
     day: "Day 6",
-    name: "Arms (Saturday)",
-    target: "Biceps & Triceps Isolation • Dumbbells, Bench",
-    warmup: ["Arm circles: 15 each direction", "Band pull-aparts: 15 reps", "Light dumbbell curls: 12 reps", "Light triceps overhead extensions: 12 reps", "Wrist circles: 10 each direction"],
+    name: "Arms & Core (Saturday)",
+    focus: "Biceps, triceps isolation & core rotational integrity",
+    warmup: [
+      "Arm circles: 15 each direction",
+      "Band pull-aparts: 15 reps",
+      "Light dumbbell curls: 12 reps @ 4kg",
+      "Light overhead triceps extensions: 12 reps @ 4kg",
+      "Wrist circles: 10 each direction"
+    ],
     exercises: [
-      { name: "Dumbbell Biceps Curls", sets: 4, reps: "8-10", cues: "Elbows locked at sides, full ROM (full extension to chest), no momentum, squeeze at top.", redFlags: "Elbows drifting forward, swinging weight, partial ROM, shoulder elevation." },
-      { name: "Dumbbell Hammer Curls", sets: 3, reps: "10-12", cues: "Neutral grip (palms facing each other), elbows stationary, squeeze biceps at top.", redFlags: "Rotating wrists mid-movement, elbows moving, swinging weight." },
-      { name: "Dumbbell Overhead Triceps Extensions", sets: 4, reps: "8-10", cues: "Both arms together, elbows in (not flared), lower behind head, full ROM.", redFlags: "Elbows flaring out, neck strain, incomplete ROM, lower back arching." },
-      { name: "Dumbbell Kickbacks", sets: 3, reps: "12-15", cues: "Hinge forward slightly, elbow stays high and stationary, extend arm fully, control return.", redFlags: "Swinging weight, using momentum, shoulder elevation, elbow drifting." },
-      { name: "Resistance Band Biceps Curls", sets: 3, reps: "12-15", cues: "Band underfoot, elbows locked at sides, steady tempo, full ROM.", redFlags: "Elbows lifting, jerky movements, momentum-based." }
+      {
+        name: "Dumbbell Biceps Curls",
+        title: "1. Dumbbell Biceps Curls",
+        sets: 3,
+        reps: "10-12",
+        load: "5kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 10–12 reps | 5kg dumbbells | 60 sec rest",
+        cues: "Elbows locked at sides, full range of motion from extension to chest, squeeze at peak, 2-sec descent.",
+        redFlags: "Elbows drifting forward, swinging hips, partial range of motion."
+      },
+      {
+        name: "Dumbbell Hammer Curls",
+        title: "2. Dumbbell Hammer Curls",
+        sets: 3,
+        reps: "10-12",
+        load: "5kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 10–12 reps | 5kg dumbbells | 60 sec rest",
+        cues: "Neutral grip (palms facing each other), elbows stationary, squeeze brachialis & forearms.",
+        redFlags: "Rotating wrists mid-movement, elbows flaring out, jerky pulls."
+      },
+      {
+        name: "Dumbbell Overhead Triceps Extensions",
+        title: "3. Overhead Triceps Extension",
+        sets: 3,
+        reps: "12",
+        load: "6kg dumbbell",
+        restTime: 60,
+        meta: "3 sets × 12 reps | 6kg dumbbell | 60 sec rest",
+        cues: "Both hands cradling dumbbell overhead, elbows pointing forward, full stretch behind head.",
+        redFlags: "Elbows flaring wide, lower back arching, neck straining forward."
+      },
+      {
+        name: "Dumbbell Kickbacks",
+        title: "4. Dumbbell Tricep Kickbacks",
+        sets: 3,
+        reps: "12-15",
+        load: "4kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 12–15 reps | 4kg dumbbells | 60 sec rest",
+        cues: "Hinge torso ~45°, upper arm pinned parallel to torso, extend forearm fully back and squeeze.",
+        redFlags: "Swinging weight from shoulder, dropping elbows between repetitions."
+      },
+      {
+        name: "Resistance Band Biceps Curls",
+        title: "5. Resistance Band Curls (Burnout)",
+        sets: 3,
+        reps: "15",
+        load: "Medium Band underfoot",
+        restTime: 60,
+        meta: "3 sets × 15 reps | Resistance Band | 60 sec rest",
+        cues: "Stand on band, continuous tension, steady tempo, squeeze biceps hard at peak contraction.",
+        redFlags: "Elbows lifting, losing band tension at bottom, momentum swinging."
+      }
     ]
   },
   7: {
     day: "Day 7",
-    name: "Shoulders (Sunday)",
-    target: "Deltoids & Trapezius • Dumbbells, Bench",
-    warmup: ["Arm circles: 15 each direction", "Band pull-aparts: 15 reps", "Scapular shrugs: 15 reps (light dumbbells)", "Shoulder dislocations with band: 12 reps", "Cat-cow stretches: 5 reps"],
+    name: "Shoulders & Traps (Sunday)",
+    focus: "Overhead push mechanics, lateral/rear deltoid hypertrophy",
+    warmup: [
+      "Arm circles: 15 each direction",
+      "Band pull-aparts: 15 reps",
+      "Scapular shrugs: 15 reps (light dumbbells)",
+      "Shoulder dislocations with band: 12 reps",
+      "Cat-cow stretches: 5 reps"
+    ],
     exercises: [
-      { name: "Dumbbell Shoulder Press", title: "Dumbbell Shoulder Press (Seated)", sets: 4, reps: "6-8", cues: "Dumbbells at shoulder height, neutral wrist, press straight up, slight forward angle.", redFlags: "Excessive arching, elbows flaring too wide, head moving forward, incomplete ROM." },
-      { name: "Dumbbell Lateral Raises", sets: 3, reps: "12-15", cues: "Slight knee bend, slight elbow bend, raise arms to shoulder height, palms down at top.", redFlags: "Using momentum, raising above shoulder height, heavy weight, jerky movements." },
-      { name: "Dumbbell Front Raises", sets: 3, reps: "12-15", cues: "Slight elbow bend, raise to shoulder height, neutral wrist, controlled descent.", redFlags: "Excessive momentum, raising above shoulder height, arching lower back." },
-      { name: "Dumbbell Reverse Pec Deck", title: "Dumbbell Reverse Pec Deck (or Band Reverse Flyes)", sets: 3, reps: "12-15", cues: "Slight hinge, light weight, arc arms out to sides, squeeze rear delts.", redFlags: "Heavy weight causing jerky movements, rounding lower back, swinging motion." },
-      { name: "Dumbbell Shrugs", sets: 3, reps: "12-15", cues: "Heavy dumbbells, shrug shoulders up toward ears, pause briefly, full ROM.", redFlags: "Rolling shoulders (avoid), arm bending, incomplete ROM, jerky movement." }
+      {
+        name: "Dumbbell Shoulder Press",
+        title: "1. Seated Dumbbell Shoulder Press",
+        sets: 3,
+        reps: "8-10",
+        load: "6kg dumbbells",
+        restTime: 90,
+        meta: "3 sets × 8–10 reps | 6kg dumbbells | 90 sec rest",
+        cues: "Dumbbells at ear level, press straight overhead with slight inward taper, control down.",
+        redFlags: "Excessive lower back arching, elbows flaring 180° flat, head jutting forward."
+      },
+      {
+        name: "Dumbbell Lateral Raises",
+        title: "2. Dumbbell Lateral Raises",
+        sets: 3,
+        reps: "12-15",
+        load: "4kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 12–15 reps | 4kg dumbbells | 60 sec rest",
+        cues: "Slight forward lean, slight elbow bend, raise arms to shoulder level, lead with elbows.",
+        redFlags: "Using hip momentum, shrugging traps to initiate lift, swinging weights."
+      },
+      {
+        name: "Dumbbell Front Raises",
+        title: "3. Dumbbell Front Raises",
+        sets: 3,
+        reps: "12",
+        load: "4kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 12 reps | 4kg dumbbells | 60 sec rest",
+        cues: "Neutral spine, raise dumbbell to eye level with controlled tempo, slow descent.",
+        redFlags: "Swinging torso backward, using excessive load, snapping wrists."
+      },
+      {
+        name: "Dumbbell Reverse Pec Deck",
+        title: "4. Dumbbell Rear Delt Reverse Flyes",
+        sets: 3,
+        reps: "12-15",
+        load: "4kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 12–15 reps | 4kg dumbbells | 60 sec rest",
+        cues: "Hinge forward ~45°, light weight, arc arms wide to sides, squeeze rear deltoids.",
+        redFlags: "Using momentum from back, rounding shoulders inward, jerky reps."
+      },
+      {
+        name: "Dumbbell Shrugs",
+        title: "5. Dumbbell Shrugs",
+        sets: 3,
+        reps: "12-15",
+        load: "8kg dumbbells",
+        restTime: 60,
+        meta: "3 sets × 12–15 reps | 8kg dumbbells | 60 sec rest",
+        cues: "Heavy dumbbells at sides, elevate traps straight toward ears, pause 1 second at top.",
+        redFlags: "Rolling shoulders (rotates joint unsafely), bending elbows, dropping weight fast."
+      }
     ]
   }
 };
@@ -1254,7 +1564,7 @@ function renderActiveDay() {
   var titleEl = document.getElementById('activeDayTitle');
   var subEl = document.getElementById('activeDaySubtitle');
   if (titleEl) titleEl.textContent = data.day + ": " + data.name.toUpperCase();
-  if (subEl) subEl.textContent = data.target || "Active Recovery & Mobility Protocols";
+  if (subEl) subEl.textContent = data.focus || "Movement quality & baseline establishment";
 
   var deckEl = document.getElementById('exerciseCarousel');
   var listEl = document.getElementById('exerciseList');
@@ -1320,7 +1630,8 @@ function generateExerciseCardHTML(ex, exIndex, day) {
   for (var s = 1; s <= ex.sets; s++) {
     var key = setKeyPrefix + '_s' + s;
     var isDone = !!setCompletionState[key];
-    setButtonsHTML += '<button type="button" class="set-pill-btn' + (isDone ? ' completed' : '') + '" data-key="' + key + '">' +
+    var restPeriod = ex.restTime || 60;
+    setButtonsHTML += '<button type="button" class="set-pill-btn' + (isDone ? ' completed' : '') + '" data-key="' + key + '" data-rest="' + restPeriod + '">' +
       '<span>SET ' + s + '</span>' +
       '<strong>' + (isDone ? '✓' : ex.reps) + '</strong>' +
       '</button>';
@@ -1339,10 +1650,11 @@ function generateExerciseCardHTML(ex, exIndex, day) {
         '<h2 class="card-title">' + title + '</h2>' +
         '<span class="card-target-rep">' + ex.sets + ' SETS</span>' +
       '</div>' +
+      '<div class="card-meta-detail">' + (ex.meta || (ex.sets + ' sets × ' + ex.reps + ' reps')) + '</div>' +
       '<div class="set-tracker-container">' +
         '<div class="set-tracker-header">' +
           '<span>Set Execution Tracker</span>' +
-          '<span style="color: var(--accent);">Auto-Rest Active</span>' +
+          '<span style="color: var(--accent);">Auto-Rest Active (' + (ex.restTime || 60) + 's)</span>' +
         '</div>' +
         '<div class="set-pills-row">' +
           setButtonsHTML +
@@ -1379,13 +1691,13 @@ function setupCarouselObserver() {
   }, { passive: true });
 }
 
-function handleSetToggle(key) {
+function handleSetToggle(key, customRest) {
   var isDone = !setCompletionState[key];
   if (isDone) {
     setCompletionState[key] = true;
     if (navigator.vibrate) navigator.vibrate([25, 40]);
     playBeep(880, 0.1);
-    startRestTimer(60);
+    startRestTimer(customRest || 60);
   } else {
     delete setCompletionState[key];
   }
@@ -1607,7 +1919,6 @@ function openGifModal(exerciseIdx) {
   if (cuesTextEl) cuesTextEl.textContent = ex.cues || '-';
   if (redFlagsTextEl) redFlagsTextEl.textContent = ex.redFlags || '-';
 
-  // Find loaded GIF source from the matching active card image
   var activeCardImg = document.querySelector('.deck-card img[data-exercise="' + ex.name + '"]');
   if (imgEl) {
     if (activeCardImg && activeCardImg.src) {
@@ -1660,24 +1971,30 @@ function normExercise(value) {
 }
 
 var aliases = {
-  'Dumbbell Bench Press': ['dumbbell bench press'],
+  'Incline Dumbbell Bench Press': ['dumbbell incline bench press', 'incline dumbbell press'],
   'Incline Dumbbell Press': ['dumbbell incline bench press', 'incline dumbbell press'],
-  'Dumbbell Flyes': ['dumbbell fly'],
-  'Push Ups / Band Press': ['push up', 'pushup', 'resistance band chest press'],
+  'Dumbbell Floor Press (Flat)': ['dumbbell floor press', 'dumbbell bench press'],
+  'Dumbbell Bench Press': ['dumbbell bench press'],
   'Dumbbell Pullovers': ['dumbbell pullover'],
-  'Pull-Ups': ['pull up', 'pullup'],
-  'Dumbbell Rows': ['dumbbell bent over row', 'dumbbell row'],
-  'Incline Dumbbell Rows': ['dumbbell incline row', 'incline dumbbell row'],
-  'Resistance Band Rows': ['band seated row', 'resistance band row'],
-  'Dumbbell Reverse Flyes': ['dumbbell rear lateral raise', 'dumbbell reverse fly'],
-  'Dumbbell Goblet Squats': ['dumbbell goblet squat'],
-  'Dumbbell Romanian Deadlifts': ['dumbbell romanian deadlift'],
-  'Bulgarian Split Squats': ['dumbbell bulgarian split squat', 'bulgarian split squat'],
-  'Dumbbell Lateral Lunges': ['dumbbell side lunge', 'dumbbell lateral lunge'],
-  'Dumbbell Calf Raises': ['dumbbell standing calf raise', 'dumbbell calf raise'],
-  'Dumbbell Biceps Curls': ['dumbbell biceps curl'],
-  'Dumbbell Hammer Curls': ['dumbbell hammer curl'],
   'Dumbbell Overhead Triceps Extensions': ['dumbbell overhead triceps extension'],
+  'Dumbbell Overhead Tricep Extension': ['dumbbell overhead triceps extension'],
+  'Dumbbell Bench Rows (Alternating)': ['dumbbell bent over row', 'dumbbell row'],
+  'Inverted Rows (Band-Assisted)': ['inverted row', 'dumbbell incline row'],
+  'Pullup Bar Hang (Grip Conditioning)': ['pull up', 'dead hang'],
+  'Pull-Ups': ['pull up', 'pullup'],
+  'Dumbbell Single-Arm Rows': ['dumbbell bent over row', 'dumbbell row'],
+  'Dumbbell Rows': ['dumbbell bent over row', 'dumbbell row'],
+  'Dumbbell Biceps Curls': ['dumbbell biceps curl'],
+  'Dumbbell Bicep Curls': ['dumbbell biceps curl'],
+  'Dumbbell Hammer Curls': ['dumbbell hammer curl'],
+  'Dumbbell Hammer Curls (Neutral Grip)': ['dumbbell hammer curl'],
+  'Dumbbell Goblet Squats': ['dumbbell goblet squat'],
+  'Goblet Squats (Dumbbell)': ['dumbbell goblet squat'],
+  'Dumbbell Romanian Deadlifts': ['dumbbell romanian deadlift'],
+  'Dumbbell Romanian Deadlift (RDL)': ['dumbbell romanian deadlift'],
+  'Dumbbell Lateral Lunges': ['dumbbell side lunge', 'dumbbell lateral lunge'],
+  'Bulgarian Split Squats': ['dumbbell bulgarian split squat', 'bulgarian split squat'],
+  'Dumbbell Calf Raises': ['dumbbell standing calf raise', 'dumbbell calf raise'],
   'Dumbbell Kickbacks': ['dumbbell kickback', 'triceps kickback'],
   'Resistance Band Biceps Curls': ['band biceps curl', 'resistance band biceps curl'],
   'Dumbbell Shoulder Press': ['dumbbell seated shoulder press', 'dumbbell shoulder press'],
@@ -1745,7 +2062,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('click', function(e) {
     var pillBtn = e.target.closest('.set-pill-btn');
     if (pillBtn && pillBtn.getAttribute('data-key')) {
-      handleSetToggle(pillBtn.getAttribute('data-key'));
+      var customRest = parseInt(pillBtn.getAttribute('data-rest'), 10) || 60;
+      handleSetToggle(pillBtn.getAttribute('data-key'), customRest);
       return;
     }
 
