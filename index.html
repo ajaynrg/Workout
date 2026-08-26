@@ -287,11 +287,6 @@
     text-transform: uppercase;
   }
 
-  .setup-banner span.tag {
-    color: var(--cyan);
-    font-weight: 600;
-  }
-
   .tip-banner {
     background: var(--surface-2);
     border: 1px dashed rgba(255, 0, 60, 0.35);
@@ -309,6 +304,61 @@
     color: var(--accent);
     font-family: var(--font-tech);
     text-transform: uppercase;
+  }
+
+  /* SESSION ANALYTICS BAR */
+  .analytics-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .analytics-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-tech);
+  }
+
+  .analytics-card span {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .analytics-card strong {
+    font-size: 1.1rem;
+    color: var(--cyan);
+  }
+
+  /* WARM-UP WITH THUMBNAILS */
+  .warmup-item-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+  }
+
+  .warmup-thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    object-fit: cover;
+    background: #000;
+    cursor: zoom-in;
+    flex-shrink: 0;
+  }
+
+  .warmup-text {
+    font-size: 0.85rem;
+    color: var(--text);
   }
 
   /* VIEW CONTAINERS */
@@ -465,9 +515,24 @@
     font-size: 0.82rem;
     color: var(--cyan);
     font-family: var(--font-mono);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     font-weight: 600;
   }
+
+  .card-history-memory {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .card-history-memory strong { color: var(--text); }
 
   /* SETS INTERACTIVE TRACKER */
   .set-tracker-container {
@@ -568,6 +633,9 @@
   
   .alert-row { border-left: 2px solid var(--orange); padding-left: 0.5rem; }
   .alert-row strong { color: var(--orange); display: block; font-size: 0.7rem; font-family: var(--font-tech); text-transform: uppercase; }
+
+  .sub-row { border-left: 2px solid var(--accent); padding-left: 0.5rem; background: rgba(255,0,60,0.03); padding: 0.4rem; border-radius: 0 4px 4px 0; }
+  .sub-row strong { color: var(--accent); display: block; font-size: 0.7rem; font-family: var(--font-tech); text-transform: uppercase; }
 
   /* CAROUSEL PAGINATION / DOTS */
   .pagination-row {
@@ -930,6 +998,18 @@
     </div>
   </section>
 
+  <!-- SESSION REALTIME ANALYTICS BAR -->
+  <div class="analytics-bar">
+    <div class="analytics-card">
+      <span>Estimated Tonnage</span>
+      <strong id="sessionTonnage">0 kg</strong>
+    </div>
+    <div class="analytics-card">
+      <span>Est. Energy Expenditure</span>
+      <strong id="sessionCalories">0 kcal</strong>
+    </div>
+  </div>
+
   <!-- USER SETUP BANNER -->
   <div class="setup-banner">
     <strong>📋 Your Setup:</strong> Adjustable dumbbells (max 24kg), bench, pull-up bar | <strong>Goal:</strong> Build muscle, stay lean | <strong>Training age:</strong> Beginner (restarting) | <strong>Schedule:</strong> 5 days/week with Wed-Thu rest
@@ -937,7 +1017,7 @@
 
   <!-- ONBOARDING HINT BANNER -->
   <div class="tip-banner">
-    <span>💡 <strong>Tip:</strong> Tap on exercise GIFs to view them in full screen. Tap set buttons (SET 1, SET 2...) to auto-start rest timer.</span>
+    <span>💡 <strong>Tip:</strong> Tap on exercise or warm-up GIFs for full-screen preview. Check previous week memory logs to guide progressive overload.</span>
   </div>
 
   <!-- WARM-UP PROTOCOL (COLLAPSIBLE) -->
@@ -1042,7 +1122,7 @@
     <div class="modal-gif-media-container">
       <img id="gifModalImg" src="" alt="Exercise demonstration full preview" loading="lazy"/>
     </div>
-    <div class="modal-gif-details">
+    <div class="modal-gif-details" id="gifModalDetailsContainer">
       <div class="cue-row" id="gifModalCuesRow">
         <strong>Form Cues</strong>
         <span id="gifModalCuesText">-</span>
@@ -1065,8 +1145,9 @@
     <div style="font-size: 0.85rem; color: var(--text); line-height: 1.6; display: flex; flex-direction: column; gap: 0.75rem;">
       <div><strong style="color: var(--accent);">👉 Day Navigation:</strong> Tap any day at the top bar (Mon–Sun) to load that workout.</div>
       <div><strong style="color: var(--accent);">👉 Swipe vs List:</strong> Use the <strong>⊞ LIST / SWIPE</strong> toggle in the top HUD to switch between a full-screen card swipe deck and a compact vertical checklist.</div>
-      <div><strong style="color: var(--accent);">👉 Zoom GIFs:</strong> Tap directly on any exercise GIF image to view the high-definition loop in a full modal.</div>
-      <div><strong style="color: var(--accent);">👉 Interactive Sets:</strong> Tap <strong>SET 1, SET 2...</strong> pills as you finish sets. It saves progress and triggers the rest timer automatically.</div>
+      <div><strong style="color: var(--accent);">👉 Zoom GIFs:</strong> Tap directly on any warm-up or exercise GIF image to view the high-definition loop in a full modal.</div>
+      <div><strong style="color: var(--accent);">👉 Interactive Sets:</strong> Tap <strong>SET 1, SET 2...</strong> pills as you finish sets. It updates tonnage, saves progress, and triggers the rest timer automatically.</div>
+      <div><strong style="color: var(--accent);">👉 Previous Memory:</strong> Each card displays your logged performance from the prior session to drive progressive overload.</div>
       <div><strong style="color: var(--accent);">👉 Rest Timer & Audio:</strong> Rest countdown beeps on the final 3 seconds and vibrates when rest finishes.</div>
       <div><strong style="color: var(--accent);">👉 Wake Lock:</strong> Tap <strong>WAKE</strong> in the top header so your phone screen stays on during training.</div>
       <div><strong style="color: var(--accent);">👉 Load Calculator:</strong> Tap <strong>⚖️ LOAD</strong> to calculate warm-up ramp sets (50%, 70%, 85%).</div>
@@ -1126,11 +1207,11 @@ var WORKOUT_PROGRAM = {
     name: "Chest & Triceps (Monday)",
     focus: "Horizontal push strength, arm development foundation",
     warmup: [
-      "Arm circles: 10 forward, 10 back (each arm)",
-      "Band pull-aparts: 15 reps (chest activation)",
-      "Incline pushup hold: 3 × 10 seconds (your baseline)",
-      "Dumbbell bench press (empty hands): 10 reps (practice motion)",
-      "Light band rows: 12 reps (shoulder prep)"
+      { text: "Arm circles: 10 forward, 10 back (each arm)", exercise: "Arm Circles" },
+      { text: "Band pull-aparts: 15 reps (chest activation)", exercise: "Band Pull-Aparts" },
+      { text: "Incline pushup hold: 3 × 10 seconds (your baseline)", exercise: "Push Ups" },
+      { text: "Dumbbell bench press (empty hands): 10 reps (practice motion)", exercise: "Dumbbell Bench Press" },
+      { text: "Light band rows: 12 reps (shoulder prep)", exercise: "Resistance Band Rows" }
     ],
     exercises: [
       {
@@ -1138,7 +1219,8 @@ var WORKOUT_PROGRAM = {
         title: "1. Incline Dumbbell Bench Press",
         sets: 3,
         reps: "8",
-        load: "6kg dumbbells",
+        loadNum: 6,
+        substitute: "Flat Push-ups or Bodyweight Dips",
         restTime: 90,
         meta: "3 sets × 8 reps | 6kg dumbbells | 90 sec rest",
         cues: "Bench inclined ~45°. Dumbbells level with lower chest. Press straight up, slight inward angle at lockout. Full control down (2-second descent). Elbows don't flare past 90°.",
@@ -1149,7 +1231,8 @@ var WORKOUT_PROGRAM = {
         title: "2. Dumbbell Floor Press (Flat)",
         sets: 3,
         reps: "10",
-        load: "5kg dumbbells",
+        loadNum: 5,
+        substitute: "Floor Press with resistance band",
         restTime: 90,
         meta: "3 sets × 10 reps | 5kg dumbbells | 90 sec rest",
         cues: "Lying on back, knees bent, feet flat. Dumbbells above chest. Lower until elbows touch ground (full range). Press back up. Stable core—lower back shouldn't arch off floor.",
@@ -1160,7 +1243,8 @@ var WORKOUT_PROGRAM = {
         title: "3. Dumbbell Pullovers",
         sets: 3,
         reps: "12",
-        load: "6kg dumbbell",
+        loadNum: 6,
+        substitute: "Resistance band pullover",
         restTime: 60,
         meta: "3 sets × 12 reps | 6kg dumbbell | 60 sec rest",
         cues: "Lying perpendicular on bench (upper back supported). Single dumbbell held above chest. Lower dumbbell behind head in an arc (stretch across chest). Return to start. Controlled tempo.",
@@ -1171,7 +1255,8 @@ var WORKOUT_PROGRAM = {
         title: "4. Dumbbell Overhead Tricep Extension",
         sets: 3,
         reps: "12",
-        load: "5kg dumbbell",
+        loadNum: 5,
+        substitute: "Resistance band pushdowns",
         restTime: 60,
         meta: "3 sets × 12 reps | 5kg dumbbell | 60 sec rest",
         cues: "Standing upright. Single dumbbell held overhead, arms extended. Lower dumbbell behind head (bend elbows only, upper arms stay vertical). Extend back to start. Elbows don't flare out.",
@@ -1182,7 +1267,8 @@ var WORKOUT_PROGRAM = {
         title: "5. Dumbbell Bench Rows (Alternating)",
         sets: 3,
         reps: "10/arm",
-        load: "6kg dumbbells",
+        loadNum: 6,
+        substitute: "Resistance band seated rows",
         restTime: 75,
         meta: "3 sets × 10 reps (each arm) | 6kg dumbbells | 75 sec rest",
         cues: "Standing, feet hip-width, slight knee bend. Hinge forward ~45°, dumbbells at sides. Row one dumbbell up to ribcage, return. Alternate. Upper back drives movement, not arms. Minimal rotation.",
@@ -1195,11 +1281,11 @@ var WORKOUT_PROGRAM = {
     name: "Back & Biceps (Tuesday)",
     focus: "Vertical and horizontal pull strength, grip conditioning",
     warmup: [
-      "Scapular pulls on pullup bar: 10 reps (pull shoulders back, minimal arm bend)",
-      "Passive hang (with towel grip): 3 × 5–8 seconds (grip conditioning)",
-      "Band face pulls: 15 reps (rear shoulder prep)",
-      "Cat-cow stretch: 8 reps (spine mobility)",
-      "Light dumbbell bicep curls: 10 reps @ 4kg (arm activation)"
+      { text: "Scapular pulls on pullup bar: 10 reps (pull shoulders back, minimal arm bend)", exercise: "Pull-Ups" },
+      { text: "Passive hang (with towel grip): 3 × 5–8 seconds (grip conditioning)", exercise: "Pull-Ups" },
+      { text: "Band face pulls: 15 reps (rear shoulder prep)", exercise: "Dumbbell Reverse Flyes" },
+      { text: "Cat-cow stretch: 8 reps (spine mobility)", exercise: "Cat Cow" },
+      { text: "Light dumbbell bicep curls: 10 reps @ 4kg (arm activation)", exercise: "Dumbbell Biceps Curls" }
     ],
     exercises: [
       {
@@ -1207,7 +1293,8 @@ var WORKOUT_PROGRAM = {
         title: "1. Inverted Rows (Band-Assisted)",
         sets: 3,
         reps: "10",
-        load: "Band under bar, knees on ground",
+        loadNum: 0,
+        substitute: "Band pull-downs",
         restTime: 90,
         meta: "3 sets × 10 reps | Band under bar, knees on ground | 90 sec rest",
         cues: "Bar at chest height. Body angled, heels on ground (or knees if needed). Pull chest to bar. Elbows stay close to torso. Squeeze upper back at top. Lower with control.",
@@ -1218,7 +1305,8 @@ var WORKOUT_PROGRAM = {
         title: "2. Pullup Bar Hang (Grip Conditioning)",
         sets: 3,
         reps: "10-15s",
-        load: "Towel wrapped around bar",
+        loadNum: 0,
+        substitute: "Static bar hold without towel",
         restTime: 60,
         meta: "3 sets × 10–15 seconds | Towel wrapped around bar (thicker grip) | 60 sec rest",
         cues: "Wrap a towel around the pullup bar to thicken it (reduces friction on palms). Dead hang, arms fully extended. Engage shoulders (don't shrug ears up). Breathe normally.",
@@ -1229,7 +1317,8 @@ var WORKOUT_PROGRAM = {
         title: "3. Dumbbell Single-Arm Rows",
         sets: 3,
         reps: "10/arm",
-        load: "6kg dumbbells",
+        loadNum: 6,
+        substitute: "Banded single-arm row",
         restTime: 75,
         meta: "3 sets × 10 reps (each arm) | 6kg dumbbells | 75 sec rest",
         cues: "Hinge forward ~45°, one leg slightly forward for balance. Dumbbell at side. Row dumbbell to ribcage, elbow close to body. Squeeze back at top. Return under control. Switch arms.",
@@ -1240,7 +1329,8 @@ var WORKOUT_PROGRAM = {
         title: "4. Dumbbell Bicep Curls",
         sets: 3,
         reps: "12",
-        load: "5kg dumbbells",
+        loadNum: 5,
+        substitute: "Resistance band curls",
         restTime: 60,
         meta: "3 sets × 12 reps | 5kg dumbbells | 60 sec rest",
         cues: "Standing, arms at sides, palms forward. Curl dumbbells up, elbows stay at sides (don't move). Squeeze biceps at top. Lower with 2-second eccentric (lowering phase). No swinging.",
@@ -1251,7 +1341,8 @@ var WORKOUT_PROGRAM = {
         title: "5. Dumbbell Hammer Curls (Neutral Grip)",
         sets: 3,
         reps: "12",
-        load: "4kg dumbbells",
+        loadNum: 4,
+        substitute: "Banded hammer curls",
         restTime: 60,
         meta: "3 sets × 12 reps | 4kg dumbbells | 60 sec rest",
         cues: "Standing, arms at sides, palms facing each other (hammer grip). Curl dumbbells up, elbows locked at sides. This hits forearms + biceps differently. Control the descent.",
@@ -1288,11 +1379,11 @@ var WORKOUT_PROGRAM = {
     name: "Legs & Core (Friday)",
     focus: "Lower body strength, core stability, cardiovascular base",
     warmup: [
-      "Leg swings (forward/back): 10 each leg",
-      "Bodyweight squats: 12 reps (your baseline—perfect form)",
-      "Glute bridges: 12 reps (glute activation)",
-      "Plank hold: 2 × 15 seconds (core prep)",
-      "Jumping jacks: 20 reps (heart rate up)"
+      { text: "Leg swings (forward/back): 10 each leg", exercise: "Leg Swings" },
+      { text: "Bodyweight squats: 12 reps (your baseline—perfect form)", exercise: "Dumbbell Goblet Squats" },
+      { text: "Glute bridges: 12 reps (glute activation)", exercise: "Glute Bridge" },
+      { text: "Plank hold: 2 × 15 seconds (core prep)", exercise: "Plank" },
+      { text: "Jumping jacks: 20 reps (heart rate up)", exercise: "Jumping Jack" }
     ],
     exercises: [
       {
@@ -1300,7 +1391,8 @@ var WORKOUT_PROGRAM = {
         title: "1. Goblet Squats (Dumbbell)",
         sets: 4,
         reps: "12",
-        load: "8kg dumbbell",
+        loadNum: 8,
+        substitute: "Bodyweight deep squats with pause",
         restTime: 90,
         meta: "4 sets × 12 reps | 8kg dumbbell | 90 sec rest",
         cues: "Hold one dumbbell at chest, feet shoulder-width. Squat down, knees tracking over toes. Chest up, lower back neutral. Drive through heels to stand. Full depth (hips below knees).",
@@ -1311,7 +1403,8 @@ var WORKOUT_PROGRAM = {
         title: "2. Dumbbell Romanian Deadlift (RDL)",
         sets: 3,
         reps: "10",
-        load: "6kg dumbbells (each hand)",
+        loadNum: 6,
+        substitute: "Single-leg bodyweight RDL",
         restTime: 90,
         meta: "3 sets × 10 reps | 6kg dumbbells (each hand) | 90 sec rest",
         cues: "Standing, feet hip-width, dumbbells at thighs. Hinge from hips (not spine). Lower dumbbells down legs with slight knee bend. Hamstring stretch at bottom. Drive hips forward to stand.",
@@ -1322,7 +1415,8 @@ var WORKOUT_PROGRAM = {
         title: "3. Dumbbell Lateral Lunges",
         sets: 3,
         reps: "10/leg",
-        load: "6kg dumbbells",
+        loadNum: 6,
+        substitute: "Bodyweight side lunges",
         restTime: 75,
         meta: "3 sets × 10 reps (each leg) | 6kg dumbbells | 75 sec rest",
         cues: "Standing, dumbbells at sides. Step out to one side, lower by bending that knee. Opposite leg stays straight. Return to center. Alternate sides. Core braced.",
@@ -1333,7 +1427,8 @@ var WORKOUT_PROGRAM = {
         title: "4. Dumbbell Split Squats (Rear Foot Elevated)",
         sets: 3,
         reps: "10/leg",
-        load: "5kg dumbbells",
+        loadNum: 5,
+        substitute: "Stationary lunges without elevation",
         restTime: 75,
         meta: "3 sets × 10 reps (each leg) | 5kg dumbbells | 75 sec rest",
         cues: "Front knee tracks over ankle, rear knee lowers toward floor, upright torso. Drive through front heel.",
@@ -1344,7 +1439,8 @@ var WORKOUT_PROGRAM = {
         title: "5. Dumbbell Calf Raises",
         sets: 3,
         reps: "15-20",
-        load: "8kg dumbbells",
+        loadNum: 8,
+        substitute: "Bodyweight single-leg calf raises",
         restTime: 60,
         meta: "3 sets × 15–20 reps | 8kg dumbbells | 60 sec rest",
         cues: "Hold dumbbells at sides, rise onto balls of feet, squeeze calves at peak, controlled 2-second lowering.",
@@ -1357,11 +1453,11 @@ var WORKOUT_PROGRAM = {
     name: "Arms & Core (Saturday)",
     focus: "Biceps, triceps isolation & core rotational integrity",
     warmup: [
-      "Arm circles: 15 each direction",
-      "Band pull-aparts: 15 reps",
-      "Light dumbbell curls: 12 reps @ 4kg",
-      "Light overhead triceps extensions: 12 reps @ 4kg",
-      "Wrist circles: 10 each direction"
+      { text: "Arm circles: 15 each direction", exercise: "Arm Circles" },
+      { text: "Band pull-aparts: 15 reps", exercise: "Band Pull-Aparts" },
+      { text: "Light dumbbell curls: 12 reps @ 4kg", exercise: "Dumbbell Biceps Curls" },
+      { text: "Light overhead triceps extensions: 12 reps @ 4kg", exercise: "Dumbbell Overhead Triceps Extensions" },
+      { text: "Wrist circles: 10 each direction", exercise: "Wrist Circles" }
     ],
     exercises: [
       {
@@ -1369,7 +1465,8 @@ var WORKOUT_PROGRAM = {
         title: "1. Dumbbell Biceps Curls",
         sets: 3,
         reps: "10-12",
-        load: "5kg dumbbells",
+        loadNum: 5,
+        substitute: "Resistance band curls",
         restTime: 60,
         meta: "3 sets × 10–12 reps | 5kg dumbbells | 60 sec rest",
         cues: "Elbows locked at sides, full range of motion from extension to chest, squeeze at peak, 2-sec descent.",
@@ -1380,7 +1477,8 @@ var WORKOUT_PROGRAM = {
         title: "2. Dumbbell Hammer Curls",
         sets: 3,
         reps: "10-12",
-        load: "5kg dumbbells",
+        loadNum: 5,
+        substitute: "Banded hammer curls",
         restTime: 60,
         meta: "3 sets × 10–12 reps | 5kg dumbbells | 60 sec rest",
         cues: "Neutral grip (palms facing each other), elbows stationary, squeeze brachialis & forearms.",
@@ -1391,7 +1489,8 @@ var WORKOUT_PROGRAM = {
         title: "3. Overhead Triceps Extension",
         sets: 3,
         reps: "12",
-        load: "6kg dumbbell",
+        loadNum: 6,
+        substitute: "Banded pushdowns",
         restTime: 60,
         meta: "3 sets × 12 reps | 6kg dumbbell | 60 sec rest",
         cues: "Both hands cradling dumbbell overhead, elbows pointing forward, full stretch behind head.",
@@ -1402,7 +1501,8 @@ var WORKOUT_PROGRAM = {
         title: "4. Dumbbell Tricep Kickbacks",
         sets: 3,
         reps: "12-15",
-        load: "4kg dumbbells",
+        loadNum: 4,
+        substitute: "Bodyweight diamond push-ups on knees",
         restTime: 60,
         meta: "3 sets × 12–15 reps | 4kg dumbbells | 60 sec rest",
         cues: "Hinge torso ~45°, upper arm pinned parallel to torso, extend forearm fully back and squeeze.",
@@ -1413,7 +1513,8 @@ var WORKOUT_PROGRAM = {
         title: "5. Resistance Band Curls (Burnout)",
         sets: 3,
         reps: "15",
-        load: "Medium Band underfoot",
+        loadNum: 0,
+        substitute: "Empty-hand high tension contractions",
         restTime: 60,
         meta: "3 sets × 15 reps | Resistance Band | 60 sec rest",
         cues: "Stand on band, continuous tension, steady tempo, squeeze biceps hard at peak contraction.",
@@ -1426,11 +1527,11 @@ var WORKOUT_PROGRAM = {
     name: "Shoulders & Traps (Sunday)",
     focus: "Overhead push mechanics, lateral/rear deltoid hypertrophy",
     warmup: [
-      "Arm circles: 15 each direction",
-      "Band pull-aparts: 15 reps",
-      "Scapular shrugs: 15 reps (light dumbbells)",
-      "Shoulder dislocations with band: 12 reps",
-      "Cat-cow stretches: 5 reps"
+      { text: "Arm circles: 15 each direction", exercise: "Arm Circles" },
+      { text: "Band pull-aparts: 15 reps", exercise: "Band Pull-Aparts" },
+      { text: "Scapular shrugs: 15 reps (light dumbbells)", exercise: "Dumbbell Shrugs" },
+      { text: "Shoulder dislocations with band: 12 reps", exercise: "Band Pull-Aparts" },
+      { text: "Cat-cow stretches: 5 reps", exercise: "Cat Cow" }
     ],
     exercises: [
       {
@@ -1438,7 +1539,8 @@ var WORKOUT_PROGRAM = {
         title: "1. Seated Dumbbell Shoulder Press",
         sets: 3,
         reps: "8-10",
-        load: "6kg dumbbells",
+        loadNum: 6,
+        substitute: "Pike push-ups or band overhead press",
         restTime: 90,
         meta: "3 sets × 8–10 reps | 6kg dumbbells | 90 sec rest",
         cues: "Dumbbells at ear level, press straight overhead with slight inward taper, control down.",
@@ -1449,7 +1551,8 @@ var WORKOUT_PROGRAM = {
         title: "2. Dumbbell Lateral Raises",
         sets: 3,
         reps: "12-15",
-        load: "4kg dumbbells",
+        loadNum: 4,
+        substitute: "Band lateral raises",
         restTime: 60,
         meta: "3 sets × 12–15 reps | 4kg dumbbells | 60 sec rest",
         cues: "Slight forward lean, slight elbow bend, raise arms to shoulder level, lead with elbows.",
@@ -1460,7 +1563,8 @@ var WORKOUT_PROGRAM = {
         title: "3. Dumbbell Front Raises",
         sets: 3,
         reps: "12",
-        load: "4kg dumbbells",
+        loadNum: 4,
+        substitute: "Band front raises",
         restTime: 60,
         meta: "3 sets × 12 reps | 4kg dumbbells | 60 sec rest",
         cues: "Neutral spine, raise dumbbell to eye level with controlled tempo, slow descent.",
@@ -1471,7 +1575,8 @@ var WORKOUT_PROGRAM = {
         title: "4. Dumbbell Rear Delt Reverse Flyes",
         sets: 3,
         reps: "12-15",
-        load: "4kg dumbbells",
+        loadNum: 4,
+        substitute: "Band pull-aparts for rear delts",
         restTime: 60,
         meta: "3 sets × 12–15 reps | 4kg dumbbells | 60 sec rest",
         cues: "Hinge forward ~45°, light weight, arc arms wide to sides, squeeze rear deltoids.",
@@ -1482,7 +1587,8 @@ var WORKOUT_PROGRAM = {
         title: "5. Dumbbell Shrugs",
         sets: 3,
         reps: "12-15",
-        load: "8kg dumbbells",
+        loadNum: 8,
+        substitute: "Isometric hold shrugs with pause",
         restTime: 60,
         meta: "3 sets × 12–15 reps | 8kg dumbbells | 60 sec rest",
         cues: "Heavy dumbbells at sides, elevate traps straight toward ears, pause 1 second at top.",
@@ -1593,11 +1699,14 @@ function renderActiveDay() {
     return;
   }
 
-  // Render Warm-Up
+  // Render Warm-Up with interactive thumbnail GIFs
   if (warmupDrawer) warmupDrawer.style.display = 'block';
   if (warmupContent) {
-    warmupContent.innerHTML = data.warmup.map(function(w) {
-      return '<div class="cue-row">✓ ' + w + '</div>';
+    warmupContent.innerHTML = data.warmup.map(function(w, wIdx) {
+      return '<div class="warmup-item-card">' +
+        '<img class="dataset-exercise-gif warmup-thumb" data-exercise="' + w.exercise + '" alt="' + w.exercise + '" loading="lazy" decoding="async" title="Click to zoom warmup" onerror="this.style.display=\'none\'">' +
+        '<div class="warmup-text">✓ ' + w.text + '</div>' +
+      '</div>';
     }).join('');
   }
 
@@ -1626,12 +1735,16 @@ function generateExerciseCardHTML(ex, exIndex, day) {
   var title = ex.title || ex.name;
   var setKeyPrefix = 'd' + day + '_e' + exIndex;
 
+  // Retrieve previous memory log from localStorage
+  var historyKey = 'ex_history_' + day + '_' + exIndex;
+  var lastLog = localStorage.getItem(historyKey) || 'None logged yet (Baseline)';
+
   var setButtonsHTML = '';
   for (var s = 1; s <= ex.sets; s++) {
     var key = setKeyPrefix + '_s' + s;
     var isDone = !!setCompletionState[key];
     var restPeriod = ex.restTime || 60;
-    setButtonsHTML += '<button type="button" class="set-pill-btn' + (isDone ? ' completed' : '') + '" data-key="' + key + '" data-rest="' + restPeriod + '">' +
+    setButtonsHTML += '<button type="button" class="set-pill-btn' + (isDone ? ' completed' : '') + '" data-key="' + key + '" data-rest="' + restPeriod + '" data-load="' + (ex.loadNum || 0) + '" data-reps="' + parseInt(ex.reps, 10) + '">' +
       '<span>SET ' + s + '</span>' +
       '<strong>' + (isDone ? '✓' : ex.reps) + '</strong>' +
       '</button>';
@@ -1651,6 +1764,7 @@ function generateExerciseCardHTML(ex, exIndex, day) {
         '<span class="card-target-rep">' + ex.sets + ' SETS</span>' +
       '</div>' +
       '<div class="card-meta-detail">' + (ex.meta || (ex.sets + ' sets × ' + ex.reps + ' reps')) + '</div>' +
+      '<div class="card-history-memory"><span>Previous Best Log:</span> <strong>' + lastLog + '</strong></div>' +
       '<div class="set-tracker-container">' +
         '<div class="set-tracker-header">' +
           '<span>Set Execution Tracker</span>' +
@@ -1670,6 +1784,10 @@ function generateExerciseCardHTML(ex, exIndex, day) {
           '<div class="alert-row">' +
             '<strong>Red flags</strong>' +
             ex.redFlags +
+          '</div>' +
+          '<div class="sub-row">' +
+            '<strong>Equipment Substitution</strong>' +
+            (ex.substitute || 'Standard Dumbbell Variation') +
           '</div>' +
         '</div>' +
       '</details>' +
@@ -1691,13 +1809,22 @@ function setupCarouselObserver() {
   }, { passive: true });
 }
 
-function handleSetToggle(key, customRest) {
+function handleSetToggle(key, customRest, loadVal, repVal) {
   var isDone = !setCompletionState[key];
   if (isDone) {
     setCompletionState[key] = true;
     if (navigator.vibrate) navigator.vibrate([25, 40]);
     playBeep(880, 0.1);
     startRestTimer(customRest || 60);
+
+    // Save history memory log for progressive overload
+    var parts = key.split('_');
+    if (parts.length >= 3) {
+      var dId = parts[0].replace('d', '');
+      var eId = parts[1].replace('e', '');
+      var historyKey = 'ex_history_' + dId + '_' + eId;
+      localStorage.setItem(historyKey, loadVal + 'kg × ' + repVal + ' reps (Completed)');
+    }
   } else {
     delete setCompletionState[key];
   }
@@ -1724,7 +1851,41 @@ function handleSetToggle(key, customRest) {
   }
 
   updateProgressStat();
+  updateSessionAnalytics();
   checkDayCompletion();
+}
+
+function updateSessionAnalytics() {
+  var data = WORKOUT_PROGRAM[currentDay];
+  if (!data || data.rest) {
+    var tEl = document.getElementById('sessionTonnage');
+    var cEl = document.getElementById('sessionCalories');
+    if (tEl) tEl.textContent = "0 kg";
+    if (cEl) cEl.textContent = "0 kcal";
+    return;
+  }
+
+  var totalTonnage = 0;
+  var completedSetsCount = 0;
+
+  data.exercises.forEach(function(ex, exIdx) {
+    var load = ex.loadNum || 0;
+    var reps = parseInt(ex.reps, 10) || 10;
+    for (var s = 1; s <= ex.sets; s++) {
+      var key = 'd' + currentDay + '_e' + exIdx + '_s' + s;
+      if (setCompletionState[key]) {
+        totalTonnage += (load * reps);
+        completedSetsCount++;
+      }
+    }
+  });
+
+  var estimatedCals = completedSetsCount * 5;
+
+  var tonnageEl = document.getElementById('sessionTonnage');
+  var calsEl = document.getElementById('sessionCalories');
+  if (tonnageEl) tonnageEl.textContent = totalTonnage + " kg";
+  if (calsEl) calsEl.textContent = estimatedCals + " kcal";
 }
 
 function updateProgressStat() {
@@ -1734,6 +1895,7 @@ function updateProgressStat() {
 
   if (data.rest) {
     statEl.textContent = "100%";
+    updateSessionAnalytics();
     return;
   }
   var totalSets = 0;
@@ -1748,6 +1910,7 @@ function updateProgressStat() {
 
   var pct = totalSets ? Math.round((completedSets / totalSets) * 100) : 0;
   statEl.textContent = pct + "%";
+  updateSessionAnalytics();
 }
 
 function checkDayCompletion() {
@@ -1911,6 +2074,7 @@ function openGifModal(exerciseIdx) {
 
   var titleEl = document.getElementById('gifModalTitle');
   var imgEl = document.getElementById('gifModalImg');
+  var cuesContainer = document.getElementById('gifModalDetailsContainer');
   var cuesTextEl = document.getElementById('gifModalCuesText');
   var redFlagsTextEl = document.getElementById('gifModalRedFlagsText');
   var modal = document.getElementById('gifModal');
@@ -1918,11 +2082,37 @@ function openGifModal(exerciseIdx) {
   if (titleEl) titleEl.textContent = title;
   if (cuesTextEl) cuesTextEl.textContent = ex.cues || '-';
   if (redFlagsTextEl) redFlagsTextEl.textContent = ex.redFlags || '-';
+  if (cuesContainer) cuesContainer.style.display = 'flex';
 
   var activeCardImg = document.querySelector('.deck-card img[data-exercise="' + ex.name + '"]');
   if (imgEl) {
     if (activeCardImg && activeCardImg.src) {
       imgEl.src = activeCardImg.src;
+    } else {
+      imgEl.src = '';
+    }
+  }
+
+  if (modal) modal.classList.add('open');
+}
+
+function openWarmupGifModal(exerciseName, warmupText) {
+  var titleEl = document.getElementById('gifModalTitle');
+  var imgEl = document.getElementById('gifModalImg');
+  var cuesContainer = document.getElementById('gifModalDetailsContainer');
+  var cuesTextEl = document.getElementById('gifModalCuesText');
+  var redFlagsTextEl = document.getElementById('gifModalRedFlagsText');
+  var modal = document.getElementById('gifModal');
+
+  if (titleEl) titleEl.textContent = warmupText;
+  if (cuesTextEl) cuesTextEl.textContent = "Warm-up movement prep for joint lubrication and neural activation.";
+  if (redFlagsTextEl) redFlagsTextEl.textContent = "Keep movements controlled; do not push to muscular failure during warm-up.";
+  if (cuesContainer) cuesContainer.style.display = 'flex';
+
+  var activeThumb = document.querySelector('.warmup-thumb[data-exercise="' + exerciseName + '"]');
+  if (imgEl) {
+    if (activeThumb && activeThumb.src) {
+      imgEl.src = activeThumb.src;
     } else {
       imgEl.src = '';
     }
@@ -2001,7 +2191,17 @@ var aliases = {
   'Dumbbell Lateral Raises': ['dumbbell lateral raise'],
   'Dumbbell Front Raises': ['dumbbell front raise'],
   'Dumbbell Reverse Pec Deck': ['dumbbell reverse fly', 'reverse fly'],
-  'Dumbbell Shrugs': ['dumbbell shrug']
+  'Dumbbell Shrugs': ['dumbbell shrug'],
+  'Arm Circles': ['arm circle', 'shoulder stretch'],
+  'Band Pull-Aparts': ['band pull apart', 'rear delt fly'],
+  'Push Ups': ['pushup', 'push up'],
+  'Resistance Band Rows': ['resistance band row', 'band seated row'],
+  'Cat Cow': ['cat cow', 'spine stretch'],
+  'Leg Swings': ['leg swing'],
+  'Glute Bridge': ['glute bridge'],
+  'Plank': ['plank'],
+  'Jumping Jack': ['jumping jack'],
+  'Wrist Circles': ['wrist circle']
 };
 
 function findExercise(requested, dataset) {
@@ -2063,15 +2263,26 @@ document.addEventListener('DOMContentLoaded', function() {
     var pillBtn = e.target.closest('.set-pill-btn');
     if (pillBtn && pillBtn.getAttribute('data-key')) {
       var customRest = parseInt(pillBtn.getAttribute('data-rest'), 10) || 60;
-      handleSetToggle(pillBtn.getAttribute('data-key'), customRest);
+      var loadVal = parseFloat(pillBtn.getAttribute('data-load')) || 0;
+      var repVal = parseInt(pillBtn.getAttribute('data-reps'), 10) || 10;
+      handleSetToggle(pillBtn.getAttribute('data-key'), customRest, loadVal, repVal);
       return;
     }
 
-    // GIF Card Header Click Delegation (Opens Fullscreen Preview)
+    // GIF Card Header Click Delegation (Opens Fullscreen Preview for Exercises)
     var cardHeader = e.target.closest('.card-header');
     if (cardHeader && cardHeader.hasAttribute('data-exercise-idx')) {
       var idx = parseInt(cardHeader.getAttribute('data-exercise-idx'), 10);
       openGifModal(idx);
+      return;
+    }
+
+    // Warm-up Thumbnail Click Delegation (Opens Fullscreen Preview for Warm-ups)
+    var warmupThumb = e.target.closest('.warmup-thumb');
+    if (warmupThumb) {
+      var exName = warmupThumb.getAttribute('data-exercise');
+      var parentText = warmupThumb.closest('.warmup-item-card').querySelector('.warmup-text').textContent.replace('✓ ', '');
+      openWarmupGifModal(exName, parentText);
       return;
     }
   });
