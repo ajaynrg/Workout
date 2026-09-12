@@ -13,8 +13,8 @@
   <style>
     :root {
       --bg-main: #0a0d14;
-      --bg-card: rgba(18, 24, 38, 0.7);
-      --bg-card-hover: rgba(26, 35, 55, 0.85);
+      --bg-card: rgba(18, 24, 38, 0.75);
+      --bg-card-hover: rgba(26, 35, 55, 0.9);
       --accent-cyan: #06b6d4;
       --accent-blue: #3b82f6;
       --accent-emerald: #10b981;
@@ -55,7 +55,7 @@
       z-index: 50;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      background: rgba(10, 13, 20, 0.85);
+      background: rgba(10, 13, 20, 0.88);
       border-bottom: 1px solid var(--border-color);
       padding: 14px 20px;
       display: flex;
@@ -114,7 +114,7 @@
       font-size: 0.88rem;
     }
 
-    /* Tab navigation */
+    /* Tabs */
     .tab-nav-wrapper {
       position: sticky;
       top: 61px;
@@ -183,7 +183,35 @@
       font-weight: 700;
     }
 
-    /* Cards */
+    /* Warmup Box */
+    .warmup-box {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px dashed rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    .warmup-title {
+      color: #34d399;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .warmup-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.83rem;
+      color: #cbd5e1;
+    }
+    .warmup-list li::before { content: "• "; color: #34d399; }
+
+    /* Exercise Card */
     .exercise-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -192,23 +220,124 @@
       overflow: hidden;
     }
 
+    .gif-container {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background: #020617;
+      overflow: hidden;
+    }
+
+    .exercise-gif {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.92);
+    }
+
+    .gif-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .rest-pill {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--glass-border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #38bdf8;
+      cursor: pointer;
+    }
+
     .card-body {
       padding: 16px;
     }
 
+    .exercise-header {
+      margin-bottom: 10px;
+    }
+    .exercise-num {
+      font-family: 'JetBrains Mono', monospace;
+      color: #38bdf8;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
     .exercise-name {
       font-size: 1.1rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 8px;
     }
 
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .metric-cell span {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      display: block;
+    }
+    .metric-cell strong {
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      display: block;
+    }
+
+    /* Accordion Details */
+    .collapsible-trigger {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 6px;
+      font-family: inherit;
+    }
+    .collapsible-content {
+      display: none;
+      padding: 8px 12px 12px 12px;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+    .collapsible-content.show { display: block; }
+    .cues-content ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .cues-content li::before { content: "✓ "; color: #10b981; font-weight: 700; }
+
+    /* Set Trackers */
     .tracker-box {
+      margin-top: 10px;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
       padding: 12px;
-      margin-top: 10px;
     }
     .tracker-header {
       display: flex;
@@ -280,7 +409,6 @@
       min-height: 55px;
       outline: none;
     }
-
     .complete-btn {
       background: linear-gradient(135deg, #10b981, #059669);
       color: #fff;
@@ -297,7 +425,7 @@
       box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
     }
 
-    /* History & Management */
+    /* History Cards */
     .history-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -330,9 +458,9 @@
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border-color);
       color: #e2e8f0;
-      padding: 5px 8px;
+      padding: 6px 10px;
       border-radius: var(--radius-sm);
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -345,9 +473,7 @@
       border-color: rgba(244, 63, 94, 0.3);
       background: rgba(244, 63, 94, 0.08);
     }
-    .btn-danger:hover {
-      background: rgba(244, 63, 94, 0.2);
-    }
+    .btn-danger:hover { background: rgba(244, 63, 94, 0.2); }
 
     .history-exercise-row {
       display: flex;
@@ -357,11 +483,47 @@
       border-bottom: 1px solid rgba(255,255,255,0.04);
     }
 
+    /* Nutrition & Checklists */
+    .meal-row {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .meal-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
+    .meal-info p { font-size: 0.82rem; color: var(--text-muted); }
+    .protein-tag {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+    }
+    .check-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+    .check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #0284c7; }
+    .check-item.done { opacity: 0.55; text-decoration: line-through; }
+
     /* Modal for Editing Session */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(8px);
       display: none;
       justify-content: center;
@@ -394,19 +556,17 @@
       padding: 10px;
       border-radius: var(--radius-sm);
       margin-bottom: 10px;
+      position: relative;
     }
-    .edit-row-title {
-      font-size: 0.85rem;
-      font-weight: 700;
+    .edit-row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 6px;
     }
-    .edit-row-inputs {
-      display: flex;
-      gap: 10px;
-    }
-    .edit-input-group {
-      flex: 1;
-    }
+    .edit-row-title { font-size: 0.85rem; font-weight: 700; color: #fff; }
+    .edit-row-inputs { display: flex; gap: 10px; }
+    .edit-input-group { flex: 1; }
     .edit-input-group label {
       font-size: 0.7rem;
       color: var(--text-muted);
@@ -461,7 +621,7 @@
   <div class="container">
     <div class="hero-banner">
       <h1>5-Day Balanced Strength</h1>
-      <p>Progressive Overload • Full Edit / Delete & Database Sync</p>
+      <p>Progressive Overload • Same Exercises • Synced to MongoDB Atlas</p>
     </div>
 
     <!-- Navigation Tabs -->
@@ -472,6 +632,8 @@
         <button class="tab-btn" onclick="switchTab('friday')"><i data-lucide="flame" style="width: 14px;"></i> Fri: Legs</button>
         <button class="tab-btn" onclick="switchTab('saturday')"><i data-lucide="trending-up" style="width: 14px;"></i> Sat: Push Vol</button>
         <button class="tab-btn" onclick="switchTab('sunday')"><i data-lucide="refresh-cw" style="width: 14px;"></i> Sun: Full Body</button>
+        <button class="tab-btn" onclick="switchTab('nutrition')"><i data-lucide="utensils" style="width: 14px;"></i> Diet & Protein</button>
+        <button class="tab-btn" onclick="switchTab('safety')"><i data-lucide="alert-triangle" style="width: 14px;"></i> Safety & Rules</button>
         <button class="tab-btn" onclick="switchTab('history')"><i data-lucide="history" style="width: 14px;"></i> Logs & History</button>
       </div>
     </div>
@@ -481,183 +643,896 @@
       <div class="day-header-card">
         <div>
           <div class="day-title">Monday: Heavy Push</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Chest, Front Delts, Triceps</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Chest, Front Delts, Triceps • 50–60 mins</div>
         </div>
       </div>
 
-      <!-- Ex 1 -->
+      <div class="warmup-box">
+        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5–8 Min Push Warm-Up</div>
+        <ul class="warmup-list">
+          <li>Arm Circles & Cross-Body Swings: 15 forward, 15 back, 15 cross</li>
+          <li>Scapular Push-Ups: 2 sets × 10–12 reps</li>
+          <li>Band Pull-Aparts or Light Face Pulls: 2 sets × 15 reps</li>
+          <li>Incline DB Acclimatization (50% × 8, 75% × 4 reps)</li>
+        </ul>
+      </div>
+
+      <!-- Mon 1 -->
       <div class="exercise-card" data-exercise="Incline DB Bench Press">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif" 
+               class="exercise-gif" alt="Incline Press" 
+               onerror="this.src='https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Primary Compound</div>
+          <div class="rest-pill" onclick="startTimer(150)"><i data-lucide="timer" style="width:12px;"></i> Rest 2.5m</div>
+        </div>
         <div class="card-body">
-          <h3 class="exercise-name">1. Incline Dumbbell Bench Press</h3>
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 01</span>
+            <h3 class="exercise-name">Incline Dumbbell Bench Press</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>4 × 6–8</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>2–3 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5–1 kg @ 8</strong></div>
+          </div>
+          <button class="collapsible-trigger" onclick="toggleAccordion(this)">
+            <span>Form Cues</span> <i data-lucide="chevron-down" style="width:14px;"></i>
+          </button>
+          <div class="collapsible-content cues-content">
+            <ul>
+              <li>Bench inclined 30–45°; feet flat on floor.</li>
+              <li>Chest up, pack shoulder blades down — elbows at 45° angle.</li>
+              <li>Lower in controlled arc, stretch chest; press up without clanking.</li>
+            </ul>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_inc" placeholder="kg" onchange="cacheLocal('wt_mon_inc', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_1')">Set 1</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_2')">Set 2</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_3')">Set 3</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_4')">Set 4</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_1')">Set 1 (6-8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_2')">Set 2 (6-8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_3')">Set 3 (6-8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_4')">Set 4 (6-8)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Ex 2 -->
+      <!-- Mon 2 -->
       <div class="exercise-card" data-exercise="Flat DB Bench Press">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Press.gif" 
+               class="exercise-gif" alt="Flat Press"
+               onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Hypertrophy</div>
+          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
+        </div>
         <div class="card-body">
-          <h3 class="exercise-name">2. Flat Dumbbell Bench Press</h3>
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 02</span>
+            <h3 class="exercise-name">Flat Dumbbell Bench Press</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_flat" placeholder="kg" onchange="cacheLocal('wt_mon_flat', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_1')">Set 1</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_2')">Set 2</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_3')">Set 3</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_2')">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_3')">Set 3 (8-10)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Ex 3 -->
+      <!-- Mon 3 -->
       <div class="exercise-card" data-exercise="Seated DB Shoulder Press">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif" 
+               class="exercise-gif" alt="Shoulder Press"
+               onerror="this.src='https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Overhead Strength</div>
+          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
+        </div>
         <div class="card-body">
-          <h3 class="exercise-name">3. Seated Dumbbell Shoulder Press</h3>
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 03</span>
+            <h3 class="exercise-name">Seated Dumbbell Shoulder Press</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_ohp" placeholder="kg" onchange="cacheLocal('wt_mon_ohp', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_1')">Set 1</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_2')">Set 2</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_3')">Set 3</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_1')">Set 1 (8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_2')">Set 2 (8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_3')">Set 3 (8)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Ex 4 -->
+      <!-- Mon 4 -->
       <div class="exercise-card" data-exercise="Dumbbell Lateral Raises">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lateral-Raise.gif" 
+               class="exercise-gif" alt="Lateral Raise"
+               onerror="this.src='https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Side Delts</div>
+          <div class="rest-pill" onclick="startTimer(75)">Rest 1-1.5m</div>
+        </div>
         <div class="card-body">
-          <h3 class="exercise-name">4. Dumbbell Lateral Raises</h3>
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 04</span>
+            <h3 class="exercise-name">Dumbbell Lateral Raises</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 12–15</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1–1.5 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+1 rep</strong></div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_lat" placeholder="kg" onchange="cacheLocal('wt_mon_lat', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_1')">Set 1</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_2')">Set 2</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_3')">Set 3</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_1')">Set 1 (12-15)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_2')">Set 2 (12-15)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_3')">Set 3 (12-15)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Ex 5 -->
+      <!-- Mon 5 -->
       <div class="exercise-card" data-exercise="Overhead Triceps Extension">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/dumbbell-overhead-triceps-extension.gif" 
+               class="exercise-gif" alt="Triceps Extension"
+               onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Triceps Long Head</div>
+          <div class="rest-pill" onclick="startTimer(90)">Rest 1.5m</div>
+        </div>
         <div class="card-body">
-          <h3 class="exercise-name">5. Overhead Triceps Extension</h3>
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 05</span>
+            <h3 class="exercise-name">Overhead Triceps Extension</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 10–12</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_tri" placeholder="kg" onchange="cacheLocal('wt_mon_tri', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_1')">Set 1</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_2')">Set 2</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_3')">Set 3</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_1')">Set 1 (10-12)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_2')">Set 2 (10-12)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_3')">Set 3 (10-12)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Complete Session Bar -->
       <div class="finish-session-bar">
         <h4 style="color:#fff; font-size: 0.95rem;">Finish Monday Session</h4>
-        <textarea id="notes_monday" placeholder="Optional session notes..."></textarea>
-        <button class="complete-btn" onclick="completeWorkoutSession('monday')">
-          <span>Complete Session & Sync</span>
-          <i data-lucide="arrow-right" style="width:16px;"></i>
-        </button>
+        <textarea id="notes_monday" placeholder="Notes (e.g., Felt strong, shoulders packed well)..."></textarea>
+        <button class="complete-btn" onclick="completeWorkoutSession('monday')">Complete Session & Sync</button>
       </div>
     </div>
 
     <!-- ==================== TAB: THURSDAY (PULL) ==================== -->
     <div id="tab-thursday" class="tab-content" data-day-name="Thursday: Pull Day">
       <div class="day-header-card">
-        <div class="day-title">Thursday: Heavy Pull</div>
+        <div>
+          <div class="day-title">Thursday: Heavy Pull</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Back, Lat Thickness, Biceps • 50–60 mins</div>
+        </div>
       </div>
+
+      <div class="warmup-box">
+        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5–8 Min Pull Warm-Up</div>
+        <ul class="warmup-list">
+          <li>Dead Hangs (Pull-up bar): 2 sets × 20–30 sec</li>
+          <li>Cat-Cow Spinal Stretches: 10 cycles</li>
+          <li>Bird-Dogs: 2 sets × 8 reps/side</li>
+          <li>Bent-Over DB Row Acclimatization (50% × 8 reps)</li>
+        </ul>
+      </div>
+
+      <!-- Thu 1 -->
       <div class="exercise-card" data-exercise="Bent-Over DB Rows">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/bent-over-dumbbell-row.gif" 
+               class="exercise-gif" alt="Bent-Over Rows"
+               onerror="this.src='https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Primary Pull</div>
+          <div class="rest-pill" onclick="startTimer(150)">Rest 2.5m</div>
+        </div>
         <div class="card-body">
-          <h3 class="exercise-name">1. Bent-Over Dumbbell Rows</h3>
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 01</span>
+            <h3 class="exercise-name">Bent-Over Dumbbell Rows</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>4 × 6–8</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>2–3 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5–1 kg @ 8</strong></div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_thu_row" placeholder="kg" onchange="cacheLocal('wt_thu_row', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_1')">Set 1</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_2')">Set 2</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_3')">Set 3</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_4')">Set 4</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_1')">Set 1 (6-8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_2')">Set 2 (6-8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_3')">Set 3 (6-8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_4')">Set 4 (6-8)</div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Thu 2 -->
+      <div class="exercise-card" data-exercise="Single-Arm Half-Kneeling Row">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif" 
+               class="exercise-gif" alt="Single Arm Row"
+               onerror="this.src='https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Unilateral Lat</div>
+          <div class="rest-pill" onclick="startTimer(90)">Rest 1.5m</div>
+        </div>
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 02</span>
+            <h3 class="exercise-name">Single-Arm Half-Kneeling Row</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10 /arm</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_thu_srow" placeholder="kg" onchange="cacheLocal('wt_thu_srow', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_srow_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_srow_2')">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_srow_3')">Set 3 (8-10)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thu 3 -->
+      <div class="exercise-card" data-exercise="Inverted Rows (Pull-Up Bar)">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Inverted-Row.gif" 
+               class="exercise-gif" alt="Inverted Row"
+               onerror="this.src='https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Bodyweight Back</div>
+          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
+        </div>
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 03</span>
+            <h3 class="exercise-name">Inverted Rows (Pull-Up Bar)</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>Lower angle</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_inv_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_inv_2')">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_inv_3')">Set 3 (8-10)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thu 4 -->
+      <div class="exercise-card" data-exercise="Dumbbell Bicep Curls">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Curl.gif" 
+               class="exercise-gif" alt="Bicep Curls"
+               onerror="this.src='https://images.unsplash.com/photo-1581009137042-c552e485697a?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Supinated Curl</div>
+          <div class="rest-pill" onclick="startTimer(90)">Rest 1.5m</div>
+        </div>
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 04</span>
+            <h3 class="exercise-name">Dumbbell Bicep Curls</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 10–12</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_thu_curl" placeholder="kg" onchange="cacheLocal('wt_thu_curl', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_curl_1')">Set 1 (10-12)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_curl_2')">Set 2 (10-12)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_curl_3')">Set 3 (10-12)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thu 5 -->
+      <div class="exercise-card" data-exercise="Dumbbell Hammer Curls">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Hammer-Curl.gif" 
+               class="exercise-gif" alt="Hammer Curls"
+               onerror="this.src='https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Brachialis & Forearms</div>
+          <div class="rest-pill" onclick="startTimer(60)">Rest 1m</div>
+        </div>
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 05</span>
+            <h3 class="exercise-name">Dumbbell Hammer Curls</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 12–15</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_thu_ham" placeholder="kg" onchange="cacheLocal('wt_thu_ham', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_ham_1')">Set 1 (12-15)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_ham_2')">Set 2 (12-15)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_thu_ham_3')">Set 3 (12-15)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="finish-session-bar">
-        <button class="complete-btn" onclick="completeWorkoutSession('thursday')">Complete Thursday Session</button>
+        <h4 style="color:#fff; font-size: 0.95rem;">Finish Thursday Session</h4>
+        <textarea id="notes_thursday" placeholder="Notes (e.g., Solid back engagement, grip felt stable)..."></textarea>
+        <button class="complete-btn" onclick="completeWorkoutSession('thursday')">Complete Session & Sync</button>
       </div>
     </div>
 
     <!-- ==================== TAB: FRIDAY (LEGS) ==================== -->
     <div id="tab-friday" class="tab-content" data-day-name="Friday: Leg Day">
       <div class="day-header-card">
-        <div class="day-title">Friday: Legs</div>
+        <div>
+          <div class="day-title">Friday: Legs & Lower Body</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Quads, Posterior Chain, Calves • 50–60 mins</div>
+        </div>
       </div>
+
+      <div class="warmup-box">
+        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5–8 Min Lower Body Warm-Up</div>
+        <ul class="warmup-list">
+          <li>Bodyweight Air Squats: 2 sets × 10 reps (2s pause at bottom)</li>
+          <li>World’s Greatest Stretch: 5 reps per side</li>
+          <li>Glute Bridges: 2 sets × 15 reps</li>
+          <li>Leg Swings (Front/Back & Side): 10 each leg</li>
+        </ul>
+      </div>
+
+      <!-- Fri 1 -->
       <div class="exercise-card" data-exercise="Goblet Squats">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/06/Dumbbell-Goblet-Squat.gif" 
+               class="exercise-gif" alt="Goblet Squat"
+               onerror="this.src='https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Quads & Core</div>
+          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
+        </div>
         <div class="card-body">
-          <h3 class="exercise-name">1. Goblet Squats</h3>
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 01</span>
+            <h3 class="exercise-name">Goblet Squats</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>4 × 8–10</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+1 kg @ 10</strong></div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_fri_sq" placeholder="kg" onchange="cacheLocal('wt_fri_sq', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_1')">Set 1</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_2')">Set 2</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_3')">Set 3</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_4')">Set 4</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_2')">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_3')">Set 3 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_4')">Set 4 (8-10)</div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Fri 2 -->
+      <div class="exercise-card" data-exercise="Dumbbell Romanian Deadlifts (RDL)">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Romanian-Deadlift.gif" 
+               class="exercise-gif" alt="Dumbbell RDL"
+               onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Hamstrings & Glutes</div>
+          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
+        </div>
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 02</span>
+            <h3 class="exercise-name">Dumbbell Romanian Deadlifts (RDL)</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+1 kg @ 10</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_fri_rdl" placeholder="kg" onchange="cacheLocal('wt_fri_rdl', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_rdl_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_rdl_2')">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_rdl_3')">Set 3 (8-10)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fri 3 -->
+      <div class="exercise-card" data-exercise="Dumbbell Reverse Lunges">
+        <div class="gif-container">
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif" 
+               class="exercise-gif" alt="Reverse Lunges"
+               onerror="this.src='https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&auto=format&fit=crop&q=80';"/>
+          <div class="gif-badge">Unilateral Leg</div>
+          <div class="rest-pill" onclick="startTimer(90)">Rest 1.5m</div>
+        </div>
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 03</span>
+            <h3 class="exercise-name">Reverse Lunges</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 10 /leg</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_fri_lng" placeholder="kg" onchange="cacheLocal('wt_fri_lng', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_lng_1')">Set 1 (10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_lng_2')">Set 2 (10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_lng_3')">Set 3 (10)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fri 4 -->
+      <div class="exercise-card" data-exercise="Rear-Foot Elevated Split Squats">
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 04</span>
+            <h3 class="exercise-name">Rear-Foot Elevated Split Squats</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10 /leg</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_fri_ss" placeholder="kg" onchange="cacheLocal('wt_fri_ss', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_ss_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_ss_2')">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_ss_3')">Set 3 (8-10)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fri 5 -->
+      <div class="exercise-card" data-exercise="Dumbbell Calf Raises">
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 05</span>
+            <h3 class="exercise-name">Dumbbell Calf Raises</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 15–20</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1 min</strong></div>
+            <div class="metric-cell"><span>Progression</span><strong>+2 reps</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_fri_cr" placeholder="kg" onchange="cacheLocal('wt_fri_cr', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_cr_1')">Set 1 (15-20)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_cr_2')">Set 2 (15-20)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_fri_cr_3')">Set 3 (15-20)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="finish-session-bar">
-        <button class="complete-btn" onclick="completeWorkoutSession('friday')">Complete Friday Session</button>
+        <h4 style="color:#fff; font-size: 0.95rem;">Finish Friday Session</h4>
+        <textarea id="notes_friday" placeholder="Notes (e.g., Squat depth felt good, no knee pinch)..."></textarea>
+        <button class="complete-btn" onclick="completeWorkoutSession('friday')">Complete Session & Sync</button>
       </div>
     </div>
 
-    <!-- ==================== TAB: SATURDAY (PUSH VOL) ==================== -->
+    <!-- ==================== TAB: SATURDAY (PUSH VOLUME) ==================== -->
     <div id="tab-saturday" class="tab-content" data-day-name="Saturday: Push Volume">
       <div class="day-header-card">
-        <div class="day-title">Saturday: Push Volume</div>
+        <div>
+          <div class="day-title">Saturday: Push Volume Day</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">10–20% lighter than Monday • Focus on Mind-Muscle Connection</div>
+        </div>
       </div>
+
+      <div class="warmup-box">
+        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5 Min Shoulder Prep</div>
+        <ul class="warmup-list">
+          <li>Band Dislocates / Pass-Throughs: 15 reps</li>
+          <li>Push-Up to Downward Dog: 8–10 reps</li>
+          <li>Thoracic Rotations (Quadruped): 8 reps/side</li>
+        </ul>
+      </div>
+
+      <!-- Sat 1 -->
+      <div class="exercise-card" data-exercise="Incline Bench Press (Volume)">
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 01</span>
+            <h3 class="exercise-name">Incline Bench Press (Volume)</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Target</span><strong>3 × 8–10</strong></div>
+            <div class="metric-cell"><span>Intensity</span><strong>-15% Mon</strong></div>
+            <div class="metric-cell"><span>Tempo</span><strong>2-0-2</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_sat_inc" placeholder="kg" onchange="cacheLocal('wt_sat_inc', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_inc_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_inc_2')">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_inc_3')">Set 3 (8-10)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sat 2 -->
+      <div class="exercise-card" data-exercise="Floor Press">
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 02</span>
+            <h3 class="exercise-name">Floor Press</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Target</span><strong>3 × 10–12</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
+            <div class="metric-cell"><span>Focus</span><strong>Shoulder Safety</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_sat_flr" placeholder="kg" onchange="cacheLocal('wt_sat_flr', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_flr_1')">Set 1 (10-12)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_flr_2')">Set 2 (10-12)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_flr_3')">Set 3 (10-12)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sat 3 -->
+      <div class="exercise-card" data-exercise="Dumbbell Shoulder Press (Volume)">
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 03</span>
+            <h3 class="exercise-name">Dumbbell Shoulder Press (Volume)</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Target</span><strong>3 × 8–10</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
+            <div class="metric-cell"><span>Focus</span><strong>Strict Form</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_sat_ohp" placeholder="kg" onchange="cacheLocal('wt_sat_ohp', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_ohp_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_ohp_2')">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_ohp_3')">Set 3 (8-10)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sat 4 -->
+      <div class="exercise-card" data-exercise="Bench Dips">
+        <div class="card-body">
+          <div class="exercise-header">
+            <span class="exercise-num">EXERCISE 04</span>
+            <h3 class="exercise-name">Bench Dips</h3>
+          </div>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Target</span><strong>3 × 10–15</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1 min</strong></div>
+            <div class="metric-cell"><span>Cue</span><strong>Lock Out Triceps</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_dip_1')">Set 1 (10-15)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_dip_2')">Set 2 (10-15)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sat_dip_3')">Set 3 (10-15)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="finish-session-bar">
-        <button class="complete-btn" onclick="completeWorkoutSession('saturday')">Complete Saturday Session</button>
+        <h4 style="color:#fff; font-size: 0.95rem;">Finish Saturday Session</h4>
+        <textarea id="notes_saturday" placeholder="Notes..."></textarea>
+        <button class="complete-btn" onclick="completeWorkoutSession('saturday')">Complete Session & Sync</button>
       </div>
     </div>
 
     <!-- ==================== TAB: SUNDAY (FULL BODY) ==================== -->
     <div id="tab-sunday" class="tab-content" data-day-name="Sunday: Full Body Active Recovery">
       <div class="day-header-card">
-        <div class="day-title">Sunday: Active Recovery</div>
+        <div>
+          <div class="day-title">Sunday: Active Recovery Full-Body</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">20–30% lighter weight • Form practice & joint flushing</div>
+        </div>
       </div>
+
+      <div class="warmup-box">
+        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5 Min Recovery Flow</div>
+        <ul class="warmup-list">
+          <li>Inchworms with Push-Up: 5–6 reps</li>
+          <li>Hip 90/90 Rotations: 8 reps/side</li>
+          <li>Light Dead Hang: 20–30 sec</li>
+        </ul>
+      </div>
+
+      <!-- Sun 1 -->
+      <div class="exercise-card" data-exercise="Bench Press (Light Active Recovery)">
+        <div class="card-body">
+          <h3 class="exercise-name">1. Bench Press (Recovery Groove)</h3>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Target</span><strong>2 × 6–8</strong></div>
+            <div class="metric-cell"><span>Load</span><strong>-30% Light</strong></div>
+            <div class="metric-cell"><span>Cue</span><strong>Smooth Motion</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_sun_bp" placeholder="kg" onchange="cacheLocal('wt_sun_bp', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_sun_bp_1')">Set 1 (6-8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sun_bp_2')">Set 2 (6-8)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sun 2 -->
+      <div class="exercise-card" data-exercise="Bent-Over Rows (Light Active Recovery)">
+        <div class="card-body">
+          <h3 class="exercise-name">2. Bent-Over Rows (Light)</h3>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Target</span><strong>2 × 6–8</strong></div>
+            <div class="metric-cell"><span>Load</span><strong>-30% Light</strong></div>
+            <div class="metric-cell"><span>Cue</span><strong>Retract Scapulae</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_sun_row" placeholder="kg" onchange="cacheLocal('wt_sun_row', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_sun_row_1')">Set 1 (6-8)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sun_row_2')">Set 2 (6-8)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sun 3 -->
+      <div class="exercise-card" data-exercise="Goblet Squats (Light Active Recovery)">
+        <div class="card-body">
+          <h3 class="exercise-name">3. Goblet Squats (Deep Hip Opener)</h3>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Target</span><strong>2 × 8–10</strong></div>
+            <div class="metric-cell"><span>Load</span><strong>Light</strong></div>
+            <div class="metric-cell"><span>Focus</span><strong>Full Depth</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="tracker-header">
+              <span class="tracker-title">Weight (kg)</span>
+              <input type="number" step="0.5" class="weight-log-input" id="wt_sun_sq" placeholder="kg" onchange="cacheLocal('wt_sun_sq', this.value)"/>
+            </div>
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_sun_sq_1')">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sun_sq_2')">Set 2 (8-10)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sun 4 -->
+      <div class="exercise-card" data-exercise="Plank Hold or Dead Hang">
+        <div class="card-body">
+          <h3 class="exercise-name">4. Plank Hold or Dead Hang</h3>
+          <div class="metrics-bar">
+            <div class="metric-cell"><span>Target</span><strong>2 × 20–45s</strong></div>
+            <div class="metric-cell"><span>Rest</span><strong>1 min</strong></div>
+            <div class="metric-cell"><span>Focus</span><strong>Decompress Spine</strong></div>
+          </div>
+          <div class="tracker-box">
+            <div class="sets-row">
+              <div class="set-pill" onclick="toggleSet(this, 'set_sun_plk_1')">Set 1 (20-45s)</div>
+              <div class="set-pill" onclick="toggleSet(this, 'set_sun_plk_2')">Set 2 (20-45s)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="finish-session-bar">
-        <button class="complete-btn" onclick="completeWorkoutSession('sunday')">Complete Sunday Session</button>
+        <h4 style="color:#fff; font-size: 0.95rem;">Finish Sunday Session</h4>
+        <textarea id="notes_sunday" placeholder="Recovery notes..."></textarea>
+        <button class="complete-btn" onclick="completeWorkoutSession('sunday')">Complete Session & Sync</button>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: NUTRITION ==================== -->
+    <div id="tab-nutrition" class="tab-content">
+      <div class="day-header-card">
+        <div>
+          <div class="day-title">Target: 140–160g Protein / Day</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Vegetarian + Eggs Strength Nutrition</div>
+        </div>
+      </div>
+
+      <div class="meal-row">
+        <div class="meal-info">
+          <h4>Breakfast</h4>
+          <p>2–3 whole eggs + whole wheat roti / toast</p>
+        </div>
+        <span class="protein-tag">~20g</span>
+      </div>
+
+      <div class="meal-row">
+        <div class="meal-info">
+          <h4>Mid-Morning</h4>
+          <p>Paneer curry or grilled paneer (~150g)</p>
+        </div>
+        <span class="protein-tag">~30g</span>
+      </div>
+
+      <div class="meal-row">
+        <div class="meal-info">
+          <h4>Lunch</h4>
+          <p>Soya chunks (150g cooked) + rice/roti + greens</p>
+        </div>
+        <span class="protein-tag">~30g</span>
+      </div>
+
+      <div class="meal-row">
+        <div class="meal-info">
+          <h4>Evening Snack</h4>
+          <p>Plant-based protein shake OR Greek yogurt</p>
+        </div>
+        <span class="protein-tag">~30g</span>
+      </div>
+
+      <div class="meal-row">
+        <div class="meal-info">
+          <h4>Dinner</h4>
+          <p>Paneer/tofu + thick daal + quinoa or rice</p>
+        </div>
+        <span class="protein-tag">~35–40g</span>
+      </div>
+
+      <div class="warmup-box" style="margin-top: 18px; border-color: rgba(6, 182, 212, 0.3); background: rgba(6, 182, 212, 0.05);">
+        <div class="warmup-title" style="color: #38bdf8;"><i data-lucide="droplet" style="width: 14px;"></i> Hydration & Sleep Rules</div>
+        <ul class="warmup-list">
+          <li><strong>3–4 Litres of water daily:</strong> 500ml before training, 250ml every 15 min during session.</li>
+          <li><strong>7–8 Hours sleep:</strong> Critical for Central Nervous System repair and muscle protein synthesis.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: SAFETY ==================== -->
+    <div id="tab-safety" class="tab-content">
+      <div class="day-header-card">
+        <div>
+          <div class="day-title">Safety Checklist & Longevity</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Rules for injury-free lifetime training</div>
+        </div>
+      </div>
+
+      <label class="check-item">
+        <input type="checkbox" onchange="this.parentElement.classList.toggle('done', this.checked)">
+        <span>Bench and pull-up bar securely locked and tested before loading weight</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="this.parentElement.classList.toggle('done', this.checked)">
+        <span>Dumbbell collars/threads tightly fastened — zero rattling plates</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="this.parentElement.classList.toggle('done', this.checked)">
+        <span>5–8 minute dynamic joint warm-up completed before working sets</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="this.parentElement.classList.toggle('done', this.checked)">
+        <span>FORM > WEIGHT always: Muscle burn is good; sharp joint pinch = STOP</span>
+      </label>
+
+      <div style="margin-top: 18px; background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: var(--radius-md); padding: 16px;">
+        <h4 style="color:#fb7185; display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <i data-lucide="alert-octagon" style="width:16px;"></i> When to Skip / Rest
+        </h4>
+        <ul class="warmup-list">
+          <li><strong>Sharp joint pain:</strong> Stop immediately and rest 2–3 days.</li>
+          <li><strong>Fever or illness:</strong> Full recovery rest.</li>
+          <li><strong>Under 5 hours sleep:</strong> Switch to light mobility or walking.</li>
+        </ul>
       </div>
     </div>
 
@@ -675,23 +1550,24 @@
       </div>
 
       <div id="historyFeed">
-        <p style="text-align: center; color: var(--text-muted); padding: 20px;">Loading from Atlas...</p>
+        <p style="text-align: center; color: var(--text-muted); padding: 20px;">Loading logs from Atlas...</p>
       </div>
     </div>
 
   </div>
 
   <!-- EDIT SESSION MODAL -->
-  <div class="modal-overlay" id="editModal">
+  <div class="modal-overlay" id="editModal" onclick="if(event.target === this) closeEditModal()">
     <div class="modal-box">
       <div class="modal-head">
         <h3 style="color:#fff; font-size:1.05rem;" id="editModalTitle">Edit Logged Session</h3>
         <button class="btn-icon" onclick="closeEditModal()"><i data-lucide="x" style="width:14px;"></i></button>
       </div>
       <div id="editExerciseList"></div>
-      <div style="margin-top: 12px;">
+      <button class="btn-icon" style="margin-top:6px; margin-bottom:12px;" onclick="addExerciseFieldInModal()"><i data-lucide="plus" style="width:14px;"></i> Add Exercise to Session</button>
+      <div style="margin-top: 8px;">
         <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Session Notes</label>
-        <textarea id="editSessionNotes" style="width:100%; background:rgba(0,0,0,0.5); border:1px solid var(--border-color); border-radius:6px; color:#fff; padding:8px; font-family:inherit;"></textarea>
+        <textarea id="editSessionNotes" style="width:100%; background:rgba(0,0,0,0.5); border:1px solid var(--border-color); border-radius:6px; color:#fff; padding:8px; font-family:inherit; min-height:50px;"></textarea>
       </div>
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
         <button class="btn-icon" onclick="closeEditModal()">Cancel</button>
@@ -700,7 +1576,7 @@
     </div>
   </div>
 
-  <!-- Bottom Floating Timer -->
+  <!-- Floating Rest Timer -->
   <div class="rest-timer-bar">
     <div style="display: flex; align-items: center; gap: 8px;">
       <i data-lucide="timer" style="width: 18px; color: #38bdf8;"></i>
@@ -721,7 +1597,6 @@
   <script>
     lucide.createIcons();
 
-    // Cache state
     let cachedHistory = [];
     let currentEditingSessionId = null;
 
@@ -745,6 +1620,11 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function toggleAccordion(trigger) {
+      const content = trigger.nextElementSibling;
+      if (content) content.classList.toggle('show');
+    }
+
     function toggleSet(pill, storageKey) {
       pill.classList.toggle('done');
       localStorage.setItem('st_5d_' + storageKey, pill.classList.contains('done') ? '1' : '0');
@@ -754,7 +1634,7 @@
       localStorage.setItem('st_5d_' + key, value);
     }
 
-    // Restore cached inputs on load
+    // Restore cached inputs on reload
     window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.set-pill').forEach(pill => {
         const attr = pill.getAttribute('onclick');
@@ -775,7 +1655,7 @@
       });
     });
 
-    // ================= SAVE SESSION =================
+    // ================= COMPLETE & CLEAR SESSION =================
     async function completeWorkoutSession(dayKey) {
       const tabElement = document.getElementById('tab-' + dayKey);
       if (!tabElement) return;
@@ -810,7 +1690,7 @@
       });
 
       if (exercisesLogged.length === 0) {
-        if (!confirm("No sets were completed. Still log this session?")) return;
+        if (!confirm("No sets were checked done. Log anyway?")) return;
       }
 
       const payload = {
@@ -830,7 +1710,7 @@
 
         const data = await res.json();
         if (data.success) {
-          alert(`🎉 "${dayName}" logged to Atlas.`);
+          alert(`🎉 "${dayName}" synced to MongoDB Atlas!`);
 
           // Reset checkboxes for today
           tabElement.querySelectorAll('.set-pill').forEach(pill => {
@@ -852,7 +1732,7 @@
           alert("Save Error: " + (data.error || "Unknown server error"));
         }
       } catch (err) {
-        alert("Failed to reach server. Check your connection / Vercel deployment.");
+        alert("Failed to connect to /api/workouts. Verify Vercel deployment.");
       }
     }
 
@@ -877,6 +1757,7 @@
         let html = '';
 
         data.history.forEach(item => {
+          const id = item._id.toString();
           const dateStr = new Date(item.date).toLocaleDateString(undefined, {
             month: 'short',
             day: 'numeric',
@@ -897,15 +1778,15 @@
           });
 
           html += `
-            <div class="history-card" id="history-card-${item._id}">
+            <div class="history-card" id="history-card-${id}">
               <div class="history-head">
                 <div>
                   <div class="history-title">${item.dayName}</div>
                   <div class="history-date">${dateStr}</div>
                 </div>
                 <div class="history-actions">
-                  <button class="btn-icon" onclick="openEditModal('${item._id}')"><i data-lucide="edit-3" style="width:12px;"></i> Edit</button>
-                  <button class="btn-icon btn-danger" onclick="deleteSingleWorkout('${item._id}')"><i data-lucide="trash" style="width:12px;"></i></button>
+                  <button class="btn-icon" onclick="openEditModal('${id}')"><i data-lucide="edit-3" style="width:12px;"></i> Edit</button>
+                  <button class="btn-icon btn-danger" onclick="deleteSingleWorkout('${id}')"><i data-lucide="trash" style="width:12px;"></i></button>
                 </div>
               </div>
               <div>${exerciseRows}</div>
@@ -920,9 +1801,9 @@
       }
     }
 
-    // ================= DELETE SINGLE WORKOUT =================
+    // ================= DELETE WORKOUT =================
     async function deleteSingleWorkout(id) {
-      if (!confirm("Are you sure you want to permanently delete this workout session?")) return;
+      if (!confirm("Permanently delete this entire workout session?")) return;
 
       try {
         const res = await fetch(`/api/workouts?id=${id}`, { method: 'DELETE' });
@@ -930,19 +1811,19 @@
         if (data.success) {
           const card = document.getElementById(`history-card-${id}`);
           if (card) card.remove();
-          cachedHistory = cachedHistory.filter(item => item._id !== id);
+          cachedHistory = cachedHistory.filter(item => item._id.toString() !== id);
           if (cachedHistory.length === 0) fetchWorkoutHistory();
         } else {
-          alert("Delete failed: " + (data.error || "Server rejected request"));
+          alert("Delete failed: " + (data.error || "Server rejected deletion"));
         }
       } catch (err) {
-        alert("Error connecting to server for deletion.");
+        alert("Error sending delete request.");
       }
     }
 
-    // ================= PURGE / CLEAR ALL WORKOUTS =================
+    // ================= CLEAR ENTIRE DATABASE =================
     async function purgeEntireDatabase() {
-      const confirm1 = confirm("⚠️ DANGER: This will delete ALL workout logs in your MongoDB database. Continue?");
+      const confirm1 = confirm("⚠️ DANGER: This will delete ALL workout logs in your MongoDB Atlas database. Continue?");
       if (!confirm1) return;
 
       const confirm2 = prompt("Type 'CLEAR' to permanently delete all records:");
@@ -955,7 +1836,7 @@
         const res = await fetch('/api/workouts?purgeAll=true', { method: 'DELETE' });
         const data = await res.json();
         if (data.success) {
-          alert(`Clean slate: ${data.deletedCount} sessions deleted from Atlas.`);
+          alert(`Clean slate: ${data.deletedCount} sessions cleared.`);
           fetchWorkoutHistory();
         } else {
           alert("Purge failed: " + data.error);
@@ -965,9 +1846,9 @@
       }
     }
 
-    // ================= EDIT SESSION MODAL =================
+    // ================= EDIT MODAL SYSTEM =================
     function openEditModal(id) {
-      const session = cachedHistory.find(item => item._id === id);
+      const session = cachedHistory.find(item => item._id.toString() === id);
       if (!session) return;
 
       currentEditingSessionId = id;
@@ -978,26 +1859,43 @@
       container.innerHTML = '';
 
       (session.exercises || []).forEach((ex, idx) => {
-        const div = document.createElement('div');
-        div.className = 'edit-row';
-        div.innerHTML = `
-          <div class="edit-row-title">${ex.name}</div>
-          <div class="edit-row-inputs">
-            <div class="edit-input-group">
-              <label>Weight (kg)</label>
-              <input type="number" step="0.5" id="edit_wt_${idx}" value="${ex.weightKg || 0}">
-            </div>
-            <div class="edit-input-group">
-              <label>Sets Done</label>
-              <input type="number" min="0" max="10" id="edit_sets_${idx}" value="${ex.setsCompleted || 0}">
-            </div>
-          </div>
-        `;
-        container.appendChild(div);
+        renderModalExerciseRow(container, ex.name, ex.weightKg, ex.setsCompleted, idx);
       });
 
       document.getElementById('editModal').classList.add('open');
       lucide.createIcons();
+    }
+
+    function renderModalExerciseRow(container, name, weight, sets, idx) {
+      const div = document.createElement('div');
+      div.className = 'edit-row';
+      div.id = `modal_ex_row_${idx}`;
+      div.innerHTML = `
+        <div class="edit-row-header">
+          <input type="text" class="edit-row-title" value="${name}" id="edit_name_${idx}" style="background:transparent; border:none; outline:none; font-weight:bold; width:80%;">
+          <button class="btn-icon btn-danger" onclick="this.parentElement.parentElement.remove()" title="Delete this exercise entry">
+            <i data-lucide="trash" style="width:12px;"></i>
+          </button>
+        </div>
+        <div class="edit-row-inputs">
+          <div class="edit-input-group">
+            <label>Weight (kg)</label>
+            <input type="number" step="0.5" id="edit_wt_${idx}" value="${weight || 0}">
+          </div>
+          <div class="edit-input-group">
+            <label>Sets Done</label>
+            <input type="number" min="0" max="10" id="edit_sets_${idx}" value="${sets || 0}">
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+      lucide.createIcons();
+    }
+
+    function addExerciseFieldInModal() {
+      const container = document.getElementById('editExerciseList');
+      const idx = container.querySelectorAll('.edit-row').length + Math.floor(Math.random() * 1000);
+      renderModalExerciseRow(container, 'New Exercise', 0, 3, idx);
     }
 
     function closeEditModal() {
@@ -1008,17 +1906,22 @@
     async function saveEditedSession() {
       if (!currentEditingSessionId) return;
 
-      const session = cachedHistory.find(item => item._id === currentEditingSessionId);
-      if (!session) return;
+      const container = document.getElementById('editExerciseList');
+      const rows = container.querySelectorAll('.edit-row');
+      const updatedExercises = [];
 
-      const updatedExercises = (session.exercises || []).map((ex, idx) => {
-        const wtVal = parseFloat(document.getElementById(`edit_wt_${idx}`)?.value) || 0;
-        const setsVal = parseInt(document.getElementById(`edit_sets_${idx}`)?.value, 10) || 0;
-        return {
-          ...ex,
-          weightKg: wtVal,
-          setsCompleted: setsVal
-        };
+      rows.forEach(row => {
+        const nameInput = row.querySelector('.edit-row-title');
+        const wtInput = row.querySelector("input[id^='edit_wt_']");
+        const setsInput = row.querySelector("input[id^='edit_sets_']");
+
+        if (nameInput && wtInput && setsInput) {
+          updatedExercises.push({
+            name: nameInput.value.trim() || 'Exercise',
+            weightKg: parseFloat(wtInput.value) || 0,
+            setsCompleted: parseInt(setsInput.value, 10) || 0
+          });
+        }
       });
 
       const updatedNotes = document.getElementById('editSessionNotes').value.trim();
@@ -1042,7 +1945,7 @@
           alert("Update error: " + (data.error || "Failed to edit"));
         }
       } catch (err) {
-        alert("Failed to submit edits.");
+        alert("Failed to send updates to API.");
       }
     }
 

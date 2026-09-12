@@ -26,6 +26,14 @@ if (process.env.NODE_ENV === 'development') {
   clientPromise = client.connect();
 }
 
+function parseIdQuery(id) {
+  if (!id) return null;
+  if (ObjectId.isValid(id)) {
+    return { _id: new ObjectId(id) };
+  }
+  return { _id: id };
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -36,8 +44,7 @@ export default async function handler(req, res) {
   );
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
   try {
@@ -45,9 +52,9 @@ export default async function handler(req, res) {
     const db = client.db('strength_db');
     const workouts = db.collection('workouts');
 
-    // 1. GET: Fetch workout history
+    // 1. GET: Fetch logs
     if (req.method === 'GET') {
-      const limit = parseInt(req.query.limit, 10) || 40;
+      const limit = parseInt(req.query.limit, 10) || 50;
       const history = await workouts
         .find({})
         .sort({ date: -1 })
@@ -57,7 +64,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, history });
     }
 
-    // 2. POST: Create a new session
+    // 2. POST: Insert new session
     if (req.method === 'POST') {
       const payload = req.body;
       if (!payload.dayKey || !payload.exercises) {
@@ -81,52 +88,46 @@ export default async function handler(req, res) {
     // 3. PUT / PATCH: Edit existing session
     if (req.method === 'PUT' || req.method === 'PATCH') {
       const { id, exercises, notes, dayName } = req.body;
-      if (!id) {
-        return res.status(400).json({ error: 'Session ID is required for edit' });
+      const query = parseIdQuery(id);
+      if (!query) {
+        return res.status(400).json({ error: 'Valid session ID required' });
       }
 
       const updateDoc = {};
-      if (exercises) updateDoc.exercises = exercises;
+      if (exercises && Array.isArray(exercises)) {
+        updateDoc.exercises = exercises;
+        updateDoc.totalVolumeKg = exercises.reduce((acc, ex) => {
+          return acc + ((Number(ex.setsCompleted) || 0) * (Number(ex.weightKg) || 0) * 8);
+        }, 0);
+      }
       if (notes !== undefined) updateDoc.notes = notes;
       if (dayName) updateDoc.dayName = dayName;
 
-      // Recalculate total approximate volume
-      if (exercises && Array.isArray(exercises)) {
-        updateDoc.totalVolumeKg = exercises.reduce((acc, ex) => {
-          return acc + ((ex.setsCompleted || 0) * (ex.weightKg || 0) * 8);
-        }, 0);
-      }
-
-      const result = await workouts.updateOne(
-        { _id: new ObjectId(id) },
-        { $set: updateDoc }
-      );
-
+      const result = await workouts.updateOne(query, { $set: updateDoc });
       return res.status(200).json({ success: true, modifiedCount: result.modifiedCount });
     }
 
-    // 4. DELETE: Remove single item OR purge all
+    // 4. DELETE: Purge all or single item
     if (req.method === 'DELETE') {
       const { id, purgeAll } = req.query;
 
-      // Clear all records in DB
       if (purgeAll === 'true') {
         const result = await workouts.deleteMany({});
-        return res.status(200).json({ success: true, deletedCount: result.deletedCount, message: 'All workouts cleared.' });
+        return res.status(200).json({ success: true, deletedCount: result.deletedCount });
       }
 
-      // Delete single session by ID
-      if (!id) {
-        return res.status(400).json({ error: 'Target ID or purgeAll flag required' });
+      const query = parseIdQuery(id);
+      if (!query) {
+        return res.status(400).json({ error: 'Valid session ID required for deletion' });
       }
 
-      const result = await workouts.deleteOne({ _id: new ObjectId(id) });
+      const result = await workouts.deleteOne(query);
       return res.status(200).json({ success: true, deletedCount: result.deletedCount });
     }
 
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
-    console.error('API Error:', error);
+    console.error('Atlas API Error:', error);
     return res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
 }
