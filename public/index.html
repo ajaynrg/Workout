@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>5-Day Strength Tracker | Atlas Sync</title>
+  <title>5-Day Strength System | Visual Analytics & Progressive Overload</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+  <!-- Chart.js for High-Performance Visual Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <style>
     :root {
@@ -40,8 +42,8 @@
     body {
       background-color: var(--bg-main);
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 45%);
+        radial-gradient(circle at 10% 10%, rgba(6, 182, 212, 0.07) 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(139, 92, 246, 0.07) 0%, transparent 45%);
       color: var(--text-main);
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
@@ -75,17 +77,24 @@
       -webkit-text-fill-color: transparent;
     }
 
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
     .pill-badge {
       background: rgba(56, 189, 248, 0.12);
       color: #38bdf8;
       border: 1px solid rgba(56, 189, 248, 0.25);
-      padding: 4px 10px;
+      padding: 5px 11px;
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 600;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 5px;
+      cursor: pointer;
     }
 
     .container {
@@ -100,21 +109,17 @@
       border-radius: var(--radius-lg);
       padding: 22px 20px;
       margin-bottom: 16px;
+      position: relative;
     }
-
     .hero-banner h1 {
       font-size: 1.5rem;
       font-weight: 800;
       line-height: 1.2;
       margin-bottom: 6px;
     }
+    .hero-banner p { color: var(--text-muted); font-size: 0.88rem; }
 
-    .hero-banner p {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-    }
-
-    /* Tabs */
+    /* Tab Navigation */
     .tab-nav-wrapper {
       position: sticky;
       top: 61px;
@@ -123,7 +128,6 @@
       padding: 6px 0 12px 0;
       margin-bottom: 12px;
     }
-
     .tab-nav {
       display: flex;
       gap: 8px;
@@ -148,7 +152,6 @@
       transition: all 0.2s;
       font-family: inherit;
     }
-
     .tab-btn.active {
       background: linear-gradient(135deg, #0284c7, #2563eb);
       color: #ffffff;
@@ -156,10 +159,7 @@
       box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
     }
 
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.2s ease forwards;
-    }
+    .tab-content { display: none; animation: fadeIn 0.2s ease forwards; }
     .tab-content.active { display: block; }
 
     @keyframes fadeIn {
@@ -177,39 +177,7 @@
       justify-content: space-between;
       align-items: center;
     }
-
-    .day-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    /* Warmup Box */
-    .warmup-box {
-      background: rgba(16, 185, 129, 0.06);
-      border: 1px dashed rgba(16, 185, 129, 0.3);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      margin-bottom: 18px;
-    }
-    .warmup-title {
-      color: #34d399;
-      font-size: 0.82rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 6px;
-    }
-    .warmup-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 0.83rem;
-      color: #cbd5e1;
-    }
-    .warmup-list li::before { content: "• "; color: #34d399; }
+    .day-title { font-size: 1.2rem; font-weight: 700; }
 
     /* Exercise Card */
     .exercise-card {
@@ -218,6 +186,7 @@
       border-radius: var(--radius-lg);
       margin-bottom: 18px;
       overflow: hidden;
+      position: relative;
     }
 
     .gif-container {
@@ -227,7 +196,6 @@
       background: #020617;
       overflow: hidden;
     }
-
     .exercise-gif {
       width: 100%;
       height: 100%;
@@ -235,7 +203,6 @@
       display: block;
       filter: brightness(0.92);
     }
-
     .gif-badge {
       position: absolute;
       top: 10px;
@@ -247,7 +214,6 @@
       font-weight: 600;
       color: #fff;
     }
-
     .rest-pill {
       position: absolute;
       bottom: 10px;
@@ -262,11 +228,12 @@
       cursor: pointer;
     }
 
-    .card-body {
-      padding: 16px;
-    }
+    .card-body { padding: 16px; }
 
     .exercise-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       margin-bottom: 10px;
     }
     .exercise-num {
@@ -279,6 +246,30 @@
       font-size: 1.1rem;
       font-weight: 700;
       color: #fff;
+    }
+
+    /* Overload & Ghost Badges */
+    .overload-badge {
+      display: none;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-top: 4px;
+    }
+    .ghost-stat {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 4px;
+      display: inline-block;
     }
 
     .metrics-bar {
@@ -304,33 +295,7 @@
       display: block;
     }
 
-    .collapsible-trigger {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      padding: 8px 12px;
-      color: #cbd5e1;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      margin-bottom: 6px;
-      font-family: inherit;
-    }
-    .collapsible-content {
-      display: none;
-      padding: 8px 12px 12px 12px;
-      font-size: 0.82rem;
-      line-height: 1.5;
-    }
-    .collapsible-content.show { display: block; }
-    .cues-content ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-    .cues-content li::before { content: "✓ "; color: #10b981; font-weight: 700; }
-
-    /* Set Trackers */
+    /* Sets and Inputs */
     .tracker-box {
       margin-top: 10px;
       background: rgba(255, 255, 255, 0.02);
@@ -356,22 +321,18 @@
       border-radius: var(--radius-sm);
       color: #fff;
       padding: 6px 10px;
-      font-size: 0.8rem;
-      width: 110px;
+      font-size: 0.85rem;
+      width: 115px;
       font-family: 'JetBrains Mono', monospace;
       outline: none;
     }
     .weight-log-input:focus { border-color: #38bdf8; }
 
-    .sets-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .sets-row { display: flex; flex-wrap: wrap; gap: 8px; }
     .set-pill {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-color);
-      padding: 6px 12px;
+      padding: 7px 13px;
       border-radius: 999px;
       font-size: 0.8rem;
       font-weight: 600;
@@ -383,9 +344,52 @@
       background: #059669;
       color: #fff;
       border-color: #10b981;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
     }
 
-    /* Complete Session Bar */
+    /* Charts Tab Styling */
+    .analytics-control-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .filter-item select, .filter-item input {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .filter-item select:focus, .filter-item input:focus { border-color: #38bdf8; }
+
+    .chart-container-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .chart-header h3 { font-size: 1.05rem; font-weight: 700; color: #fff; }
+    .chart-canvas-wrapper { position: relative; width: 100%; height: 260px; }
+
+    /* Completion CTA */
     .finish-session-bar {
       margin-top: 24px;
       background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
@@ -424,244 +428,7 @@
       box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
     }
 
-    /* AI Exporter Card Component */
-    .ai-export-card {
-      background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(99, 102, 241, 0.08));
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(10px);
-    }
-    .ai-export-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .ai-export-head h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fff;
-    }
-    .ai-export-head p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    .date-filter-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .date-filter-item label {
-      display: block;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .date-filter-item input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      color: #fff;
-      padding: 8px 10px;
-      font-size: 0.85rem;
-      font-family: inherit;
-      outline: none;
-    }
-    .date-filter-item input:focus { border-color: #38bdf8; }
-
-    .ai-actions-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .btn-ai {
-      background: linear-gradient(135deg, #0284c7, #2563eb);
-      color: #fff;
-      border: none;
-      padding: 9px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: opacity 0.2s;
-    }
-    .btn-ai:hover { opacity: 0.9; }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-color);
-      color: #e2e8f0;
-    }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
-
-    /* History Cards */
-    .history-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      position: relative;
-    }
-    .history-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-    .history-title {
-      font-weight: 700;
-      color: #fff;
-      font-size: 0.98rem;
-    }
-    .history-date {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-    .history-actions {
-      display: flex;
-      gap: 6px;
-    }
-    .btn-icon {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border-color);
-      color: #e2e8f0;
-      padding: 6px 10px;
-      border-radius: var(--radius-sm);
-      font-size: 0.78rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: background 0.15s;
-    }
-    .btn-icon:hover { background: rgba(255, 255, 255, 0.12); }
-    .btn-danger {
-      color: #fb7185;
-      border-color: rgba(244, 63, 94, 0.3);
-      background: rgba(244, 63, 94, 0.08);
-    }
-    .btn-danger:hover { background: rgba(244, 63, 94, 0.2); }
-
-    .history-exercise-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.82rem;
-      padding: 4px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-
-    /* Nutrition & Checklists */
-    .meal-row {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .meal-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
-    .meal-info p { font-size: 0.82rem; color: var(--text-muted); }
-    .protein-tag {
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      font-weight: 700;
-      font-size: 0.85rem;
-      padding: 4px 10px;
-      border-radius: var(--radius-sm);
-      white-space: nowrap;
-    }
-    .check-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 12px 14px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      margin-bottom: 8px;
-    }
-    .check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #0284c7; }
-    .check-item.done { opacity: 0.55; text-decoration: line-through; }
-
-    /* Modal for Editing Session */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 200;
-      padding: 16px;
-    }
-    .modal-overlay.open { display: flex; }
-
-    .modal-box {
-      background: #0f172a;
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-lg);
-      width: 100%;
-      max-width: 500px;
-      max-height: 85vh;
-      overflow-y: auto;
-      padding: 20px;
-    }
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 10px;
-    }
-    .edit-row {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 10px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 10px;
-      position: relative;
-    }
-    .edit-row-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .edit-row-title { font-size: 0.85rem; font-weight: 700; color: #fff; }
-    .edit-row-inputs { display: flex; gap: 10px; }
-    .edit-input-group { flex: 1; }
-    .edit-input-group label {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      display: block;
-      margin-bottom: 2px;
-    }
-    .edit-input-group input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      color: #fff;
-      padding: 6px 8px;
-      font-size: 0.85rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Floating Rest Timer */
+    /* Floating Timer */
     .rest-timer-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -680,6 +447,44 @@
       font-weight: 700;
       color: #38bdf8;
     }
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+      color: #e2e8f0;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-icon:hover { background: rgba(255, 255, 255, 0.12); }
+    .btn-danger { color: #fb7185; border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.08); }
+
+    /* Modal System */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #0f172a;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 500px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 20px;
+    }
   </style>
 </head>
 <body>
@@ -689,16 +494,22 @@
       <i data-lucide="dumbbell" style="width: 20px; color: #38bdf8;"></i>
       <span>STRNGTH 5D</span>
     </div>
-    <div class="pill-badge">
-      <i data-lucide="database" style="width: 14px;"></i>
-      Atlas Connected
+    <div class="header-actions">
+      <button class="pill-badge" onclick="openDialModal()">
+        <i data-lucide="sliders" style="width: 13px;"></i>
+        <span>DB Dial Calc</span>
+      </button>
+      <div class="pill-badge" style="background:rgba(16,185,129,0.12); color:#34d399; border-color:rgba(16,185,129,0.25);">
+        <i data-lucide="database" style="width: 13px;"></i>
+        <span>Atlas Active</span>
+      </div>
     </div>
   </header>
 
   <div class="container">
     <div class="hero-banner">
       <h1>5-Day Balanced Strength</h1>
-      <p>Progressive Overload • Same Core Exercises • Synced to MongoDB Atlas</p>
+      <p>Progressive Overload • Automatic Rest Timer • Visual Performance Analytics</p>
     </div>
 
     <!-- Navigation Tabs -->
@@ -709,9 +520,8 @@
         <button class="tab-btn" onclick="switchTab('friday')"><i data-lucide="flame" style="width: 14px;"></i> Fri: Legs</button>
         <button class="tab-btn" onclick="switchTab('saturday')"><i data-lucide="trending-up" style="width: 14px;"></i> Sat: Push Vol</button>
         <button class="tab-btn" onclick="switchTab('sunday')"><i data-lucide="refresh-cw" style="width: 14px;"></i> Sun: Full Body</button>
-        <button class="tab-btn" onclick="switchTab('nutrition')"><i data-lucide="utensils" style="width: 14px;"></i> Diet & Protein</button>
-        <button class="tab-btn" onclick="switchTab('safety')"><i data-lucide="alert-triangle" style="width: 14px;"></i> Safety & Rules</button>
-        <button class="tab-btn" onclick="switchTab('history')"><i data-lucide="history" style="width: 14px;"></i> Logs & AI Export</button>
+        <button class="tab-btn" onclick="switchTab('charts')"><i data-lucide="line-chart" style="width: 14px;"></i> Visual Analytics</button>
+        <button class="tab-btn" onclick="switchTab('history')"><i data-lucide="history" style="width: 14px;"></i> Logs & Export</button>
       </div>
     </div>
 
@@ -722,16 +532,6 @@
           <div class="day-title">Monday: Heavy Push</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">Chest, Front Delts, Triceps • 50–60 mins</div>
         </div>
-      </div>
-
-      <div class="warmup-box">
-        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5–8 Min Push Warm-Up</div>
-        <ul class="warmup-list">
-          <li>Arm Circles & Cross-Body Swings: 15 forward, 15 back, 15 cross</li>
-          <li>Scapular Push-Ups: 2 sets × 10–12 reps</li>
-          <li>Band Pull-Aparts or Light Face Pulls: 2 sets × 15 reps</li>
-          <li>Incline DB Acclimatization (50% × 8, 75% × 4 reps)</li>
-        </ul>
       </div>
 
       <!-- Mon 1 -->
@@ -745,23 +545,17 @@
         </div>
         <div class="card-body">
           <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 01</span>
-            <h3 class="exercise-name">Incline Dumbbell Bench Press</h3>
+            <div>
+              <span class="exercise-num">EXERCISE 01</span>
+              <h3 class="exercise-name">Incline Dumbbell Bench Press</h3>
+              <span class="ghost-stat" id="ghost_mon_inc">Fetching last log...</span>
+              <div class="overload-badge" id="overload_mon_inc">⚡ OVERLOAD READY: Add +0.5 kg to 1 kg</div>
+            </div>
           </div>
           <div class="metrics-bar">
             <div class="metric-cell"><span>Sets × Reps</span><strong>4 × 6–8</strong></div>
             <div class="metric-cell"><span>Rest</span><strong>2–3 min</strong></div>
             <div class="metric-cell"><span>Progression</span><strong>+0.5–1 kg @ 8</strong></div>
-          </div>
-          <button class="collapsible-trigger" onclick="toggleAccordion(this)">
-            <span>Form Cues</span> <i data-lucide="chevron-down" style="width:14px;"></i>
-          </button>
-          <div class="collapsible-content cues-content">
-            <ul>
-              <li>Bench inclined 30–45°; feet flat on floor.</li>
-              <li>Chest up, pack shoulder blades down — elbows at 45° angle.</li>
-              <li>Lower in controlled arc, stretch chest; press up without clanking.</li>
-            </ul>
           </div>
           <div class="tracker-box">
             <div class="tracker-header">
@@ -769,10 +563,10 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_inc" placeholder="kg" onchange="cacheLocal('wt_mon_inc', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_1')">Set 1 (6-8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_2')">Set 2 (6-8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_3')">Set 3 (6-8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_inc_4')">Set 4 (6-8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_inc_1', 150)">Set 1 (6-8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_inc_2', 150)">Set 2 (6-8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_inc_3', 150)">Set 3 (6-8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_inc_4', 150)">Set 4 (6-8)</div>
             </div>
           </div>
         </div>
@@ -781,16 +575,19 @@
       <!-- Mon 2 -->
       <div class="exercise-card" data-exercise="Flat DB Bench Press">
         <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Press.gif" 
-               class="exercise-gif" alt="Flat Press"
+          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Press.gif" class="exercise-gif" alt="Flat Press"
                onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&auto=format&fit=crop&q=80';"/>
           <div class="gif-badge">Hypertrophy</div>
           <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
         </div>
         <div class="card-body">
           <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 02</span>
-            <h3 class="exercise-name">Flat Dumbbell Bench Press</h3>
+            <div>
+              <span class="exercise-num">EXERCISE 02</span>
+              <h3 class="exercise-name">Flat Dumbbell Bench Press</h3>
+              <span class="ghost-stat" id="ghost_mon_flat">Fetching last log...</span>
+              <div class="overload-badge" id="overload_mon_flat">⚡ OVERLOAD READY: Add +0.5 kg</div>
+            </div>
           </div>
           <div class="metrics-bar">
             <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10</strong></div>
@@ -803,9 +600,9 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_flat" placeholder="kg" onchange="cacheLocal('wt_mon_flat', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_2')">Set 2 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_flat_3')">Set 3 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_flat_1', 120)">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_flat_2', 120)">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_flat_3', 120)">Set 3 (8-10)</div>
             </div>
           </div>
         </div>
@@ -813,22 +610,14 @@
 
       <!-- Mon 3 -->
       <div class="exercise-card" data-exercise="Seated DB Shoulder Press">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif" 
-               class="exercise-gif" alt="Shoulder Press"
-               onerror="this.src='https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Overhead Strength</div>
-          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
-        </div>
         <div class="card-body">
           <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 03</span>
-            <h3 class="exercise-name">Seated Dumbbell Shoulder Press</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+            <div>
+              <span class="exercise-num">EXERCISE 03</span>
+              <h3 class="exercise-name">Seated Dumbbell Shoulder Press</h3>
+              <span class="ghost-stat" id="ghost_mon_ohp">Fetching last log...</span>
+              <div class="overload-badge" id="overload_mon_ohp">⚡ OVERLOAD READY: Add +0.5 kg</div>
+            </div>
           </div>
           <div class="tracker-box">
             <div class="tracker-header">
@@ -836,32 +625,22 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_ohp" placeholder="kg" onchange="cacheLocal('wt_mon_ohp', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_1')">Set 1 (8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_2')">Set 2 (8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_ohp_3')">Set 3 (8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_ohp_1', 120)">Set 1 (8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_ohp_2', 120)">Set 2 (8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_ohp_3', 120)">Set 3 (8)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Mon 4 -->
+      <!-- Mon 4 & 5 -->
       <div class="exercise-card" data-exercise="Dumbbell Lateral Raises">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lateral-Raise.gif" 
-               class="exercise-gif" alt="Lateral Raise"
-               onerror="this.src='https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Side Delts</div>
-          <div class="rest-pill" onclick="startTimer(75)">Rest 1-1.5m</div>
-        </div>
         <div class="card-body">
           <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 04</span>
-            <h3 class="exercise-name">Dumbbell Lateral Raises</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 12–15</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1–1.5 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+1 rep</strong></div>
+            <div>
+              <span class="exercise-num">EXERCISE 04</span>
+              <h3 class="exercise-name">Dumbbell Lateral Raises</h3>
+            </div>
           </div>
           <div class="tracker-box">
             <div class="tracker-header">
@@ -869,32 +648,21 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_lat" placeholder="kg" onchange="cacheLocal('wt_mon_lat', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_1')">Set 1 (12-15)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_2')">Set 2 (12-15)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_lat_3')">Set 3 (12-15)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_lat_1', 75)">Set 1 (12-15)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_lat_2', 75)">Set 2 (12-15)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_lat_3', 75)">Set 3 (12-15)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Mon 5 -->
       <div class="exercise-card" data-exercise="Overhead Triceps Extension">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/dumbbell-overhead-triceps-extension.gif" 
-               class="exercise-gif" alt="Triceps Extension"
-               onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Triceps Long Head</div>
-          <div class="rest-pill" onclick="startTimer(90)">Rest 1.5m</div>
-        </div>
         <div class="card-body">
           <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 05</span>
-            <h3 class="exercise-name">Overhead Triceps Extension</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 10–12</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
+            <div>
+              <span class="exercise-num">EXERCISE 05</span>
+              <h3 class="exercise-name">Overhead Triceps Extension</h3>
+            </div>
           </div>
           <div class="tracker-box">
             <div class="tracker-header">
@@ -902,9 +670,9 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_mon_tri" placeholder="kg" onchange="cacheLocal('wt_mon_tri', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_1')">Set 1 (10-12)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_2')">Set 2 (10-12)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_mon_tri_3')">Set 3 (10-12)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_tri_1', 90)">Set 1 (10-12)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_tri_2', 90)">Set 2 (10-12)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_mon_tri_3', 90)">Set 3 (10-12)</div>
             </div>
           </div>
         </div>
@@ -912,7 +680,7 @@
 
       <div class="finish-session-bar">
         <h4 style="color:#fff; font-size: 0.95rem;">Finish Monday Session</h4>
-        <textarea id="notes_monday" placeholder="Notes (e.g., Felt strong, shoulders packed well)..."></textarea>
+        <textarea id="notes_monday" placeholder="Notes..."></textarea>
         <button class="complete-btn" onclick="completeWorkoutSession('monday')">Complete Session & Sync</button>
       </div>
     </div>
@@ -920,74 +688,66 @@
     <!-- ==================== TAB: THURSDAY (PULL) ==================== -->
     <div id="tab-thursday" class="tab-content" data-day-name="Thursday: Pull Day">
       <div class="day-header-card">
-        <div>
-          <div class="day-title">Thursday: Heavy Pull</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Back, Lat Thickness, Biceps • 50–60 mins</div>
-        </div>
+        <div class="day-title">Thursday: Heavy Pull</div>
       </div>
 
-      <div class="warmup-box">
-        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5–8 Min Pull Warm-Up</div>
-        <ul class="warmup-list">
-          <li>Dead Hangs (Pull-up bar): 2 sets × 20–30 sec</li>
-          <li>Cat-Cow Spinal Stretches: 10 cycles</li>
-          <li>Bird-Dogs: 2 sets × 8 reps/side</li>
-          <li>Bent-Over DB Row Acclimatization (50% × 8 reps)</li>
-        </ul>
-      </div>
-
-      <!-- Thu 1 -->
       <div class="exercise-card" data-exercise="Bent-Over DB Rows">
         <div class="card-body">
-          <h3 class="exercise-name">1. Bent-Over Dumbbell Rows</h3>
+          <div class="exercise-header">
+            <div>
+              <span class="exercise-num">EXERCISE 01</span>
+              <h3 class="exercise-name">Bent-Over Dumbbell Rows</h3>
+              <span class="ghost-stat" id="ghost_thu_row">Fetching last log...</span>
+              <div class="overload-badge" id="overload_thu_row">⚡ OVERLOAD READY: Add +0.5 kg to 1 kg</div>
+            </div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_thu_row" placeholder="kg" onchange="cacheLocal('wt_thu_row', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_1')">Set 1 (6-8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_2')">Set 2 (6-8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_3')">Set 3 (6-8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_row_4')">Set 4 (6-8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_row_1', 150)">Set 1 (6-8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_row_2', 150)">Set 2 (6-8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_row_3', 150)">Set 3 (6-8)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_row_4', 150)">Set 4 (6-8)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Thu 2 -->
       <div class="exercise-card" data-exercise="Single-Arm Half-Kneeling Row">
         <div class="card-body">
-          <h3 class="exercise-name">2. Single-Arm Half-Kneeling Row</h3>
+          <div class="exercise-header">
+            <h3 class="exercise-name">2. Single-Arm Half-Kneeling Row</h3>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_thu_srow" placeholder="kg" onchange="cacheLocal('wt_thu_srow', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_srow_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_srow_2')">Set 2 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_srow_3')">Set 3 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_srow_1', 90)">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_srow_2', 90)">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_srow_3', 90)">Set 3 (8-10)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Thu 3 -->
       <div class="exercise-card" data-exercise="Inverted Rows (Pull-Up Bar)">
         <div class="card-body">
           <h3 class="exercise-name">3. Inverted Rows (Pull-Up Bar)</h3>
           <div class="tracker-box">
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_inv_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_inv_2')">Set 2 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_inv_3')">Set 3 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_inv_1', 120)">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_inv_2', 120)">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_inv_3', 120)">Set 3 (8-10)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Thu 4 -->
       <div class="exercise-card" data-exercise="Dumbbell Bicep Curls">
         <div class="card-body">
           <h3 class="exercise-name">4. Dumbbell Bicep Curls</h3>
@@ -997,15 +757,14 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_thu_curl" placeholder="kg" onchange="cacheLocal('wt_thu_curl', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_curl_1')">Set 1 (10-12)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_curl_2')">Set 2 (10-12)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_curl_3')">Set 3 (10-12)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_curl_1', 90)">Set 1 (10-12)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_curl_2', 90)">Set 2 (10-12)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_curl_3', 90)">Set 3 (10-12)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Thu 5 -->
       <div class="exercise-card" data-exercise="Dumbbell Hammer Curls">
         <div class="card-body">
           <h3 class="exercise-name">5. Dumbbell Hammer Curls</h3>
@@ -1015,43 +774,45 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_thu_ham" placeholder="kg" onchange="cacheLocal('wt_thu_ham', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_ham_1')">Set 1 (12-15)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_ham_2')">Set 2 (12-15)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_thu_ham_3')">Set 3 (12-15)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_ham_1', 60)">Set 1 (12-15)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_ham_2', 60)">Set 2 (12-15)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_thu_ham_3', 60)">Set 3 (12-15)</div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="finish-session-bar">
-        <h4 style="color:#fff; font-size: 0.95rem;">Finish Thursday Session</h4>
-        <textarea id="notes_thursday" placeholder="Notes..."></textarea>
-        <button class="complete-btn" onclick="completeWorkoutSession('thursday')">Complete Session & Sync</button>
+        <button class="complete-btn" onclick="completeWorkoutSession('thursday')">Complete Thursday Session</button>
       </div>
     </div>
 
     <!-- ==================== TAB: FRIDAY (LEGS) ==================== -->
     <div id="tab-friday" class="tab-content" data-day-name="Friday: Leg Day">
       <div class="day-header-card">
-        <div>
-          <div class="day-title">Friday: Legs & Lower Body</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Quads, Posterior Chain, Calves • 50–60 mins</div>
-        </div>
+        <div class="day-title">Friday: Legs & Lower Body</div>
       </div>
 
       <div class="exercise-card" data-exercise="Goblet Squats">
         <div class="card-body">
-          <h3 class="exercise-name">1. Goblet Squats</h3>
+          <div class="exercise-header">
+            <div>
+              <span class="exercise-num">EXERCISE 01</span>
+              <h3 class="exercise-name">Goblet Squats</h3>
+              <span class="ghost-stat" id="ghost_fri_sq">Fetching last log...</span>
+              <div class="overload-badge" id="overload_fri_sq">⚡ OVERLOAD READY: Add +1 kg</div>
+            </div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_fri_sq" placeholder="kg" onchange="cacheLocal('wt_fri_sq', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_2')">Set 2 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_3')">Set 3 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_sq_4')">Set 4 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_sq_1', 120)">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_sq_2', 120)">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_sq_3', 120)">Set 3 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_sq_4', 120)">Set 4 (8-10)</div>
             </div>
           </div>
         </div>
@@ -1059,16 +820,23 @@
 
       <div class="exercise-card" data-exercise="Dumbbell Romanian Deadlifts (RDL)">
         <div class="card-body">
-          <h3 class="exercise-name">2. Dumbbell Romanian Deadlifts (RDL)</h3>
+          <div class="exercise-header">
+            <div>
+              <span class="exercise-num">EXERCISE 02</span>
+              <h3 class="exercise-name">Dumbbell Romanian Deadlifts (RDL)</h3>
+              <span class="ghost-stat" id="ghost_fri_rdl">Fetching last log...</span>
+              <div class="overload-badge" id="overload_fri_rdl">⚡ OVERLOAD READY: Add +1 kg</div>
+            </div>
+          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
               <input type="number" step="0.5" class="weight-log-input" id="wt_fri_rdl" placeholder="kg" onchange="cacheLocal('wt_fri_rdl', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_rdl_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_rdl_2')">Set 2 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_rdl_3')">Set 3 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_rdl_1', 120)">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_rdl_2', 120)">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_rdl_3', 120)">Set 3 (8-10)</div>
             </div>
           </div>
         </div>
@@ -1083,9 +851,9 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_fri_lng" placeholder="kg" onchange="cacheLocal('wt_fri_lng', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_lng_1')">Set 1 (10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_lng_2')">Set 2 (10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_lng_3')">Set 3 (10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_lng_1', 90)">Set 1 (10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_lng_2', 90)">Set 2 (10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_lng_3', 90)">Set 3 (10)</div>
             </div>
           </div>
         </div>
@@ -1100,9 +868,9 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_fri_ss" placeholder="kg" onchange="cacheLocal('wt_fri_ss', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_ss_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_ss_2')">Set 2 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_ss_3')">Set 3 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_ss_1', 90)">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_ss_2', 90)">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_ss_3', 90)">Set 3 (8-10)</div>
             </div>
           </div>
         </div>
@@ -1117,30 +885,24 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_fri_cr" placeholder="kg" onchange="cacheLocal('wt_fri_cr', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_cr_1')">Set 1 (15-20)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_cr_2')">Set 2 (15-20)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_fri_cr_3')">Set 3 (15-20)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_cr_1', 60)">Set 1 (15-20)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_cr_2', 60)">Set 2 (15-20)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_fri_cr_3', 60)">Set 3 (15-20)</div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="finish-session-bar">
-        <h4 style="color:#fff; font-size: 0.95rem;">Finish Friday Session</h4>
-        <textarea id="notes_friday" placeholder="Notes..."></textarea>
-        <button class="complete-btn" onclick="completeWorkoutSession('friday')">Complete Session & Sync</button>
+        <button class="complete-btn" onclick="completeWorkoutSession('friday')">Complete Friday Session</button>
       </div>
     </div>
 
     <!-- ==================== TAB: SATURDAY (PUSH VOLUME) ==================== -->
     <div id="tab-saturday" class="tab-content" data-day-name="Saturday: Push Volume">
       <div class="day-header-card">
-        <div>
-          <div class="day-title">Saturday: Push Volume Day</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">10–20% lighter than Monday • Mind-Muscle Connection</div>
-        </div>
+        <div class="day-title">Saturday: Push Volume</div>
       </div>
-
       <div class="exercise-card" data-exercise="Incline Bench Press (Volume)">
         <div class="card-body">
           <h3 class="exercise-name">1. Incline Bench Press (Volume)</h3>
@@ -1150,241 +912,105 @@
               <input type="number" step="0.5" class="weight-log-input" id="wt_sat_inc" placeholder="kg" onchange="cacheLocal('wt_sat_inc', this.value)"/>
             </div>
             <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_inc_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_inc_2')">Set 2 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_inc_3')">Set 3 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_sat_inc_1', 90)">Set 1 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_sat_inc_2', 90)">Set 2 (8-10)</div>
+              <div class="set-pill" onclick="handleSetClick(this, 'set_sat_inc_3', 90)">Set 3 (8-10)</div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="exercise-card" data-exercise="Floor Press">
-        <div class="card-body">
-          <h3 class="exercise-name">2. Floor Press</h3>
-          <div class="tracker-box">
-            <div class="tracker-header">
-              <span class="tracker-title">Weight (kg)</span>
-              <input type="number" step="0.5" class="weight-log-input" id="wt_sat_flr" placeholder="kg" onchange="cacheLocal('wt_sat_flr', this.value)"/>
-            </div>
-            <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_flr_1')">Set 1 (10-12)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_flr_2')">Set 2 (10-12)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_flr_3')">Set 3 (10-12)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="exercise-card" data-exercise="Dumbbell Shoulder Press (Volume)">
-        <div class="card-body">
-          <h3 class="exercise-name">3. Dumbbell Shoulder Press (Volume)</h3>
-          <div class="tracker-box">
-            <div class="tracker-header">
-              <span class="tracker-title">Weight (kg)</span>
-              <input type="number" step="0.5" class="weight-log-input" id="wt_sat_ohp" placeholder="kg" onchange="cacheLocal('wt_sat_ohp', this.value)"/>
-            </div>
-            <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_ohp_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_ohp_2')">Set 2 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_ohp_3')">Set 3 (8-10)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="exercise-card" data-exercise="Bench Dips">
-        <div class="card-body">
-          <h3 class="exercise-name">4. Bench Dips</h3>
-          <div class="tracker-box">
-            <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_dip_1')">Set 1 (10-15)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_dip_2')">Set 2 (10-15)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sat_dip_3')">Set 3 (10-15)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="finish-session-bar">
-        <h4 style="color:#fff; font-size: 0.95rem;">Finish Saturday Session</h4>
-        <textarea id="notes_saturday" placeholder="Notes..."></textarea>
-        <button class="complete-btn" onclick="completeWorkoutSession('saturday')">Complete Session & Sync</button>
+        <button class="complete-btn" onclick="completeWorkoutSession('saturday')">Complete Saturday Session</button>
       </div>
     </div>
 
     <!-- ==================== TAB: SUNDAY (FULL BODY) ==================== -->
     <div id="tab-sunday" class="tab-content" data-day-name="Sunday: Full Body Active Recovery">
       <div class="day-header-card">
-        <div>
-          <div class="day-title">Sunday: Active Recovery Full-Body</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">20–30% lighter weight • Form & joint flushing</div>
-        </div>
+        <div class="day-title">Sunday: Active Recovery</div>
       </div>
-
-      <div class="exercise-card" data-exercise="Bench Press (Light Active Recovery)">
-        <div class="card-body">
-          <h3 class="exercise-name">1. Bench Press (Recovery Groove)</h3>
-          <div class="tracker-box">
-            <div class="tracker-header">
-              <span class="tracker-title">Weight (kg)</span>
-              <input type="number" step="0.5" class="weight-log-input" id="wt_sun_bp" placeholder="kg" onchange="cacheLocal('wt_sun_bp', this.value)"/>
-            </div>
-            <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_sun_bp_1')">Set 1 (6-8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sun_bp_2')">Set 2 (6-8)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="exercise-card" data-exercise="Bent-Over Rows (Light Active Recovery)">
-        <div class="card-body">
-          <h3 class="exercise-name">2. Bent-Over Rows (Light)</h3>
-          <div class="tracker-box">
-            <div class="tracker-header">
-              <span class="tracker-title">Weight (kg)</span>
-              <input type="number" step="0.5" class="weight-log-input" id="wt_sun_row" placeholder="kg" onchange="cacheLocal('wt_sun_row', this.value)"/>
-            </div>
-            <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_sun_row_1')">Set 1 (6-8)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sun_row_2')">Set 2 (6-8)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="exercise-card" data-exercise="Goblet Squats (Light Active Recovery)">
-        <div class="card-body">
-          <h3 class="exercise-name">3. Goblet Squats (Deep Hip Opener)</h3>
-          <div class="tracker-box">
-            <div class="tracker-header">
-              <span class="tracker-title">Weight (kg)</span>
-              <input type="number" step="0.5" class="weight-log-input" id="wt_sun_sq" placeholder="kg" onchange="cacheLocal('wt_sun_sq', this.value)"/>
-            </div>
-            <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_sun_sq_1')">Set 1 (8-10)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sun_sq_2')">Set 2 (8-10)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="exercise-card" data-exercise="Plank Hold or Dead Hang">
-        <div class="card-body">
-          <h3 class="exercise-name">4. Plank Hold or Dead Hang</h3>
-          <div class="tracker-box">
-            <div class="sets-row">
-              <div class="set-pill" onclick="toggleSet(this, 'set_sun_plk_1')">Set 1 (20-45s)</div>
-              <div class="set-pill" onclick="toggleSet(this, 'set_sun_plk_2')">Set 2 (20-45s)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="finish-session-bar">
-        <h4 style="color:#fff; font-size: 0.95rem;">Finish Sunday Session</h4>
-        <textarea id="notes_sunday" placeholder="Recovery notes..."></textarea>
-        <button class="complete-btn" onclick="completeWorkoutSession('sunday')">Complete Session & Sync</button>
+        <button class="complete-btn" onclick="completeWorkoutSession('sunday')">Complete Sunday Session</button>
       </div>
     </div>
 
-    <!-- ==================== TAB: NUTRITION ==================== -->
-    <div id="tab-nutrition" class="tab-content">
+    <!-- ==================== TAB: VISUAL ANALYTICS & PERFORMANCE ==================== -->
+    <div id="tab-charts" class="tab-content">
       <div class="day-header-card">
         <div>
-          <div class="day-title">Target: 140–160g Protein / Day</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Vegetarian + Eggs Strength Nutrition</div>
+          <div class="day-title">Visual Progress & Strength Analytics</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Real-time performance graphs rendered from your Atlas history</div>
         </div>
       </div>
 
-      <div class="meal-row">
-        <div class="meal-info">
-          <h4>Breakfast</h4>
-          <p>2–3 whole eggs + whole wheat roti / toast</p>
+      <!-- Controls & Filter -->
+      <div class="analytics-control-bar">
+        <div class="filter-item">
+          <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Exercise Progress</label>
+          <select id="chartExerciseSelect" onchange="renderStrengthProgressionChart()">
+            <option value="Incline DB Bench Press">Incline DB Bench Press</option>
+            <option value="Flat DB Bench Press">Flat DB Bench Press</option>
+            <option value="Bent-Over DB Rows">Bent-Over DB Rows</option>
+            <option value="Goblet Squats">Goblet Squats</option>
+            <option value="Dumbbell Romanian Deadlifts (RDL)">Dumbbell Romanian Deadlifts (RDL)</option>
+            <option value="Seated DB Shoulder Press">Seated DB Shoulder Press</option>
+          </select>
         </div>
-        <span class="protein-tag">~20g</span>
+
+        <div class="filter-item" style="display:flex; gap:8px;">
+          <div>
+            <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">From</label>
+            <input type="date" id="chartStartDate" onchange="refreshAllCharts()" />
+          </div>
+          <div>
+            <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">To</label>
+            <input type="date" id="chartEndDate" onchange="refreshAllCharts()" />
+          </div>
+        </div>
       </div>
 
-      <div class="meal-row">
-        <div class="meal-info">
-          <h4>Mid-Morning</h4>
-          <p>Paneer curry or grilled paneer (~150g)</p>
+      <!-- Chart 1: Strength Progression & Estimated 1RM -->
+      <div class="chart-container-card">
+        <div class="chart-header">
+          <div>
+            <h3 id="strengthChartTitle">Strength Curve (Weight & e1RM)</h3>
+            <p style="font-size:0.75rem; color:var(--text-muted);">Track progressive overload over time (kg)</p>
+          </div>
+          <span class="pill-badge" id="strengthStatsBadge">0 Data Points</span>
         </div>
-        <span class="protein-tag">~30g</span>
+        <div class="chart-canvas-wrapper">
+          <canvas id="strengthChartCanvas"></canvas>
+        </div>
       </div>
 
-      <div class="meal-row">
-        <div class="meal-info">
-          <h4>Lunch</h4>
-          <p>Soya chunks (150g cooked) + rice/roti + greens</p>
+      <!-- Chart 2: Total Weekly Training Volume -->
+      <div class="chart-container-card">
+        <div class="chart-header">
+          <div>
+            <h3>Session Volume Load (Tonnage)</h3>
+            <p style="font-size:0.75rem; color:var(--text-muted);">Total kg lifted per session (Sets × Weight × Reps)</p>
+          </div>
         </div>
-        <span class="protein-tag">~30g</span>
+        <div class="chart-canvas-wrapper">
+          <canvas id="volumeChartCanvas"></canvas>
+        </div>
       </div>
 
-      <div class="meal-row">
-        <div class="meal-info">
-          <h4>Evening Snack</h4>
-          <p>Plant-based protein shake OR Greek yogurt</p>
+      <!-- Chart 3: Muscle Group Frequency Distribution -->
+      <div class="chart-container-card">
+        <div class="chart-header">
+          <div>
+            <h3>Volume Distribution by Muscle Group</h3>
+            <p style="font-size:0.75rem; color:var(--text-muted);">Ensures push/pull/legs muscular symmetry</p>
+          </div>
         </div>
-        <span class="protein-tag">~30g</span>
-      </div>
-
-      <div class="meal-row">
-        <div class="meal-info">
-          <h4>Dinner</h4>
-          <p>Paneer/tofu + thick daal + quinoa or rice</p>
+        <div class="chart-canvas-wrapper" style="height: 240px;">
+          <canvas id="distributionChartCanvas"></canvas>
         </div>
-        <span class="protein-tag">~35–40g</span>
-      </div>
-
-      <div class="warmup-box" style="margin-top: 18px; border-color: rgba(6, 182, 212, 0.3); background: rgba(6, 182, 212, 0.05);">
-        <div class="warmup-title" style="color: #38bdf8;"><i data-lucide="droplet" style="width: 14px;"></i> Hydration & Sleep Rules</div>
-        <ul class="warmup-list">
-          <li><strong>3–4 Litres of water daily:</strong> 500ml before training, 250ml every 15 min during session.</li>
-          <li><strong>7–8 Hours sleep:</strong> Critical for Central Nervous System repair and muscle protein synthesis.</li>
-        </ul>
       </div>
     </div>
 
-    <!-- ==================== TAB: SAFETY ==================== -->
-    <div id="tab-safety" class="tab-content">
-      <div class="day-header-card">
-        <div>
-          <div class="day-title">Safety Checklist & Longevity</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Rules for injury-free lifetime training</div>
-        </div>
-      </div>
-
-      <label class="check-item">
-        <input type="checkbox" onchange="this.parentElement.classList.toggle('done', this.checked)">
-        <span>Bench and pull-up bar securely locked and tested before loading weight</span>
-      </label>
-      <label class="check-item">
-        <input type="checkbox" onchange="this.parentElement.classList.toggle('done', this.checked)">
-        <span>Dumbbell collars/threads tightly fastened — zero rattling plates</span>
-      </label>
-      <label class="check-item">
-        <input type="checkbox" onchange="this.parentElement.classList.toggle('done', this.checked)">
-        <span>5–8 minute dynamic joint warm-up completed before working sets</span>
-      </label>
-      <label class="check-item">
-        <input type="checkbox" onchange="this.parentElement.classList.toggle('done', this.checked)">
-        <span>FORM > WEIGHT always: Muscle burn is good; sharp joint pinch = STOP</span>
-      </label>
-
-      <div style="margin-top: 18px; background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: var(--radius-md); padding: 16px;">
-        <h4 style="color:#fb7185; display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-          <i data-lucide="alert-octagon" style="width:16px;"></i> When to Skip / Rest
-        </h4>
-        <ul class="warmup-list">
-          <li><strong>Sharp joint pain:</strong> Stop immediately and rest 2–3 days.</li>
-          <li><strong>Fever or illness:</strong> Full recovery rest.</li>
-          <li><strong>Under 5 hours sleep:</strong> Switch to light mobility or walking.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- ==================== TAB: HISTORY & AI EXPORT ==================== -->
+    <!-- ==================== TAB: HISTORY & EXPORT ==================== -->
     <div id="tab-history" class="tab-content">
       <div class="day-header-card">
         <div>
@@ -1397,40 +1023,19 @@
         </div>
       </div>
 
-      <!-- AI EXPORT & DOWNLOAD MODULE -->
-      <div class="ai-export-card">
-        <div class="ai-export-head">
-          <i data-lucide="sparkles" style="width: 22px; height: 22px; color: #38bdf8;"></i>
+      <!-- AI Exporter -->
+      <div class="ai-export-card" style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 20px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <i data-lucide="sparkles" style="width: 22px; color: #38bdf8;"></i>
           <div>
-            <h3>AI Feedback Log Exporter</h3>
-            <p>Filter by date range and download structured logs to feed directly to ChatGPT, Claude, or Gemini.</p>
+            <h3 style="font-size: 1.05rem; font-weight: 700;">AI Feedback Log Exporter</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Download formatted training history to feed into ChatGPT, Claude, or Gemini</p>
           </div>
         </div>
-
-        <div class="date-filter-grid">
-          <div class="date-filter-item">
-            <label>Start Date</label>
-            <input type="date" id="exportStartDate" />
-          </div>
-          <div class="date-filter-item">
-            <label>End Date</label>
-            <input type="date" id="exportEndDate" />
-          </div>
-        </div>
-
-        <div class="ai-actions-row">
-          <button class="btn-ai" onclick="exportLogsForAI('markdown', true)">
-            <i data-lucide="download" style="width: 14px;"></i>
-            <span>Download Markdown (.md)</span>
-          </button>
-          <button class="btn-ai btn-secondary" onclick="exportLogsForAI('json', true)">
-            <i data-lucide="file-code" style="width: 14px;"></i>
-            <span>Download JSON</span>
-          </button>
-          <button class="btn-ai btn-secondary" onclick="copyAIPromptToClipboard()">
-            <i data-lucide="copy" style="width: 14px;"></i>
-            <span>Copy AI Prompt to Clipboard</span>
-          </button>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <button class="btn-icon" style="background:#0284c7; color:#fff;" onclick="exportLogsForAI('markdown', true)"><i data-lucide="download" style="width:14px;"></i> Download Markdown</button>
+          <button class="btn-icon" onclick="exportLogsForAI('json', true)"><i data-lucide="file-code" style="width:14px;"></i> Download JSON</button>
+          <button class="btn-icon" onclick="copyAIPromptToClipboard()"><i data-lucide="copy" style="width:14px;"></i> Copy Prompt to Clipboard</button>
         </div>
       </div>
 
@@ -1441,27 +1046,35 @@
 
   </div>
 
-  <!-- EDIT SESSION MODAL -->
-  <div class="modal-overlay" id="editModal" onclick="if(event.target === this) closeEditModal()">
+  <!-- Dumbbell Dial Helper Modal -->
+  <div class="modal-overlay" id="dialModal" onclick="if(event.target === this) closeDialModal()">
     <div class="modal-box">
-      <div class="modal-head">
-        <h3 style="color:#fff; font-size:1.05rem;" id="editModalTitle">Edit Logged Session</h3>
-        <button class="btn-icon" onclick="closeEditModal()"><i data-lucide="x" style="width:14px;"></i></button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+        <h3 style="color:#fff; font-size:1.05rem;"><i data-lucide="sliders" style="width:16px; vertical-align:middle;"></i> DB Dial & Weight Math</h3>
+        <button class="btn-icon" onclick="closeDialModal()"><i data-lucide="x" style="width:14px;"></i></button>
       </div>
-      <div id="editExerciseList"></div>
-      <button class="btn-icon" style="margin-top:6px; margin-bottom:12px;" onclick="addExerciseFieldInModal()"><i data-lucide="plus" style="width:14px;"></i> Add Exercise to Session</button>
-      <div style="margin-top: 8px;">
-        <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Session Notes</label>
-        <textarea id="editSessionNotes" style="width:100%; background:rgba(0,0,0,0.5); border:1px solid var(--border-color); border-radius:6px; color:#fff; padding:8px; font-family:inherit; min-height:50px;"></textarea>
-      </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-        <button class="btn-icon" onclick="closeEditModal()">Cancel</button>
-        <button class="btn-icon" style="background:#0284c7; color:#fff; border-color:#0284c7;" onclick="saveEditedSession()">Save Changes</button>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Reference chart for 24 kg adjustable dumbbells (increments of 1 to 2.5 kg):</p>
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; text-align:center; font-family:'JetBrains Mono', monospace; font-size:0.85rem;">
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">2.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">3.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">4.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">5.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">6.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">8.0 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">9.0 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">10.0 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">11.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">13.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">16.0 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">18.0 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">20.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px;">22.5 kg</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px; color:#38bdf8; font-weight:bold;">24.0 kg</div>
       </div>
     </div>
   </div>
 
-  <!-- Floating Rest Timer -->
+  <!-- Bottom Floating Timer -->
   <div class="rest-timer-bar">
     <div style="display: flex; align-items: center; gap: 8px;">
       <i data-lucide="timer" style="width: 18px; color: #38bdf8;"></i>
@@ -1483,7 +1096,9 @@
     lucide.createIcons();
 
     let cachedHistory = [];
-    let currentEditingSessionId = null;
+    let strengthChartInstance = null;
+    let volumeChartInstance = null;
+    let distributionChartInstance = null;
 
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -1501,25 +1116,31 @@
 
       if (tabId === 'history') {
         fetchWorkoutHistory();
+      } else if (tabId === 'charts') {
+        refreshAllCharts();
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function toggleAccordion(trigger) {
-      const content = trigger.nextElementSibling;
-      if (content) content.classList.toggle('show');
-    }
-
-    function toggleSet(pill, storageKey) {
+    // Auto-triggering Rest Timer on Set Completion
+    function handleSetClick(pill, storageKey, restSeconds = 90) {
       pill.classList.toggle('done');
-      localStorage.setItem('st_5d_' + storageKey, pill.classList.contains('done') ? '1' : '0');
+      const isDone = pill.classList.contains('done');
+      localStorage.setItem('st_5d_' + storageKey, isDone ? '1' : '0');
+
+      if (isDone) {
+        startTimer(restSeconds);
+      }
     }
 
     function cacheLocal(key, value) {
       localStorage.setItem('st_5d_' + key, value);
     }
 
-    // Restore cached inputs on reload & default export dates
+    function openDialModal() { document.getElementById('dialModal').classList.add('open'); }
+    function closeDialModal() { document.getElementById('dialModal').classList.remove('open'); }
+
+    // Restore cached inputs & Fetch Ghost History on load
     window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.set-pill').forEach(pill => {
         const attr = pill.getAttribute('onclick');
@@ -1539,19 +1160,317 @@
         if (saved) input.value = saved;
       });
 
-      // Default export dates (Past 30 days up to today)
+      // Default Date Filters (Past 60 days)
       const now = new Date();
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(now.getDate() - 30);
-      
-      const toISODate = d => d.toISOString().split('T')[0];
-      const startInput = document.getElementById('exportStartDate');
-      const endInput = document.getElementById('exportEndDate');
-      if (startInput) startInput.value = toISODate(thirtyDaysAgo);
-      if (endInput) endInput.value = toISODate(now);
+      const sixtyDaysAgo = new Date();
+      sixtyDaysAgo.setDate(now.getDate() - 60);
+
+      const toISO = d => d.toISOString().split('T')[0];
+      const startEl = document.getElementById('chartStartDate');
+      const endEl = document.getElementById('chartEndDate');
+      if (startEl) startEl.value = toISO(sixtyDaysAgo);
+      if (endEl) endEl.value = toISO(now);
+
+      fetchWorkoutHistory(true);
     });
 
-    // ================= COMPLETE & CLEAR SESSION =================
+    // ================= HISTORY & GHOST / OVERLOAD ENGINE =================
+    async function fetchWorkoutHistory(updateGhostsOnly = false) {
+      try {
+        const res = await fetch('/api/workouts?limit=80');
+        const data = await res.json();
+        if (data.success && data.history) {
+          cachedHistory = data.history;
+          updateGhostStats(cachedHistory);
+          if (!updateGhostsOnly) {
+            renderHistoryFeed(cachedHistory);
+          }
+        }
+      } catch (err) {
+        console.error("History fetch error:", err);
+      }
+    }
+
+    function updateGhostStats(history) {
+      const exerciseMap = {
+        'ghost_mon_inc': { name: 'Incline DB Bench Press', overload: 'overload_mon_inc', targetSets: 4 },
+        'ghost_mon_flat': { name: 'Flat DB Bench Press', overload: 'overload_mon_flat', targetSets: 3 },
+        'ghost_mon_ohp': { name: 'Seated DB Shoulder Press', overload: 'overload_mon_ohp', targetSets: 3 },
+        'ghost_thu_row': { name: 'Bent-Over DB Rows', overload: 'overload_thu_row', targetSets: 4 },
+        'ghost_fri_sq': { name: 'Goblet Squats', overload: 'overload_fri_sq', targetSets: 4 },
+        'ghost_fri_rdl': { name: 'Dumbbell Romanian Deadlifts (RDL)', overload: 'overload_fri_rdl', targetSets: 3 },
+      };
+
+      Object.entries(exerciseMap).forEach(([ghostId, config]) => {
+        const ghostEl = document.getElementById(ghostId);
+        const overloadEl = document.getElementById(config.overload);
+        if (!ghostEl) return;
+
+        let lastFound = null;
+        for (const session of history) {
+          const match = (session.exercises || []).find(e => e.name.toLowerCase().includes(config.name.toLowerCase()));
+          if (match && match.setsCompleted > 0) {
+            lastFound = match;
+            break;
+          }
+        }
+
+        if (lastFound) {
+          ghostEl.textContent = `Last: ${lastFound.weightKg} kg × ${lastFound.setsCompleted} sets`;
+          // If lifter hit all sets, trigger Overload Ready badge
+          if (overloadEl) {
+            if (lastFound.setsCompleted >= config.targetSets) {
+              overloadEl.style.display = 'inline-block';
+            } else {
+              overloadEl.style.display = 'none';
+            }
+          }
+        } else {
+          ghostEl.textContent = 'No previous session';
+        }
+      });
+    }
+
+    function renderHistoryFeed(history) {
+      const feed = document.getElementById('historyFeed');
+      if (!feed) return;
+
+      if (history.length === 0) {
+        feed.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:30px;">No workout logs found.</p>';
+        return;
+      }
+
+      let html = '';
+      history.forEach(item => {
+        const id = item._id.toString();
+        const dateStr = new Date(item.date).toLocaleDateString(undefined, {
+          month: 'short', day: 'numeric', year: 'numeric'
+        });
+
+        let rows = '';
+        (item.exercises || []).forEach(ex => {
+          rows += `
+            <div class="history-exercise-row">
+              <span style="color:#e2e8f0;">${ex.name}</span>
+              <span style="color:#38bdf8; font-family:'JetBrains Mono', monospace;">
+                ${ex.setsCompleted} sets @ ${ex.weightKg > 0 ? ex.weightKg + ' kg' : 'BW'}
+              </span>
+            </div>`;
+        });
+
+        html += `
+          <div class="history-card" id="history-card-${id}">
+            <div class="history-head">
+              <div>
+                <div class="history-title">${item.dayName}</div>
+                <div class="history-date">${dateStr}</div>
+              </div>
+              <div class="history-actions">
+                <button class="btn-icon btn-danger" onclick="deleteSingleWorkout('${id}')"><i data-lucide="trash" style="width:12px;"></i></button>
+              </div>
+            </div>
+            <div>${rows}</div>
+            ${item.notes ? `<p style="margin-top:8px; font-size:0.8rem; color:#94a3b8; font-style:italic;">"${item.notes}"</p>` : ''}
+          </div>`;
+      });
+
+      feed.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    // ================= VISUAL CHARTS ENGINE (CHART.JS) =================
+    async function refreshAllCharts() {
+      const startDate = document.getElementById('chartStartDate')?.value;
+      const endDate = document.getElementById('chartEndDate')?.value;
+
+      let url = '/api/workouts?limit=100';
+      if (startDate) url += `&startDate=${startDate}`;
+      if (endDate) url += `&endDate=${endDate}`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.success && data.history) {
+          renderStrengthProgressionChart(data.history);
+          renderVolumeChart(data.history);
+          renderDistributionChart(data.history);
+        }
+      } catch (err) {
+        console.error("Chart data fetch error:", err);
+      }
+    }
+
+    // 1. Line Chart: Strength Progression & Estimated 1RM
+    function renderStrengthProgressionChart(historyData = null) {
+      const history = historyData || cachedHistory;
+      const select = document.getElementById('chartExerciseSelect');
+      const targetName = select ? select.value : 'Incline DB Bench Press';
+
+      // Chronological sort
+      const sorted = [...history].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      const labels = [];
+      const weightData = [];
+      const e1RMData = [];
+
+      sorted.forEach(session => {
+        const ex = (session.exercises || []).find(e => e.name.toLowerCase().includes(targetName.toLowerCase()));
+        if (ex && ex.weightKg > 0) {
+          const dateLabel = new Date(session.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+          labels.push(dateLabel);
+          weightData.push(ex.weightKg);
+
+          // Epley Formula for e1RM: Weight * (1 + Reps/30) assuming average reps of 8
+          const est1RM = Math.round(ex.weightKg * (1 + 8 / 30) * 10) / 10;
+          e1RMData.push(est1RM);
+        }
+      });
+
+      const badge = document.getElementById('strengthStatsBadge');
+      if (badge) badge.textContent = `${weightData.length} Logs Found`;
+
+      const ctx = document.getElementById('strengthChartCanvas')?.getContext('2d');
+      if (!ctx) return;
+
+      if (strengthChartInstance) strengthChartInstance.destroy();
+
+      strengthChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Working Weight (kg)',
+              data: weightData,
+              borderColor: '#38bdf8',
+              backgroundColor: 'rgba(56, 189, 248, 0.12)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.35,
+              pointBackgroundColor: '#38bdf8',
+              pointRadius: 5
+            },
+            {
+              label: 'Estimated 1RM (e1RM)',
+              data: e1RMData,
+              borderColor: '#818cf8',
+              borderDash: [5, 5],
+              borderWidth: 2,
+              fill: false,
+              tension: 0.3,
+              pointRadius: 3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#94a3b8', font: { family: 'Outfit' } } },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.dataset.label}: ${ctx.raw} kg`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' }, beginAtZero: false }
+          }
+        }
+      });
+    }
+
+    // 2. Bar Chart: Total Volume Load
+    function renderVolumeChart(history) {
+      const sorted = [...history].sort((a, b) => new Date(a.date) - new Date(b.date));
+      const labels = [];
+      const volumes = [];
+
+      sorted.forEach(session => {
+        const d = new Date(session.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        labels.push(d);
+        volumes.push(session.totalVolumeKg || 0);
+      });
+
+      const ctx = document.getElementById('volumeChartCanvas')?.getContext('2d');
+      if (!ctx) return;
+
+      if (volumeChartInstance) volumeChartInstance.destroy();
+
+      volumeChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Total Volume Load (kg)',
+            data: volumes,
+            backgroundColor: 'rgba(16, 185, 129, 0.4)',
+            borderColor: '#10b981',
+            borderWidth: 1.5,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+    }
+
+    // 3. Doughnut Chart: Muscle Group Distribution
+    function renderDistributionChart(history) {
+      const groups = { Chest: 0, Back: 0, Legs: 0, Shoulders: 0, Arms: 0 };
+
+      history.forEach(session => {
+        (session.exercises || []).forEach(ex => {
+          const n = ex.name.toLowerCase();
+          const sets = ex.setsCompleted || 0;
+          if (n.includes('press') && !n.includes('shoulder')) groups.Chest += sets;
+          else if (n.includes('row') || n.includes('pull')) groups.Back += sets;
+          else if (n.includes('squat') || n.includes('rdl') || n.includes('lunge') || n.includes('calf')) groups.Legs += sets;
+          else if (n.includes('shoulder') || n.includes('lateral')) groups.Shoulders += sets;
+          else if (n.includes('curl') || n.includes('triceps') || n.includes('dip')) groups.Arms += sets;
+        });
+      });
+
+      const ctx = document.getElementById('distributionChartCanvas')?.getContext('2d');
+      if (!ctx) return;
+
+      if (distributionChartInstance) distributionChartInstance.destroy();
+
+      distributionChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(groups),
+          datasets: [{
+            data: Object.values(groups),
+            backgroundColor: [
+              '#38bdf8',
+              '#34d399',
+              '#fbbf24',
+              '#818cf8',
+              '#f43f5e'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { color: '#cbd5e1', font: { family: 'Outfit', size: 12 } } }
+          }
+        }
+      });
+    }
+
+    // ================= WORKOUT LOGGING & COMPLETE =================
     async function completeWorkoutSession(dayKey) {
       const tabElement = document.getElementById('tab-' + dayKey);
       if (!tabElement) return;
@@ -1567,7 +1486,7 @@
         const name = card.getAttribute('data-exercise') || 'Unknown Exercise';
         const weightInput = card.querySelector('.weight-log-input');
         const weight = weightInput ? parseFloat(weightInput.value) || 0 : 0;
-        
+
         const setPills = card.querySelectorAll('.set-pill');
         let completedCount = 0;
         setPills.forEach(pill => {
@@ -1586,7 +1505,7 @@
       });
 
       if (exercisesLogged.length === 0) {
-        if (!confirm("No sets were checked done. Log anyway?")) return;
+        if (!confirm("No sets checked. Complete session anyway?")) return;
       }
 
       const payload = {
@@ -1606,8 +1525,9 @@
 
         const data = await res.json();
         if (data.success) {
-          alert(`🎉 "${dayName}" synced to MongoDB Atlas!`);
+          alert(`🎉 "${dayName}" saved to MongoDB Atlas!`);
 
+          // Reset checkboxes for today
           tabElement.querySelectorAll('.set-pill').forEach(pill => {
             pill.classList.remove('done');
             const attr = pill.getAttribute('onclick');
@@ -1619,343 +1539,12 @@
             }
           });
 
-          const notesElem = document.getElementById('notes_' + dayKey);
-          if (notesElem) notesElem.value = '';
-
-          switchTab('history');
-        } else {
-          alert("Save Error: " + (data.error || "Unknown server error"));
+          // Refresh memory
+          fetchWorkoutHistory(true);
+          switchTab('charts');
         }
       } catch (err) {
-        alert("Failed to connect to /api/workouts. Verify Vercel deployment.");
-      }
-    }
-
-    // ================= FETCH HISTORY =================
-    async function fetchWorkoutHistory() {
-      const feed = document.getElementById('historyFeed');
-      feed.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 20px;">Fetching logs...</p>';
-
-      try {
-        const res = await fetch('/api/workouts?limit=50');
-        const data = await res.json();
-
-        if (!data.success || !data.history || data.history.length === 0) {
-          feed.innerHTML = `
-            <div class="history-card" style="text-align:center; color:var(--text-muted); padding:30px;">
-              <p>No workout sessions found in MongoDB.</p>
-            </div>`;
-          return;
-        }
-
-        cachedHistory = data.history;
-        let html = '';
-
-        data.history.forEach(item => {
-          const id = item._id.toString();
-          const dateStr = new Date(item.date).toLocaleDateString(undefined, {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-
-          let exerciseRows = '';
-          (item.exercises || []).forEach(ex => {
-            exerciseRows += `
-              <div class="history-exercise-row">
-                <span style="color:#e2e8f0;">${ex.name}</span>
-                <span style="color:#38bdf8; font-family:'JetBrains Mono', monospace;">
-                  ${ex.setsCompleted} sets @ ${ex.weightKg > 0 ? ex.weightKg + ' kg' : 'BW'}
-                </span>
-              </div>`;
-          });
-
-          html += `
-            <div class="history-card" id="history-card-${id}">
-              <div class="history-head">
-                <div>
-                  <div class="history-title">${item.dayName}</div>
-                  <div class="history-date">${dateStr}</div>
-                </div>
-                <div class="history-actions">
-                  <button class="btn-icon" onclick="openEditModal('${id}')"><i data-lucide="edit-3" style="width:12px;"></i> Edit</button>
-                  <button class="btn-icon btn-danger" onclick="deleteSingleWorkout('${id}')"><i data-lucide="trash" style="width:12px;"></i></button>
-                </div>
-              </div>
-              <div>${exerciseRows}</div>
-              ${item.notes ? `<p style="margin-top:8px; font-size:0.8rem; color:#94a3b8; font-style:italic;">"${item.notes}"</p>` : ''}
-            </div>`;
-        });
-
-        feed.innerHTML = html;
-        lucide.createIcons();
-      } catch (err) {
-        feed.innerHTML = '<p style="color:#fb7185; text-align:center;">Failed to connect to database API.</p>';
-      }
-    }
-
-    // ================= AI EXPORT & DOWNLOAD ENGINE =================
-    async function fetchFilteredHistory(startDate, endDate) {
-      let url = '/api/workouts?limit=200';
-      if (startDate) url += `&startDate=${startDate}`;
-      if (endDate) url += `&endDate=${endDate}`;
-
-      const res = await fetch(url);
-      const data = await res.json();
-      return (data.success && data.history) ? data.history : [];
-    }
-
-    function formatMarkdownPrompt(sessions, startDate, endDate) {
-      const rangeText = (startDate && endDate) ? `${startDate} to ${endDate}` : 'All Recorded Sessions';
-      
-      let md = `# STRENGTH TRAINING LOG & PROGRESSIVE OVERLOAD REPORT\n`;
-      md += `**Date Range:** ${rangeText}\n`;
-      md += `**Total Sessions Logged:** ${sessions.length}\n`;
-      md += `**Program Routine:** 5-Day Balanced Strength (Push, Pull, Legs, Push Volume, Full Body)\n\n`;
-      
-      md += `## INSTRUCTIONS FOR AI FITNESS COACH:\n`;
-      md += `You are an elite strength & conditioning coach specializing in natural progressive overload, dumbbell biomechanics, and lifetime injury prevention.\n`;
-      md += `Review the training logs below and provide:\n`;
-      md += `1. **Progression Audit:** Which core compound lifts (Incline DB Press, DB Rows, Goblet Squats, RDLs) showed weight/rep overload, and which stalled?\n`;
-      md += `2. **Volume & Frequency Review:** Are pushing, pulling, and lower-body volumes balanced across the week?\n`;
-      md += `3. **Fatigue & Recovery Signals:** Evaluate session notes for warning signs of joint discomfort or central fatigue.\n`;
-      md += `4. **Next 4-Week Action Plan:** Specific load increases (+0.5 kg to 1 kg), rep goals, and whether a deload week is recommended.\n\n`;
-      md += `---\n\n`;
-      md += `## TRAINING SESSIONS LOG:\n\n`;
-
-      if (sessions.length === 0) {
-        md += `*No sessions found in the selected date range.*\n`;
-        return md;
-      }
-
-      // Sort chronological (oldest to newest) for proper progression timeline analysis
-      const chronological = [...sessions].sort((a, b) => new Date(a.date) - new Date(b.date));
-
-      chronological.forEach((s, idx) => {
-        const d = new Date(s.date).toISOString().split('T')[0];
-        md += `### Session ${idx + 1}: ${s.dayName} (${d})\n`;
-        if (s.totalVolumeKg) md += `- **Approx Total Volume:** ${s.totalVolumeKg} kg\n`;
-        if (s.notes) md += `- **Lifter's Feedback / Notes:** "${s.notes}"\n`;
-        md += `\n| Exercise | Sets Completed | Working Weight |\n`;
-        md += `| :--- | :---: | :---: |\n`;
-        (s.exercises || []).forEach(ex => {
-          const wt = ex.weightKg > 0 ? `${ex.weightKg} kg` : `Bodyweight`;
-          md += `| ${ex.name} | ${ex.setsCompleted} sets | ${wt} |\n`;
-        });
-        md += `\n`;
-      });
-
-      return md;
-    }
-
-    async function exportLogsForAI(format = 'markdown', triggerDownload = true) {
-      const startDate = document.getElementById('exportStartDate')?.value;
-      const endDate = document.getElementById('exportEndDate')?.value;
-
-      const sessions = await fetchFilteredHistory(startDate, endDate);
-      if (sessions.length === 0) {
-        alert("No workout sessions found in the selected date range.");
-        return null;
-      }
-
-      let fileContent = '';
-      let fileName = `strength-logs_${startDate || 'start'}_to_${endDate || 'end'}`;
-      let mimeType = 'text/plain';
-
-      if (format === 'markdown') {
-        fileContent = formatMarkdownPrompt(sessions, startDate, endDate);
-        fileName += '.md';
-        mimeType = 'text/markdown;charset=utf-8;';
-      } else {
-        fileContent = JSON.stringify({
-          exportedAt: new Date().toISOString(),
-          dateRange: { startDate, endDate },
-          sessions
-        }, null, 2);
-        fileName += '.json';
-        mimeType = 'application/json;charset=utf-8;';
-      }
-
-      if (triggerDownload) {
-        const blob = new Blob([fileContent], { type: mimeType });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
-      }
-
-      return fileContent;
-    }
-
-    async function copyAIPromptToClipboard() {
-      const startDate = document.getElementById('exportStartDate')?.value;
-      const endDate = document.getElementById('exportEndDate')?.value;
-
-      const sessions = await fetchFilteredHistory(startDate, endDate);
-      if (sessions.length === 0) {
-        alert("No workout sessions found to copy.");
-        return;
-      }
-
-      const promptText = formatMarkdownPrompt(sessions, startDate, endDate);
-      try {
-        await navigator.clipboard.writeText(promptText);
-        alert("📋 Formatted AI Coaching Prompt copied to clipboard! Paste it directly into ChatGPT, Gemini, or Claude.");
-      } catch (err) {
-        alert("Could not write to clipboard automatically. Use the 'Download Markdown' option instead.");
-      }
-    }
-
-    // ================= DELETE WORKOUT =================
-    async function deleteSingleWorkout(id) {
-      if (!confirm("Permanently delete this entire workout session?")) return;
-
-      try {
-        const res = await fetch(`/api/workouts?id=${id}`, { method: 'DELETE' });
-        const data = await res.json();
-        if (data.success) {
-          const card = document.getElementById(`history-card-${id}`);
-          if (card) card.remove();
-          cachedHistory = cachedHistory.filter(item => item._id.toString() !== id);
-          if (cachedHistory.length === 0) fetchWorkoutHistory();
-        } else {
-          alert("Delete failed: " + (data.error || "Server rejected deletion"));
-        }
-      } catch (err) {
-        alert("Error sending delete request.");
-      }
-    }
-
-    // ================= CLEAR ENTIRE DATABASE =================
-    async function purgeEntireDatabase() {
-      const confirm1 = confirm("⚠️ DANGER: This will delete ALL workout logs in your MongoDB Atlas database. Continue?");
-      if (!confirm1) return;
-
-      const confirm2 = prompt("Type 'CLEAR' to permanently delete all records:");
-      if (confirm2 !== 'CLEAR') {
-        alert("Operation cancelled.");
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/workouts?purgeAll=true', { method: 'DELETE' });
-        const data = await res.json();
-        if (data.success) {
-          alert(`Clean slate: ${data.deletedCount} sessions cleared.`);
-          fetchWorkoutHistory();
-        } else {
-          alert("Purge failed: " + data.error);
-        }
-      } catch (err) {
-        alert("Error while purging database.");
-      }
-    }
-
-    // ================= EDIT MODAL SYSTEM =================
-    function openEditModal(id) {
-      const session = cachedHistory.find(item => item._id.toString() === id);
-      if (!session) return;
-
-      currentEditingSessionId = id;
-      document.getElementById('editModalTitle').textContent = `Edit ${session.dayName}`;
-      document.getElementById('editSessionNotes').value = session.notes || '';
-
-      const container = document.getElementById('editExerciseList');
-      container.innerHTML = '';
-
-      (session.exercises || []).forEach((ex, idx) => {
-        renderModalExerciseRow(container, ex.name, ex.weightKg, ex.setsCompleted, idx);
-      });
-
-      document.getElementById('editModal').classList.add('open');
-      lucide.createIcons();
-    }
-
-    function renderModalExerciseRow(container, name, weight, sets, idx) {
-      const div = document.createElement('div');
-      div.className = 'edit-row';
-      div.id = `modal_ex_row_${idx}`;
-      div.innerHTML = `
-        <div class="edit-row-header">
-          <input type="text" class="edit-row-title" value="${name}" id="edit_name_${idx}" style="background:transparent; border:none; outline:none; font-weight:bold; width:80%;">
-          <button class="btn-icon btn-danger" onclick="this.parentElement.parentElement.remove()" title="Delete this exercise entry">
-            <i data-lucide="trash" style="width:12px;"></i>
-          </button>
-        </div>
-        <div class="edit-row-inputs">
-          <div class="edit-input-group">
-            <label>Weight (kg)</label>
-            <input type="number" step="0.5" id="edit_wt_${idx}" value="${weight || 0}">
-          </div>
-          <div class="edit-input-group">
-            <label>Sets Done</label>
-            <input type="number" min="0" max="10" id="edit_sets_${idx}" value="${sets || 0}">
-          </div>
-        </div>
-      `;
-      container.appendChild(div);
-      lucide.createIcons();
-    }
-
-    function addExerciseFieldInModal() {
-      const container = document.getElementById('editExerciseList');
-      const idx = container.querySelectorAll('.edit-row').length + Math.floor(Math.random() * 1000);
-      renderModalExerciseRow(container, 'New Exercise', 0, 3, idx);
-    }
-
-    function closeEditModal() {
-      document.getElementById('editModal').classList.remove('open');
-      currentEditingSessionId = null;
-    }
-
-    async function saveEditedSession() {
-      if (!currentEditingSessionId) return;
-
-      const container = document.getElementById('editExerciseList');
-      const rows = container.querySelectorAll('.edit-row');
-      const updatedExercises = [];
-
-      rows.forEach(row => {
-        const nameInput = row.querySelector('.edit-row-title');
-        const wtInput = row.querySelector("input[id^='edit_wt_']");
-        const setsInput = row.querySelector("input[id^='edit_sets_']");
-
-        if (nameInput && wtInput && setsInput) {
-          updatedExercises.push({
-            name: nameInput.value.trim() || 'Exercise',
-            weightKg: parseFloat(wtInput.value) || 0,
-            setsCompleted: parseInt(setsInput.value, 10) || 0
-          });
-        }
-      });
-
-      const updatedNotes = document.getElementById('editSessionNotes').value.trim();
-
-      try {
-        const res = await fetch('/api/workouts', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: currentEditingSessionId,
-            exercises: updatedExercises,
-            notes: updatedNotes
-          })
-        });
-
-        const data = await res.json();
-        if (data.success) {
-          closeEditModal();
-          fetchWorkoutHistory();
-        } else {
-          alert("Update error: " + (data.error || "Failed to edit"));
-        }
-      } catch (err) {
-        alert("Failed to send updates to API.");
+        alert("Failed to reach server. Please verify deployment.");
       }
     }
 
@@ -1986,6 +1575,7 @@
           isRunning = false;
           document.getElementById('timerBtn').textContent = 'Start';
           try { document.getElementById('beepAudio').play(); } catch (e) {}
+          if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
         }
       }, 1000);
     }

@@ -52,10 +52,10 @@ export default async function handler(req, res) {
     const db = client.db('strength_db');
     const workouts = db.collection('workouts');
 
-    // 1. GET: Fetch logs with optional Date Range filtering
+    // GET: Query logs with date range and limit
     if (req.method === 'GET') {
-      const { startDate, endDate } = req.query;
-      const limit = parseInt(req.query.limit, 10) || 100;
+      const { startDate, endDate, limit } = req.query;
+      const maxLimit = parseInt(limit, 10) || 100;
       
       const filter = {};
       if (startDate || endDate) {
@@ -75,13 +75,13 @@ export default async function handler(req, res) {
       const history = await workouts
         .find(filter)
         .sort({ date: -1 })
-        .limit(limit)
+        .limit(maxLimit)
         .toArray();
 
       return res.status(200).json({ success: true, history });
     }
 
-    // 2. POST: Insert new session
+    // POST: Insert completed workout
     if (req.method === 'POST') {
       const payload = req.body;
       if (!payload.dayKey || !payload.exercises) {
@@ -102,7 +102,7 @@ export default async function handler(req, res) {
       return res.status(201).json({ success: true, id: result.insertedId, session: newSession });
     }
 
-    // 3. PUT / PATCH: Edit existing session
+    // PUT / PATCH: Update workout session
     if (req.method === 'PUT' || req.method === 'PATCH') {
       const { id, exercises, notes, dayName } = req.body;
       const query = parseIdQuery(id);
@@ -124,7 +124,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, modifiedCount: result.modifiedCount });
     }
 
-    // 4. DELETE: Purge all or single item
+    // DELETE: Delete single session or clear all
     if (req.method === 'DELETE') {
       const { id, purgeAll } = req.query;
 
