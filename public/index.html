@@ -176,11 +176,18 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* 1-Exercise-Per-Page Deck */
+    /* 1-Exercise-Per-Page Deck with Touch Swiping */
     .deck-carousel {
       width: 100%;
       overflow: hidden;
       border-radius: var(--radius-md);
+      touch-action: pan-y; /* Allows vertical scrolling while intercepting horizontal swipes */
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: grab;
+    }
+    .deck-carousel:active {
+      cursor: grabbing;
     }
     .deck-track {
       display: flex;
@@ -213,6 +220,7 @@
       object-fit: cover;
       display: block;
       opacity: 0.95;
+      pointer-events: none;
     }
     .media-badge {
       position: absolute;
@@ -368,7 +376,7 @@
       border-color: var(--accent);
     }
 
-    /* Deck Nav Buttons */
+    /* Deck Nav Buttons & Swipe Cue */
     .deck-nav-bar {
       display: flex;
       justify-content: space-between;
@@ -691,11 +699,11 @@
 </head>
 <body>
 
-  <!-- Clean Floating Toast -->
+  <!-- Floating Toast Notification -->
   <div class="toast-container">
     <div class="toast-pill" id="toastPill">
       <i data-lucide="check" id="toastIcon" style="width: 14px; color: var(--success);"></i>
-      <span class="toast-text" id="toastText">System initialized</span>
+      <span class="toast-text" id="toastText">Ready</span>
     </div>
   </div>
 
@@ -719,9 +727,9 @@
     <div class="meta-card">
       <div>
         <div class="meta-title">5-Day Strength Routine</div>
-        <div class="meta-desc">Progressive Overload • Mon / Thu / Fri / Sat / Sun</div>
+        <div class="meta-desc">Swipe left/right to browse exercises • Auto-saving to Atlas</div>
       </div>
-      <span class="btn-subtle" style="border:none; background:var(--bg-card); font-family:'JetBrains Mono'; font-size:11px;">M0 Tier Sync</span>
+      <span class="btn-subtle" style="border:none; background:var(--bg-card); font-family:'JetBrains Mono'; font-size:11px;">Active</span>
     </div>
 
     <!-- Tab Bar -->
@@ -1018,7 +1026,7 @@
     <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- PROGRAM CATALOG WITH PRECISE TECHNIQUE ASSETS -->
+  <!-- PROGRAM CATALOG -->
   <script>
     const WORKOUT_PROGRAM = {
       monday: [
@@ -1193,7 +1201,7 @@
               <div class="media-viewport" onclick="openCinemaModal('${dayKey}', ${idx})">
                 <img src="${ex.gif}" alt="${ex.name}" onerror="this.src='https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&auto=format&fit=crop&q=80';"/>
                 <div class="slide-indicator">${idx + 1} / ${exercises.length}</div>
-                <div class="media-badge"><i data-lucide="info" style="width:12px;"></i> Technique & Form</div>
+                <div class="media-badge"><i data-lucide="info" style="width:12px;"></i> Form & Technique</div>
               </div>
               <div class="card-body">
                 <div class="exercise-header">
@@ -1224,8 +1232,92 @@
           `;
           track.appendChild(slide);
         });
+
+        // Initialize swipe event listeners for each carousel track
+        setupSwipeGestures(dayKey);
       });
       lucide.createIcons();
+    }
+
+    // ================= TOUCH & MOUSE SWIPE GESTURE ENGINE =================
+    function setupSwipeGestures(dayKey) {
+      const carousel = document.getElementById(`carousel-${dayKey}`);
+      if (!carousel) return;
+
+      let startX = 0;
+      let startY = 0;
+      let isDragging = false;
+      let isHorizontalSwipe = false;
+
+      // Touch Events (Mobile)
+      carousel.addEventListener('touchstart', (e) => {
+        // Do not intercept if interacting with stepper buttons or inputs
+        if (e.target.closest('button') || e.target.closest('input')) return;
+
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isDragging = true;
+        isHorizontalSwipe = false;
+      }, { passive: true });
+
+      carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
+
+        // Determine if movement is predominantly horizontal
+        if (!isHorizontalSwipe) {
+          if (Math.abs(deltaX) > 10 && Math.abs(deltaX) > Math.abs(deltaY)) {
+            isHorizontalSwipe = true;
+          } else if (Math.abs(deltaY) > 10) {
+            // Predominantly vertical scrolling; cancel swipe tracking
+            isDragging = false;
+          }
+        }
+      }, { passive: true });
+
+      carousel.addEventListener('touchend', (e) => {
+        if (!isDragging || !isHorizontalSwipe) {
+          isDragging = false;
+          return;
+        }
+
+        const endX = e.changedTouches[0].clientX;
+        const diffX = endX - startX;
+        const swipeThreshold = 40; // Pixels needed to trigger slide change
+
+        if (diffX < -swipeThreshold) {
+          nextSlide(dayKey);
+        } else if (diffX > swipeThreshold) {
+          prevSlide(dayKey);
+        }
+
+        isDragging = false;
+        isHorizontalSwipe = false;
+      });
+
+      // Mouse Drag Events (Desktop)
+      carousel.addEventListener('mousedown', (e) => {
+        if (e.target.closest('button') || e.target.closest('input')) return;
+        startX = e.clientX;
+        isDragging = true;
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        const diffX = e.clientX - startX;
+        const swipeThreshold = 45;
+
+        if (diffX < -swipeThreshold) {
+          nextSlide(dayKey);
+        } else if (diffX > swipeThreshold) {
+          prevSlide(dayKey);
+        }
+        isDragging = false;
+      });
     }
 
     function updateSlidePosition(dayKey) {
