@@ -52,11 +52,28 @@ export default async function handler(req, res) {
     const db = client.db('strength_db');
     const workouts = db.collection('workouts');
 
-    // 1. GET: Fetch logs
+    // 1. GET: Fetch logs with optional Date Range filtering
     if (req.method === 'GET') {
-      const limit = parseInt(req.query.limit, 10) || 50;
+      const { startDate, endDate } = req.query;
+      const limit = parseInt(req.query.limit, 10) || 100;
+      
+      const filter = {};
+      if (startDate || endDate) {
+        filter.date = {};
+        if (startDate) {
+          const start = new Date(startDate);
+          start.setHours(0, 0, 0, 0);
+          filter.date.$gte = start;
+        }
+        if (endDate) {
+          const end = new Date(endDate);
+          end.setHours(23, 59, 59, 999);
+          filter.date.$lte = end;
+        }
+      }
+
       const history = await workouts
-        .find({})
+        .find(filter)
         .sort({ date: -1 })
         .limit(limit)
         .toArray();

@@ -304,7 +304,6 @@
       display: block;
     }
 
-    /* Accordion Details */
     .collapsible-trigger {
       width: 100%;
       background: rgba(255, 255, 255, 0.03);
@@ -424,6 +423,84 @@
       gap: 8px;
       box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
     }
+
+    /* AI Exporter Card Component */
+    .ai-export-card {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(99, 102, 241, 0.08));
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .ai-export-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .ai-export-head h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .ai-export-head p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .date-filter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .date-filter-item label {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .date-filter-item input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .date-filter-item input:focus { border-color: #38bdf8; }
+
+    .ai-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn-ai {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      border: none;
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .btn-ai:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      color: #e2e8f0;
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
 
     /* History Cards */
     .history-card {
@@ -621,7 +698,7 @@
   <div class="container">
     <div class="hero-banner">
       <h1>5-Day Balanced Strength</h1>
-      <p>Progressive Overload • Same Exercises • Synced to MongoDB Atlas</p>
+      <p>Progressive Overload • Same Core Exercises • Synced to MongoDB Atlas</p>
     </div>
 
     <!-- Navigation Tabs -->
@@ -634,7 +711,7 @@
         <button class="tab-btn" onclick="switchTab('sunday')"><i data-lucide="refresh-cw" style="width: 14px;"></i> Sun: Full Body</button>
         <button class="tab-btn" onclick="switchTab('nutrition')"><i data-lucide="utensils" style="width: 14px;"></i> Diet & Protein</button>
         <button class="tab-btn" onclick="switchTab('safety')"><i data-lucide="alert-triangle" style="width: 14px;"></i> Safety & Rules</button>
-        <button class="tab-btn" onclick="switchTab('history')"><i data-lucide="history" style="width: 14px;"></i> Logs & History</button>
+        <button class="tab-btn" onclick="switchTab('history')"><i data-lucide="history" style="width: 14px;"></i> Logs & AI Export</button>
       </div>
     </div>
 
@@ -861,23 +938,8 @@
 
       <!-- Thu 1 -->
       <div class="exercise-card" data-exercise="Bent-Over DB Rows">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/bent-over-dumbbell-row.gif" 
-               class="exercise-gif" alt="Bent-Over Rows"
-               onerror="this.src='https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Primary Pull</div>
-          <div class="rest-pill" onclick="startTimer(150)">Rest 2.5m</div>
-        </div>
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 01</span>
-            <h3 class="exercise-name">Bent-Over Dumbbell Rows</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>4 × 6–8</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>2–3 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+0.5–1 kg @ 8</strong></div>
-          </div>
+          <h3 class="exercise-name">1. Bent-Over Dumbbell Rows</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -895,23 +957,8 @@
 
       <!-- Thu 2 -->
       <div class="exercise-card" data-exercise="Single-Arm Half-Kneeling Row">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif" 
-               class="exercise-gif" alt="Single Arm Row"
-               onerror="this.src='https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Unilateral Lat</div>
-          <div class="rest-pill" onclick="startTimer(90)">Rest 1.5m</div>
-        </div>
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 02</span>
-            <h3 class="exercise-name">Single-Arm Half-Kneeling Row</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10 /arm</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
-          </div>
+          <h3 class="exercise-name">2. Single-Arm Half-Kneeling Row</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -928,23 +975,8 @@
 
       <!-- Thu 3 -->
       <div class="exercise-card" data-exercise="Inverted Rows (Pull-Up Bar)">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Inverted-Row.gif" 
-               class="exercise-gif" alt="Inverted Row"
-               onerror="this.src='https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Bodyweight Back</div>
-          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
-        </div>
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 03</span>
-            <h3 class="exercise-name">Inverted Rows (Pull-Up Bar)</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>Lower angle</strong></div>
-          </div>
+          <h3 class="exercise-name">3. Inverted Rows (Pull-Up Bar)</h3>
           <div class="tracker-box">
             <div class="sets-row">
               <div class="set-pill" onclick="toggleSet(this, 'set_thu_inv_1')">Set 1 (8-10)</div>
@@ -957,23 +989,8 @@
 
       <!-- Thu 4 -->
       <div class="exercise-card" data-exercise="Dumbbell Bicep Curls">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Curl.gif" 
-               class="exercise-gif" alt="Bicep Curls"
-               onerror="this.src='https://images.unsplash.com/photo-1581009137042-c552e485697a?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Supinated Curl</div>
-          <div class="rest-pill" onclick="startTimer(90)">Rest 1.5m</div>
-        </div>
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 04</span>
-            <h3 class="exercise-name">Dumbbell Bicep Curls</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 10–12</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
-          </div>
+          <h3 class="exercise-name">4. Dumbbell Bicep Curls</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -990,23 +1007,8 @@
 
       <!-- Thu 5 -->
       <div class="exercise-card" data-exercise="Dumbbell Hammer Curls">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Hammer-Curl.gif" 
-               class="exercise-gif" alt="Hammer Curls"
-               onerror="this.src='https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Brachialis & Forearms</div>
-          <div class="rest-pill" onclick="startTimer(60)">Rest 1m</div>
-        </div>
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 05</span>
-            <h3 class="exercise-name">Dumbbell Hammer Curls</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 12–15</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
-          </div>
+          <h3 class="exercise-name">5. Dumbbell Hammer Curls</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1023,7 +1025,7 @@
 
       <div class="finish-session-bar">
         <h4 style="color:#fff; font-size: 0.95rem;">Finish Thursday Session</h4>
-        <textarea id="notes_thursday" placeholder="Notes (e.g., Solid back engagement, grip felt stable)..."></textarea>
+        <textarea id="notes_thursday" placeholder="Notes..."></textarea>
         <button class="complete-btn" onclick="completeWorkoutSession('thursday')">Complete Session & Sync</button>
       </div>
     </div>
@@ -1037,35 +1039,9 @@
         </div>
       </div>
 
-      <div class="warmup-box">
-        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5–8 Min Lower Body Warm-Up</div>
-        <ul class="warmup-list">
-          <li>Bodyweight Air Squats: 2 sets × 10 reps (2s pause at bottom)</li>
-          <li>World’s Greatest Stretch: 5 reps per side</li>
-          <li>Glute Bridges: 2 sets × 15 reps</li>
-          <li>Leg Swings (Front/Back & Side): 10 each leg</li>
-        </ul>
-      </div>
-
-      <!-- Fri 1 -->
       <div class="exercise-card" data-exercise="Goblet Squats">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/06/Dumbbell-Goblet-Squat.gif" 
-               class="exercise-gif" alt="Goblet Squat"
-               onerror="this.src='https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Quads & Core</div>
-          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
-        </div>
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 01</span>
-            <h3 class="exercise-name">Goblet Squats</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>4 × 8–10</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+1 kg @ 10</strong></div>
-          </div>
+          <h3 class="exercise-name">1. Goblet Squats</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1081,25 +1057,9 @@
         </div>
       </div>
 
-      <!-- Fri 2 -->
       <div class="exercise-card" data-exercise="Dumbbell Romanian Deadlifts (RDL)">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Romanian-Deadlift.gif" 
-               class="exercise-gif" alt="Dumbbell RDL"
-               onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Hamstrings & Glutes</div>
-          <div class="rest-pill" onclick="startTimer(120)">Rest 2m</div>
-        </div>
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 02</span>
-            <h3 class="exercise-name">Dumbbell Romanian Deadlifts (RDL)</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>2 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+1 kg @ 10</strong></div>
-          </div>
+          <h3 class="exercise-name">2. Dumbbell Romanian Deadlifts (RDL)</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1114,25 +1074,9 @@
         </div>
       </div>
 
-      <!-- Fri 3 -->
       <div class="exercise-card" data-exercise="Dumbbell Reverse Lunges">
-        <div class="gif-container">
-          <img src="https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif" 
-               class="exercise-gif" alt="Reverse Lunges"
-               onerror="this.src='https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&auto=format&fit=crop&q=80';"/>
-          <div class="gif-badge">Unilateral Leg</div>
-          <div class="rest-pill" onclick="startTimer(90)">Rest 1.5m</div>
-        </div>
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 03</span>
-            <h3 class="exercise-name">Reverse Lunges</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 10 /leg</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
-          </div>
+          <h3 class="exercise-name">3. Reverse Lunges</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1147,18 +1091,9 @@
         </div>
       </div>
 
-      <!-- Fri 4 -->
       <div class="exercise-card" data-exercise="Rear-Foot Elevated Split Squats">
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 04</span>
-            <h3 class="exercise-name">Rear-Foot Elevated Split Squats</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 8–10 /leg</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+0.5 kg</strong></div>
-          </div>
+          <h3 class="exercise-name">4. Rear-Foot Elevated Split Squats</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1173,18 +1108,9 @@
         </div>
       </div>
 
-      <!-- Fri 5 -->
       <div class="exercise-card" data-exercise="Dumbbell Calf Raises">
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 05</span>
-            <h3 class="exercise-name">Dumbbell Calf Raises</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Sets × Reps</span><strong>3 × 15–20</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1 min</strong></div>
-            <div class="metric-cell"><span>Progression</span><strong>+2 reps</strong></div>
-          </div>
+          <h3 class="exercise-name">5. Dumbbell Calf Raises</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1201,7 +1127,7 @@
 
       <div class="finish-session-bar">
         <h4 style="color:#fff; font-size: 0.95rem;">Finish Friday Session</h4>
-        <textarea id="notes_friday" placeholder="Notes (e.g., Squat depth felt good, no knee pinch)..."></textarea>
+        <textarea id="notes_friday" placeholder="Notes..."></textarea>
         <button class="complete-btn" onclick="completeWorkoutSession('friday')">Complete Session & Sync</button>
       </div>
     </div>
@@ -1211,31 +1137,13 @@
       <div class="day-header-card">
         <div>
           <div class="day-title">Saturday: Push Volume Day</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">10–20% lighter than Monday • Focus on Mind-Muscle Connection</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">10–20% lighter than Monday • Mind-Muscle Connection</div>
         </div>
       </div>
 
-      <div class="warmup-box">
-        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5 Min Shoulder Prep</div>
-        <ul class="warmup-list">
-          <li>Band Dislocates / Pass-Throughs: 15 reps</li>
-          <li>Push-Up to Downward Dog: 8–10 reps</li>
-          <li>Thoracic Rotations (Quadruped): 8 reps/side</li>
-        </ul>
-      </div>
-
-      <!-- Sat 1 -->
       <div class="exercise-card" data-exercise="Incline Bench Press (Volume)">
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 01</span>
-            <h3 class="exercise-name">Incline Bench Press (Volume)</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Target</span><strong>3 × 8–10</strong></div>
-            <div class="metric-cell"><span>Intensity</span><strong>-15% Mon</strong></div>
-            <div class="metric-cell"><span>Tempo</span><strong>2-0-2</strong></div>
-          </div>
+          <h3 class="exercise-name">1. Incline Bench Press (Volume)</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1250,18 +1158,9 @@
         </div>
       </div>
 
-      <!-- Sat 2 -->
       <div class="exercise-card" data-exercise="Floor Press">
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 02</span>
-            <h3 class="exercise-name">Floor Press</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Target</span><strong>3 × 10–12</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
-            <div class="metric-cell"><span>Focus</span><strong>Shoulder Safety</strong></div>
-          </div>
+          <h3 class="exercise-name">2. Floor Press</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1276,18 +1175,9 @@
         </div>
       </div>
 
-      <!-- Sat 3 -->
       <div class="exercise-card" data-exercise="Dumbbell Shoulder Press (Volume)">
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 03</span>
-            <h3 class="exercise-name">Dumbbell Shoulder Press (Volume)</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Target</span><strong>3 × 8–10</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1.5 min</strong></div>
-            <div class="metric-cell"><span>Focus</span><strong>Strict Form</strong></div>
-          </div>
+          <h3 class="exercise-name">3. Dumbbell Shoulder Press (Volume)</h3>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1302,18 +1192,9 @@
         </div>
       </div>
 
-      <!-- Sat 4 -->
       <div class="exercise-card" data-exercise="Bench Dips">
         <div class="card-body">
-          <div class="exercise-header">
-            <span class="exercise-num">EXERCISE 04</span>
-            <h3 class="exercise-name">Bench Dips</h3>
-          </div>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Target</span><strong>3 × 10–15</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1 min</strong></div>
-            <div class="metric-cell"><span>Cue</span><strong>Lock Out Triceps</strong></div>
-          </div>
+          <h3 class="exercise-name">4. Bench Dips</h3>
           <div class="tracker-box">
             <div class="sets-row">
               <div class="set-pill" onclick="toggleSet(this, 'set_sat_dip_1')">Set 1 (10-15)</div>
@@ -1336,28 +1217,13 @@
       <div class="day-header-card">
         <div>
           <div class="day-title">Sunday: Active Recovery Full-Body</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">20–30% lighter weight • Form practice & joint flushing</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">20–30% lighter weight • Form & joint flushing</div>
         </div>
       </div>
 
-      <div class="warmup-box">
-        <div class="warmup-title"><i data-lucide="activity" style="width:14px;"></i> 5 Min Recovery Flow</div>
-        <ul class="warmup-list">
-          <li>Inchworms with Push-Up: 5–6 reps</li>
-          <li>Hip 90/90 Rotations: 8 reps/side</li>
-          <li>Light Dead Hang: 20–30 sec</li>
-        </ul>
-      </div>
-
-      <!-- Sun 1 -->
       <div class="exercise-card" data-exercise="Bench Press (Light Active Recovery)">
         <div class="card-body">
           <h3 class="exercise-name">1. Bench Press (Recovery Groove)</h3>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Target</span><strong>2 × 6–8</strong></div>
-            <div class="metric-cell"><span>Load</span><strong>-30% Light</strong></div>
-            <div class="metric-cell"><span>Cue</span><strong>Smooth Motion</strong></div>
-          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1371,15 +1237,9 @@
         </div>
       </div>
 
-      <!-- Sun 2 -->
       <div class="exercise-card" data-exercise="Bent-Over Rows (Light Active Recovery)">
         <div class="card-body">
           <h3 class="exercise-name">2. Bent-Over Rows (Light)</h3>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Target</span><strong>2 × 6–8</strong></div>
-            <div class="metric-cell"><span>Load</span><strong>-30% Light</strong></div>
-            <div class="metric-cell"><span>Cue</span><strong>Retract Scapulae</strong></div>
-          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1393,15 +1253,9 @@
         </div>
       </div>
 
-      <!-- Sun 3 -->
       <div class="exercise-card" data-exercise="Goblet Squats (Light Active Recovery)">
         <div class="card-body">
           <h3 class="exercise-name">3. Goblet Squats (Deep Hip Opener)</h3>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Target</span><strong>2 × 8–10</strong></div>
-            <div class="metric-cell"><span>Load</span><strong>Light</strong></div>
-            <div class="metric-cell"><span>Focus</span><strong>Full Depth</strong></div>
-          </div>
           <div class="tracker-box">
             <div class="tracker-header">
               <span class="tracker-title">Weight (kg)</span>
@@ -1415,15 +1269,9 @@
         </div>
       </div>
 
-      <!-- Sun 4 -->
       <div class="exercise-card" data-exercise="Plank Hold or Dead Hang">
         <div class="card-body">
           <h3 class="exercise-name">4. Plank Hold or Dead Hang</h3>
-          <div class="metrics-bar">
-            <div class="metric-cell"><span>Target</span><strong>2 × 20–45s</strong></div>
-            <div class="metric-cell"><span>Rest</span><strong>1 min</strong></div>
-            <div class="metric-cell"><span>Focus</span><strong>Decompress Spine</strong></div>
-          </div>
           <div class="tracker-box">
             <div class="sets-row">
               <div class="set-pill" onclick="toggleSet(this, 'set_sun_plk_1')">Set 1 (20-45s)</div>
@@ -1536,16 +1384,53 @@
       </div>
     </div>
 
-    <!-- ==================== TAB: HISTORY / CRUD MANAGEMENT ==================== -->
+    <!-- ==================== TAB: HISTORY & AI EXPORT ==================== -->
     <div id="tab-history" class="tab-content">
       <div class="day-header-card">
         <div>
           <div class="day-title">Workout History & Logs</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Manage, edit or delete logged sessions</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Manage logs or export formatted prompts for AI feedback</div>
         </div>
         <div style="display:flex; gap:6px;">
           <button class="btn-icon" onclick="fetchWorkoutHistory()"><i data-lucide="refresh-cw" style="width: 14px;"></i> Refresh</button>
           <button class="btn-icon btn-danger" onclick="purgeEntireDatabase()"><i data-lucide="trash-2" style="width: 14px;"></i> Clear All DB</button>
+        </div>
+      </div>
+
+      <!-- AI EXPORT & DOWNLOAD MODULE -->
+      <div class="ai-export-card">
+        <div class="ai-export-head">
+          <i data-lucide="sparkles" style="width: 22px; height: 22px; color: #38bdf8;"></i>
+          <div>
+            <h3>AI Feedback Log Exporter</h3>
+            <p>Filter by date range and download structured logs to feed directly to ChatGPT, Claude, or Gemini.</p>
+          </div>
+        </div>
+
+        <div class="date-filter-grid">
+          <div class="date-filter-item">
+            <label>Start Date</label>
+            <input type="date" id="exportStartDate" />
+          </div>
+          <div class="date-filter-item">
+            <label>End Date</label>
+            <input type="date" id="exportEndDate" />
+          </div>
+        </div>
+
+        <div class="ai-actions-row">
+          <button class="btn-ai" onclick="exportLogsForAI('markdown', true)">
+            <i data-lucide="download" style="width: 14px;"></i>
+            <span>Download Markdown (.md)</span>
+          </button>
+          <button class="btn-ai btn-secondary" onclick="exportLogsForAI('json', true)">
+            <i data-lucide="file-code" style="width: 14px;"></i>
+            <span>Download JSON</span>
+          </button>
+          <button class="btn-ai btn-secondary" onclick="copyAIPromptToClipboard()">
+            <i data-lucide="copy" style="width: 14px;"></i>
+            <span>Copy AI Prompt to Clipboard</span>
+          </button>
         </div>
       </div>
 
@@ -1634,7 +1519,7 @@
       localStorage.setItem('st_5d_' + key, value);
     }
 
-    // Restore cached inputs on reload
+    // Restore cached inputs on reload & default export dates
     window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.set-pill').forEach(pill => {
         const attr = pill.getAttribute('onclick');
@@ -1653,6 +1538,17 @@
         const saved = localStorage.getItem('st_5d_' + input.id);
         if (saved) input.value = saved;
       });
+
+      // Default export dates (Past 30 days up to today)
+      const now = new Date();
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(now.getDate() - 30);
+      
+      const toISODate = d => d.toISOString().split('T')[0];
+      const startInput = document.getElementById('exportStartDate');
+      const endInput = document.getElementById('exportEndDate');
+      if (startInput) startInput.value = toISODate(thirtyDaysAgo);
+      if (endInput) endInput.value = toISODate(now);
     });
 
     // ================= COMPLETE & CLEAR SESSION =================
@@ -1712,7 +1608,6 @@
         if (data.success) {
           alert(`🎉 "${dayName}" synced to MongoDB Atlas!`);
 
-          // Reset checkboxes for today
           tabElement.querySelectorAll('.set-pill').forEach(pill => {
             pill.classList.remove('done');
             const attr = pill.getAttribute('onclick');
@@ -1742,7 +1637,7 @@
       feed.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 20px;">Fetching logs...</p>';
 
       try {
-        const res = await fetch('/api/workouts?limit=40');
+        const res = await fetch('/api/workouts?limit=50');
         const data = await res.json();
 
         if (!data.success || !data.history || data.history.length === 0) {
@@ -1798,6 +1693,121 @@
         lucide.createIcons();
       } catch (err) {
         feed.innerHTML = '<p style="color:#fb7185; text-align:center;">Failed to connect to database API.</p>';
+      }
+    }
+
+    // ================= AI EXPORT & DOWNLOAD ENGINE =================
+    async function fetchFilteredHistory(startDate, endDate) {
+      let url = '/api/workouts?limit=200';
+      if (startDate) url += `&startDate=${startDate}`;
+      if (endDate) url += `&endDate=${endDate}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+      return (data.success && data.history) ? data.history : [];
+    }
+
+    function formatMarkdownPrompt(sessions, startDate, endDate) {
+      const rangeText = (startDate && endDate) ? `${startDate} to ${endDate}` : 'All Recorded Sessions';
+      
+      let md = `# STRENGTH TRAINING LOG & PROGRESSIVE OVERLOAD REPORT\n`;
+      md += `**Date Range:** ${rangeText}\n`;
+      md += `**Total Sessions Logged:** ${sessions.length}\n`;
+      md += `**Program Routine:** 5-Day Balanced Strength (Push, Pull, Legs, Push Volume, Full Body)\n\n`;
+      
+      md += `## INSTRUCTIONS FOR AI FITNESS COACH:\n`;
+      md += `You are an elite strength & conditioning coach specializing in natural progressive overload, dumbbell biomechanics, and lifetime injury prevention.\n`;
+      md += `Review the training logs below and provide:\n`;
+      md += `1. **Progression Audit:** Which core compound lifts (Incline DB Press, DB Rows, Goblet Squats, RDLs) showed weight/rep overload, and which stalled?\n`;
+      md += `2. **Volume & Frequency Review:** Are pushing, pulling, and lower-body volumes balanced across the week?\n`;
+      md += `3. **Fatigue & Recovery Signals:** Evaluate session notes for warning signs of joint discomfort or central fatigue.\n`;
+      md += `4. **Next 4-Week Action Plan:** Specific load increases (+0.5 kg to 1 kg), rep goals, and whether a deload week is recommended.\n\n`;
+      md += `---\n\n`;
+      md += `## TRAINING SESSIONS LOG:\n\n`;
+
+      if (sessions.length === 0) {
+        md += `*No sessions found in the selected date range.*\n`;
+        return md;
+      }
+
+      // Sort chronological (oldest to newest) for proper progression timeline analysis
+      const chronological = [...sessions].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      chronological.forEach((s, idx) => {
+        const d = new Date(s.date).toISOString().split('T')[0];
+        md += `### Session ${idx + 1}: ${s.dayName} (${d})\n`;
+        if (s.totalVolumeKg) md += `- **Approx Total Volume:** ${s.totalVolumeKg} kg\n`;
+        if (s.notes) md += `- **Lifter's Feedback / Notes:** "${s.notes}"\n`;
+        md += `\n| Exercise | Sets Completed | Working Weight |\n`;
+        md += `| :--- | :---: | :---: |\n`;
+        (s.exercises || []).forEach(ex => {
+          const wt = ex.weightKg > 0 ? `${ex.weightKg} kg` : `Bodyweight`;
+          md += `| ${ex.name} | ${ex.setsCompleted} sets | ${wt} |\n`;
+        });
+        md += `\n`;
+      });
+
+      return md;
+    }
+
+    async function exportLogsForAI(format = 'markdown', triggerDownload = true) {
+      const startDate = document.getElementById('exportStartDate')?.value;
+      const endDate = document.getElementById('exportEndDate')?.value;
+
+      const sessions = await fetchFilteredHistory(startDate, endDate);
+      if (sessions.length === 0) {
+        alert("No workout sessions found in the selected date range.");
+        return null;
+      }
+
+      let fileContent = '';
+      let fileName = `strength-logs_${startDate || 'start'}_to_${endDate || 'end'}`;
+      let mimeType = 'text/plain';
+
+      if (format === 'markdown') {
+        fileContent = formatMarkdownPrompt(sessions, startDate, endDate);
+        fileName += '.md';
+        mimeType = 'text/markdown;charset=utf-8;';
+      } else {
+        fileContent = JSON.stringify({
+          exportedAt: new Date().toISOString(),
+          dateRange: { startDate, endDate },
+          sessions
+        }, null, 2);
+        fileName += '.json';
+        mimeType = 'application/json;charset=utf-8;';
+      }
+
+      if (triggerDownload) {
+        const blob = new Blob([fileContent], { type: mimeType });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      }
+
+      return fileContent;
+    }
+
+    async function copyAIPromptToClipboard() {
+      const startDate = document.getElementById('exportStartDate')?.value;
+      const endDate = document.getElementById('exportEndDate')?.value;
+
+      const sessions = await fetchFilteredHistory(startDate, endDate);
+      if (sessions.length === 0) {
+        alert("No workout sessions found to copy.");
+        return;
+      }
+
+      const promptText = formatMarkdownPrompt(sessions, startDate, endDate);
+      try {
+        await navigator.clipboard.writeText(promptText);
+        alert("📋 Formatted AI Coaching Prompt copied to clipboard! Paste it directly into ChatGPT, Gemini, or Claude.");
+      } catch (err) {
+        alert("Could not write to clipboard automatically. Use the 'Download Markdown' option instead.");
       }
     }
 
