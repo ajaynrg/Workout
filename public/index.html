@@ -129,7 +129,7 @@
       padding: 16px;
     }
 
-    /* Program Meta Strip */
+    /* Meta Strip */
     .meta-card {
       background: var(--bg-surface);
       border: 1px solid var(--border);
@@ -176,12 +176,74 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
+    /* Warm-Up Section Card */
+    .warmup-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+    .warmup-header {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      background: var(--bg-card);
+    }
+    .warmup-title-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .warmup-toggle-icon {
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+    .warmup-toggle-icon.open {
+      transform: rotate(180deg);
+    }
+    .warmup-body {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .warmup-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .warmup-item input[type="checkbox"] {
+      margin-top: 3px;
+      width: 15px;
+      height: 15px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .warmup-label {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .warmup-label strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
     /* 1-Exercise-Per-Page Deck with Touch Swiping */
     .deck-carousel {
       width: 100%;
       overflow: hidden;
       border-radius: var(--radius-md);
-      touch-action: pan-y; /* Allows vertical scrolling while intercepting horizontal swipes */
+      touch-action: pan-y;
       user-select: none;
       -webkit-user-select: none;
       cursor: grab;
@@ -376,7 +438,7 @@
       border-color: var(--accent);
     }
 
-    /* Deck Nav Buttons & Swipe Cue */
+    /* Deck Nav Buttons */
     .deck-nav-bar {
       display: flex;
       justify-content: space-between;
@@ -747,6 +809,32 @@
 
     <!-- MONDAY -->
     <div id="tab-monday" class="tab-content active" data-day-name="Monday: Push Day">
+      <!-- Monday Warmup Banner -->
+      <div class="warmup-container">
+        <div class="warmup-header" onclick="toggleWarmup('warmup-body-monday', this)">
+          <span class="warmup-title-text"><i data-lucide="activity" style="width: 15px; color: var(--success);"></i> 5–8 Min Push Warm-Up (Tap to expand)</span>
+          <i data-lucide="chevron-down" class="warmup-toggle-icon" style="width: 15px;"></i>
+        </div>
+        <div class="warmup-body" id="warmup-body-monday">
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Arm Circles & Cross-Body Swings:</strong> 15 forward, 15 backward, 15 across chest.</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Scapular Push-Ups:</strong> 2 sets × 10–12 reps (hands on floor/bench, isolate scapular protraction/retraction).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Band Pull-Aparts / Light Face Pulls:</strong> 2 sets × 15 reps (rotator cuff & rear delt priming).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Incline DB Acclimatization:</strong> 1–2 light ramp sets (50% working load × 8, 75% × 4) prior to Set 1.</span>
+          </label>
+        </div>
+      </div>
+
       <div class="deck-carousel" id="carousel-monday"><div class="deck-track" id="track-monday"></div></div>
       <div class="deck-nav-bar">
         <button class="deck-btn" onclick="prevSlide('monday')"><i data-lucide="chevron-left" style="width:14px;"></i> Prev</button>
@@ -761,6 +849,32 @@
 
     <!-- THURSDAY -->
     <div id="tab-thursday" class="tab-content" data-day-name="Thursday: Pull Day">
+      <!-- Thursday Warmup Banner -->
+      <div class="warmup-container">
+        <div class="warmup-header" onclick="toggleWarmup('warmup-body-thursday', this)">
+          <span class="warmup-title-text"><i data-lucide="activity" style="width: 15px; color: var(--success);"></i> 5–8 Min Pull Warm-Up (Spine & Scapula)</span>
+          <i data-lucide="chevron-down" class="warmup-toggle-icon" style="width: 15px;"></i>
+        </div>
+        <div class="warmup-body" id="warmup-body-thursday">
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Dead Hangs (Pull-Up Bar):</strong> 2 sets × 20–30s (spine and shoulder girdle decompression).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Cat-Cow Spinal Stretches:</strong> 10 slow cycles (thoracic extension and flexion).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Bird-Dogs:</strong> 2 sets × 8 reps per side (activates spinal erectors and core stability).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Bent-Over Row Warm-Up Sets:</strong> 1–2 acclimatization sets with 50% working load × 8 reps.</span>
+          </label>
+        </div>
+      </div>
+
       <div class="deck-carousel" id="carousel-thursday"><div class="deck-track" id="track-thursday"></div></div>
       <div class="deck-nav-bar">
         <button class="deck-btn" onclick="prevSlide('thursday')"><i data-lucide="chevron-left" style="width:14px;"></i> Prev</button>
@@ -775,6 +889,32 @@
 
     <!-- FRIDAY -->
     <div id="tab-friday" class="tab-content" data-day-name="Friday: Leg Day">
+      <!-- Friday Warmup Banner -->
+      <div class="warmup-container">
+        <div class="warmup-header" onclick="toggleWarmup('warmup-body-friday', this)">
+          <span class="warmup-title-text"><i data-lucide="activity" style="width: 15px; color: var(--success);"></i> 5–8 Min Lower Body Dynamic Prep</span>
+          <i data-lucide="chevron-down" class="warmup-toggle-icon" style="width: 15px;"></i>
+        </div>
+        <div class="warmup-body" id="warmup-body-friday">
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Bodyweight Air Squats:</strong> 2 sets × 10 reps (pause 2 seconds at deep parallel).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>World’s Greatest Stretch:</strong> 5 reps per side (opens hip flexors, thoracic spine, hamstrings).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Glute Bridges (Bodyweight):</strong> 2 sets × 15 reps (squeeze glutes for 1s at lockout).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Leg Swings:</strong> 10 front-to-back & 10 side-to-side per leg (hip capsule dynamic mobility).</span>
+          </label>
+        </div>
+      </div>
+
       <div class="deck-carousel" id="carousel-friday"><div class="deck-track" id="track-friday"></div></div>
       <div class="deck-nav-bar">
         <button class="deck-btn" onclick="prevSlide('friday')"><i data-lucide="chevron-left" style="width:14px;"></i> Prev</button>
@@ -789,6 +929,28 @@
 
     <!-- SATURDAY -->
     <div id="tab-saturday" class="tab-content" data-day-name="Saturday: Push Volume">
+      <!-- Saturday Warmup Banner -->
+      <div class="warmup-container">
+        <div class="warmup-header" onclick="toggleWarmup('warmup-body-saturday', this)">
+          <span class="warmup-title-text"><i data-lucide="activity" style="width: 15px; color: var(--success);"></i> 5 Min Shoulder & Serratus Prep</span>
+          <i data-lucide="chevron-down" class="warmup-toggle-icon" style="width: 15px;"></i>
+        </div>
+        <div class="warmup-body" id="warmup-body-saturday">
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Band Pass-Throughs / Dislocates:</strong> 15 slow reps (opens anterior shoulder capsule).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Push-Up to Downward Dog:</strong> 8–10 reps (preps chest, serratus anterior, and posterior chain).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Quadruped Thoracic Rotations:</strong> 8 reps per side (hand behind head, rotate elbow to ceiling).</span>
+          </label>
+        </div>
+      </div>
+
       <div class="deck-carousel" id="carousel-saturday"><div class="deck-track" id="track-saturday"></div></div>
       <div class="deck-nav-bar">
         <button class="deck-btn" onclick="prevSlide('saturday')"><i data-lucide="chevron-left" style="width:14px;"></i> Prev</button>
@@ -803,6 +965,28 @@
 
     <!-- SUNDAY -->
     <div id="tab-sunday" class="tab-content" data-day-name="Sunday: Active Recovery Full-Body">
+      <!-- Sunday Warmup Banner -->
+      <div class="warmup-container">
+        <div class="warmup-header" onclick="toggleWarmup('warmup-body-sunday', this)">
+          <span class="warmup-title-text"><i data-lucide="activity" style="width: 15px; color: var(--success);"></i> 5 Min Recovery & Mobility Flow</span>
+          <i data-lucide="chevron-down" class="warmup-toggle-icon" style="width: 15px;"></i>
+        </div>
+        <div class="warmup-body" id="warmup-body-sunday">
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Inchworms with a Push-Up:</strong> 5–6 reps (posterior chain stretch + light core load).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Hip 90/90 Rotations:</strong> 8 reps per side (internal and external hip capsule mobility).</span>
+          </label>
+          <label class="warmup-item">
+            <input type="checkbox" />
+            <span class="warmup-label"><strong>Light Decompression Dead Hang:</strong> 20–30 seconds relaxed hang from pull-up bar.</span>
+          </label>
+        </div>
+      </div>
+
       <div class="deck-carousel" id="carousel-sunday"><div class="deck-track" id="track-sunday"></div></div>
       <div class="deck-nav-bar">
         <button class="deck-btn" onclick="prevSlide('sunday')"><i data-lucide="chevron-left" style="width:14px;"></i> Prev</button>
@@ -1173,6 +1357,19 @@
 
     const currentSlideIndices = { monday: 0, thursday: 0, friday: 0, saturday: 0, sunday: 0 };
 
+    function toggleWarmup(bodyId, headerEl) {
+      const body = document.getElementById(bodyId);
+      const icon = headerEl.querySelector('.warmup-toggle-icon');
+      if (!body) return;
+      if (body.style.display === 'none') {
+        body.style.display = 'flex';
+        if (icon) icon.classList.add('open');
+      } else {
+        body.style.display = 'none';
+        if (icon) icon.classList.remove('open');
+      }
+    }
+
     function renderDeckCarousel() {
       Object.entries(WORKOUT_PROGRAM).forEach(([dayKey, exercises]) => {
         const track = document.getElementById(`track-${dayKey}`);
@@ -1233,27 +1430,20 @@
           track.appendChild(slide);
         });
 
-        // Initialize swipe event listeners for each carousel track
         setupSwipeGestures(dayKey);
       });
       lucide.createIcons();
     }
 
-    // ================= TOUCH & MOUSE SWIPE GESTURE ENGINE =================
+    // Touch and drag swipe engine
     function setupSwipeGestures(dayKey) {
       const carousel = document.getElementById(`carousel-${dayKey}`);
       if (!carousel) return;
 
-      let startX = 0;
-      let startY = 0;
-      let isDragging = false;
-      let isHorizontalSwipe = false;
+      let startX = 0, startY = 0, isDragging = false, isHorizontalSwipe = false;
 
-      // Touch Events (Mobile)
       carousel.addEventListener('touchstart', (e) => {
-        // Do not intercept if interacting with stepper buttons or inputs
         if (e.target.closest('button') || e.target.closest('input')) return;
-
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         isDragging = true;
@@ -1262,18 +1452,13 @@
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
+        const deltaX = e.touches[0].clientX - startX;
+        const deltaY = e.touches[0].clientY - startY;
 
-        const currentX = e.touches[0].clientX;
-        const currentY = e.touches[0].clientY;
-        const deltaX = currentX - startX;
-        const deltaY = currentY - startY;
-
-        // Determine if movement is predominantly horizontal
         if (!isHorizontalSwipe) {
           if (Math.abs(deltaX) > 10 && Math.abs(deltaX) > Math.abs(deltaY)) {
             isHorizontalSwipe = true;
           } else if (Math.abs(deltaY) > 10) {
-            // Predominantly vertical scrolling; cancel swipe tracking
             isDragging = false;
           }
         }
@@ -1284,22 +1469,16 @@
           isDragging = false;
           return;
         }
+        const diffX = e.changedTouches[0].clientX - startX;
+        const swipeThreshold = 40;
 
-        const endX = e.changedTouches[0].clientX;
-        const diffX = endX - startX;
-        const swipeThreshold = 40; // Pixels needed to trigger slide change
-
-        if (diffX < -swipeThreshold) {
-          nextSlide(dayKey);
-        } else if (diffX > swipeThreshold) {
-          prevSlide(dayKey);
-        }
+        if (diffX < -swipeThreshold) nextSlide(dayKey);
+        else if (diffX > swipeThreshold) prevSlide(dayKey);
 
         isDragging = false;
         isHorizontalSwipe = false;
       });
 
-      // Mouse Drag Events (Desktop)
       carousel.addEventListener('mousedown', (e) => {
         if (e.target.closest('button') || e.target.closest('input')) return;
         startX = e.clientX;
@@ -1311,11 +1490,8 @@
         const diffX = e.clientX - startX;
         const swipeThreshold = 45;
 
-        if (diffX < -swipeThreshold) {
-          nextSlide(dayKey);
-        } else if (diffX > swipeThreshold) {
-          prevSlide(dayKey);
-        }
+        if (diffX < -swipeThreshold) nextSlide(dayKey);
+        else if (diffX > swipeThreshold) prevSlide(dayKey);
         isDragging = false;
       });
     }
